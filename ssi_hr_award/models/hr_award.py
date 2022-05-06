@@ -22,10 +22,21 @@ class HrAward(models.Model):
     _approval_state = "confirm"
     _after_approved_method = "action_done"
 
-    # Automatic view attribute
+    # Attributes related to add element on view automatically
     _automatically_insert_view_element = True
+
+    # Attributes related to add element on form view automatically
     _automatically_insert_multiple_approval_page = True
     _statusbar_visible_label = "draft,confirm,done"
+
+    # Attributes related to add element on search view automatically
+    _state_filter_order = [
+        "dom_draft",
+        "dom_confirm",
+        "dom_reject",
+        "dom_done",
+        "dom_cancel",
+    ]
 
     # Mixin duration attribute
     _date_start_readonly = True
