@@ -6,11 +6,32 @@
 <record id="hr_award_view_search" model="ir.ui.view">
     <field name="name">hr.award - search</field>
     <field name="model">hr.award</field>
+    <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
     <field name="mode">primary</field>
     <field name="arch" type="xml">
-        <search>
-            <field name="id" />
-        </search>
+        <data>
+            <xpath expr="//group[@name='group_by']" position="inside">
+                <filter
+                        name="grp_type"
+                        string="Type"
+                        context="{'group_by':'type_id'}"
+                    />
+                <filter name="grp_date" string="Date" context="{'group_by':'date'}" />
+                <filter
+                        name="grp_date_start"
+                        string="Date Start"
+                        context="{'group_by':'date_start'}"
+                    />
+                <filter
+                        name="grp_date_end"
+                        string="Date End"
+                        context="{'group_by':'date_end'}"
+                    />
+            </xpath>
+        </data>
     </field>
 </record>
 
