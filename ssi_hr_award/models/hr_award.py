@@ -24,10 +24,28 @@ class HrAward(models.Model):
 
     # Attributes related to add element on view automatically
     _automatically_insert_view_element = True
+    _automatically_insert_done_button = False
+    _automatically_insert_done_policy_fields = False
 
     # Attributes related to add element on form view automatically
     _automatically_insert_multiple_approval_page = True
     _statusbar_visible_label = "draft,confirm,done"
+    _policy_field_order = [
+        "confirm_ok",
+        "approve_ok",
+        "reject_ok",
+        "restart_approval_ok",
+        "cancel_ok",
+        "restart_ok",
+        "manual_number_ok",
+    ]
+    _header_button_order = [
+        "action_confirm",
+        "action_approve_approval",
+        "action_reject_approval",
+        "%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d",
+        "action_restart",
+    ]
 
     # Attributes related to add element on search view automatically
     _state_filter_order = [
