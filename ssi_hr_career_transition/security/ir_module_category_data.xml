@@ -4,15 +4,24 @@
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <odoo>
     <!-- Workflow -->
-    <record id="employee_career_transition_workflow_module_category" model="ir.module.category">
+    <record
+        id="employee_career_transition_workflow_module_category"
+        model="ir.module.category"
+    >
         <field name="name">Employee Career Transition - Workflow</field>
-        <field name="parent_id" ref="ssi_hr.human_resource_module_category"/>
+        <field name="parent_id" ref="ssi_hr.human_resource_module_category" />
     </record>
 
     <!-- Configurator -->
-    <record id="employee_career_transition_configurator_module_category" model="ir.module.category">
+    <record
+        id="employee_career_transition_configurator_module_category"
+        model="ir.module.category"
+    >
         <field name="name">Employee Career Transition - Configurator</field>
-        <field name="parent_id" ref="ssi_hr.human_resource_configurator_module_category" />
+        <field
+            name="parent_id"
+            ref="ssi_hr.human_resource_configurator_module_category"
+        />
     </record>
 
     <!-- Data Ownership -->
@@ -21,7 +30,7 @@
         model="ir.module.category"
     >
         <field name="name">Employee Career Transition - Data Ownership</field>
-        <field name="parent_id" ref="ssi_hr.human_resource_data_module_category"/>
+        <field name="parent_id" ref="ssi_hr.human_resource_data_module_category" />
     </record>
 
 </odoo>

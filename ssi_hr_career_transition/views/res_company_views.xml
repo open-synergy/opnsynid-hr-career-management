@@ -13,9 +13,9 @@
             <xpath expr="//notebook" position="inside">
                 <page name="career_transition" string="Career Transition">
                     <group name="career_transition_1" col="2" colspan="4">
-                        <field name="join_transition_type_id"/>
-                        <field name="terminate_transition_type_id"/>
-                        <field name="permanent_transition_type_id"/>
+                        <field name="join_transition_type_id" />
+                        <field name="terminate_transition_type_id" />
+                        <field name="permanent_transition_type_id" />
                     </group>
                 </page>
             </xpath>

@@ -9,10 +9,7 @@
     "license": "LGPL-3",
     "installable": True,
     "depends": [
-        "ssi_hr",
-        "ssi_hr_employee",
         "ssi_employee_document_mixin",
-        "ssi_master_data_mixin",
         "ssi_transaction_confirm_mixin",
         "ssi_transaction_ready_mixin",
         "ssi_transaction_done_mixin",

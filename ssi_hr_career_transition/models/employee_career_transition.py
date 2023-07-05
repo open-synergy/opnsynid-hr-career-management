@@ -2,9 +2,10 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models
-from odoo.addons.ssi_decorator import ssi_decorator
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+
+from odoo.addons.ssi_decorator import ssi_decorator
 
 
 class HrCareerTransition(models.Model):
@@ -84,6 +85,7 @@ class HrCareerTransition(models.Model):
         comodel_name="employee_career_transition_type.reason",
         string="Allowed Reasons",
         compute="_compute_allowed_reason_ids",
+        compute_sudo=True,
         store=False,
     )
     require_reason = fields.Boolean(
@@ -240,53 +242,55 @@ class HrCareerTransition(models.Model):
         res += policy_field
         return res
 
-    @api.depends('type_id')
+    @api.depends("type_id")
     def _compute_allowed_reason_ids(self):
         for record in self:
             result = []
             if record.type_id:
-                reasons = self.env['employee_career_transition_type.reason'].search([('type_id', '=', record.type_id.id)])
+                reasons = self.env["employee_career_transition_type.reason"].search(
+                    [("type_id", "=", record.type_id.id)]
+                )
                 result = reasons.ids
 
             record.allowed_reason_ids = result
 
-    @api.onchange('employee_id')
+    @api.onchange("employee_id")
     def onchange_previous_company_id(self):
         self.previous_company_id = self.employee_id.company_id
 
-    @api.depends('previous_company_id')
+    @api.depends("previous_company_id")
     def onchange_new_company_id(self):
         self.new_company_id = self.previous_company_id
 
-    @api.onchange('employee_id')
+    @api.onchange("employee_id")
     def onchange_previous_department_id(self):
         self.previous_department_id = self.employee_id.department_id
 
-    @api.depends('previous_department_id')
+    @api.depends("previous_department_id")
     def onchange_new_department_id(self):
         self.new_department_id = self.previous_department_id
 
-    @api.onchange('employee_id')
+    @api.onchange("employee_id")
     def onchange_previous_manager_id(self):
         self.previous_manager_id = self.employee_id.manager_id
 
-    @api.depends('previous_manager_id')
+    @api.depends("previous_manager_id")
     def onchange_new_manager_id(self):
         self.new_manager_id = self.previous_manager_id
 
-    @api.onchange('employee_id')
+    @api.onchange("employee_id")
     def onchange_previous_job_id(self):
         self.previous_job_id = self.employee_id.job_id
 
-    @api.depends('previous_job_id')
+    @api.depends("previous_job_id")
     def onchange_new_job_id(self):
         self.new_job_id = self.previous_job_id
 
-    @api.onchange('employee_id')
+    @api.onchange("employee_id")
     def onchange_previous_employment_status_id(self):
         self.previous_employment_status_id = self.employee_id.employment_status_id
 
-    @api.depends('previous_employment_status_id')
+    @api.depends("previous_employment_status_id")
     def onchange_new_employment_status_id(self):
         self.new_employment_status_id = self.previous_employment_status_id
 
@@ -305,6 +309,7 @@ class HrCareerTransition(models.Model):
             ("manager_id", "=", self.new_manager_id.id),
             ("employment_status_id", "=", self.new_employment_status_id.id),
         ]
+        return result
 
     @ssi_decorator.post_cancel_action
     def _01_revert_employee_information(self):
@@ -321,13 +326,20 @@ class HrCareerTransition(models.Model):
             ("manager_id", "=", self.previous_manager_id.id),
             ("employment_status_id", "=", self.previous_employment_status_id.id),
         ]
+        return result
 
     @ssi_decorator.post_cancel_check
     def _01_check_latest_history_when_cancel(self):
         if self.id != self.employee_id.latest_career_transition_id.id:
             if not self.archieve:
-                if self.state == 'done':
-                    raise ValidationError("Context: Cancel employee career transition \n"
-                                          "Database ID: self.id"
-                                          "Problem: Employee career transition is not latest transition\n"
-                                          "Solution: Find and cancel latest transition first")
+                if self.state == "done":
+                    error_message = _(
+                        """
+                    Context: Cancel employee career transition
+                    Database ID: %s
+                    Problem: Employee career transition is not latest transition
+                    Solution: Find and cancel latest transition first
+                    """
+                        % (self.id)
+                    )
+                    raise ValidationError(error_message)

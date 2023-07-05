@@ -14,14 +14,18 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id" widget="many2one_avatar_employee"/>
-                    <field name="department_id" optional="hide"/>
-                    <field name="manager_id" optional="hide" widget="many2one_avatar_employee"/>
-                    <field name="job_id" optional="hide"/>
-                    <field name="effective_date"/>
-                    <field name="type_id"/>
-                    <field name="archieve"/>
-                    <field name="reason_id"/>
+                    <field name="employee_id" widget="many2one_avatar_employee" />
+                    <field name="department_id" optional="hide" />
+                    <field
+                        name="manager_id"
+                        optional="hide"
+                        widget="many2one_avatar_employee"
+                    />
+                    <field name="job_id" optional="hide" />
+                    <field name="effective_date" />
+                    <field name="type_id" />
+                    <field name="archieve" />
+                    <field name="reason_id" />
                 </xpath>
             </data>
         </field>
@@ -38,10 +42,10 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id"/>
-                    <field name="type_id"/>
-                    <field name="reason_id"/>
-                    <field name="effective_date"/>
+                    <field name="employee_id" />
+                    <field name="type_id" />
+                    <field name="reason_id" />
+                    <field name="effective_date" />
                 </xpath>
                 <xpath expr="//group[@name='group_by']" position="inside">
                     <filter
@@ -80,54 +84,109 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id" widget="many2one_avatar_employee"/>
-                    <field name="department_id" readonly="1" force_save="1"/>
-                    <field name="manager_id" widget="many2one_avatar_employee" readonly="1" force_save="1"/>
-                    <field name="job_id" readonly="1" force_save="1"/>
+                    <field name="employee_id" widget="many2one_avatar_employee" />
+                    <field name="department_id" readonly="1" force_save="1" />
+                    <field
+                        name="manager_id"
+                        widget="many2one_avatar_employee"
+                        readonly="1"
+                        force_save="1"
+                    />
+                    <field name="job_id" readonly="1" force_save="1" />
                 </xpath>
                 <xpath expr="//group[@name='header_right']" position="inside">
-                    <field name="type_id"/>
-                    <field name="reason_id" domain="[('id', 'in', allowed_reason_ids)]"/>
-                    <field name="allowed_reason_ids" invisible="1" widget="many2many_tags"/>
-                    <field name="effective_date"/>
-                    <field name="archieve"/>
+                    <field name="type_id" />
+                    <field
+                        name="reason_id"
+                        domain="[('id', 'in', allowed_reason_ids)]"
+                    />
+                    <field
+                        name="allowed_reason_ids"
+                        invisible="1"
+                        widget="many2many_tags"
+                    />
+                    <field name="effective_date" />
+                    <field name="archieve" />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="change_data" string="Career Transition Detail">
                         <group name="change_data_1" colspan="4" col="3">
-                            <field name="previous_company_id" string="Company" readonly="1" force_save="1"/>
-                            <field name="new_company_id" nolabel="1"
-                                   attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=','require_company')]}"/>
-                            <field name="previous_department_id" string="Department" readonly="1" force_save="1"/>
-                            <field name="new_department_id" nolabel="1"
-                                   attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=','require_department')]}"/>
-                            <field name="previous_manager_id" string="Manager" readonly="1" force_save="1"/>
-                            <field name="new_manager_id" nolabel="1"
-                                   attrs="{'readonly':[('change_manager','=',False)], 'required':[('require_manager','=','require_manager')]}"/>
-                            <field name="previous_job_id" string="Job Position" readonly="1" force_save="1"/>
-                            <field name="new_job_id" nolabel="1"
-                                   attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=','require_job')]}"/>
-                            <field name="previous_employment_status_id" string="Employment Status" readonly="1"
-                                   force_save="1"/>
-                            <field name="new_employment_status_id" nolabel="1"
-                                   attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=','require_employment_status')]}"/>
+                            <field
+                                name="previous_company_id"
+                                string="Company"
+                                readonly="1"
+                                force_save="1"
+                            />
+                            <field
+                                name="new_company_id"
+                                nolabel="1"
+                                attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=','require_company')]}"
+                            />
+                            <field
+                                name="previous_department_id"
+                                string="Department"
+                                readonly="1"
+                                force_save="1"
+                            />
+                            <field
+                                name="new_department_id"
+                                nolabel="1"
+                                attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=','require_department')]}"
+                            />
+                            <field
+                                name="previous_manager_id"
+                                string="Manager"
+                                readonly="1"
+                                force_save="1"
+                            />
+                            <field
+                                name="new_manager_id"
+                                nolabel="1"
+                                attrs="{'readonly':[('change_manager','=',False)], 'required':[('require_manager','=','require_manager')]}"
+                            />
+                            <field
+                                name="previous_job_id"
+                                string="Job Position"
+                                readonly="1"
+                                force_save="1"
+                            />
+                            <field
+                                name="new_job_id"
+                                nolabel="1"
+                                attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=','require_job')]}"
+                            />
+                            <field
+                                name="previous_employment_status_id"
+                                string="Employment Status"
+                                readonly="1"
+                                force_save="1"
+                            />
+                            <field
+                                name="new_employment_status_id"
+                                nolabel="1"
+                                attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=','require_employment_status')]}"
+                            />
                         </group>
                     </page>
-                    <page name="change_policy" string="Change Policy" groups="base.group_system">
+                    <page
+                        name="change_policy"
+                        string="Change Policy"
+                        groups="base.group_system"
+                    >
                         <group name="change_policy_1" colspan="4" col="2">
                             <group name="change_policy_1_1" colspan="1" col="2">
-                                <field name="change_company"/>
-                                <field name="change_department"/>
-                                <field name="change_job"/>
-                                <field name="change_manager"/>
-                                <field name="change_employment_status"/>
+                                <field name="change_company" />
+                                <field name="change_department" />
+                                <field name="change_job" />
+                                <field name="change_manager" />
+                                <field name="change_employment_status" />
                             </group>
                             <group name="change_policy_1_2" colspan="1" col="2">
-                                <field name="require_company"/>
-                                <field name="require_department"/>
-                                <field name="require_job"/>
-                                <field name="require_manager"/>
-                                <field name="require_employment_status"/>
+                                <field name="require_company" />
+                                <field name="require_department" />
+                                <field name="require_job" />
+                                <field name="require_manager" />
+                                <field name="require_employment_status" />
                             </group>
                         </group>
                     </page>

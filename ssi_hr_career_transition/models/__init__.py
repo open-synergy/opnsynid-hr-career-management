@@ -7,5 +7,5 @@ from . import (
     employee_career_transition_type,
     employee_career_transition_type_reason,
     hr_employee,
-    res_company
+    res_company,
 )
