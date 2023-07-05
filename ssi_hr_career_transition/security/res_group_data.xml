@@ -31,19 +31,34 @@
     <!-- Workflow -->
     <record id="employee_career_transition_viewer_group" model="res.groups">
         <field name="name">Viewer</field>
-        <field name="category_id" ref="employee_career_transition_workflow_module_category"/>
+        <field
+            name="category_id"
+            ref="employee_career_transition_workflow_module_category"
+        />
     </record>
 
     <record id="employee_career_transition_user_group" model="res.groups">
         <field name="name">User</field>
-        <field name="category_id" ref="employee_career_transition_workflow_module_category"/>
-        <field name="implied_ids" eval="[(4, ref('employee_career_transition_viewer_group'))]"/>
+        <field
+            name="category_id"
+            ref="employee_career_transition_workflow_module_category"
+        />
+        <field
+            name="implied_ids"
+            eval="[(4, ref('employee_career_transition_viewer_group'))]"
+        />
     </record>
 
     <record id="employee_career_transition_validator_group" model="res.groups">
         <field name="name">Validator</field>
-        <field name="category_id" ref="employee_career_transition_workflow_module_category"/>
-        <field name="implied_ids" eval="[(4, ref('employee_career_transition_user_group'))]"/>
+        <field
+            name="category_id"
+            ref="employee_career_transition_workflow_module_category"
+        />
+        <field
+            name="implied_ids"
+            eval="[(4, ref('employee_career_transition_user_group'))]"
+        />
         <field
             name="users"
             eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"
@@ -88,7 +103,10 @@
             name="category_id"
             ref="employee_career_transition_data_ownership_module_category"
         />
-        <field name="implied_ids" eval="[(4, ref('employee_career_transition_company_group'))]"/>
+        <field
+            name="implied_ids"
+            eval="[(4, ref('employee_career_transition_company_group'))]"
+        />
     </record>
 
     <record id="employee_career_transition_all_group" model="res.groups">
@@ -97,7 +115,10 @@
             name="category_id"
             ref="employee_career_transition_data_ownership_module_category"
         />
-        <field name="implied_ids" eval="[(4, ref('employee_career_transition_company_child_group'))]"/>
+        <field
+            name="implied_ids"
+            eval="[(4, ref('employee_career_transition_company_child_group'))]"
+        />
         <field
             name="users"
             eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"

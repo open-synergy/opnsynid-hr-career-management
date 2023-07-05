@@ -20,7 +20,10 @@
             id="employee_career_transition_policy_template_detail_confirm"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','confirm_ok')]"
@@ -44,7 +47,10 @@
             id="employee_career_transition_policy_template_detail_approve"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','approve_ok')]"
@@ -66,7 +72,10 @@ if env.user.id in document.active_approver_user_ids.ids:
             id="employee_career_transition_policy_template_detail_reject"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','reject_ok')]"
@@ -88,7 +97,10 @@ if env.user.id in document.active_approver_user_ids.ids:
             id="employee_career_transition_policy_template_detail_restart_approval"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','restart_approval_ok')]"
@@ -115,7 +127,10 @@ if not document.approval_template_id:
             id="employee_career_transition_policy_template_detail_done"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','done_ok')]"
@@ -139,7 +154,10 @@ if not document.approval_template_id:
             id="employee_career_transition_policy_template_detail_cancel"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','cancel_ok')]"
@@ -163,7 +181,10 @@ if not document.approval_template_id:
             id="employee_career_transition_policy_template_detail_restart"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','restart_ok')]"
@@ -187,7 +208,10 @@ if not document.approval_template_id:
             id="employee_career_transition_policy_template_detail_manual_number"
             model="policy.template_detail"
         >
-            <field name="template_id" ref="employee_career_transition_policy_template" />
+            <field
+                name="template_id"
+                ref="employee_career_transition_policy_template"
+            />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_career_transition'),('name','=','manual_number_ok')]"
