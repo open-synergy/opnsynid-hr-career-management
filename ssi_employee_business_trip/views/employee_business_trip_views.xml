@@ -161,7 +161,6 @@
                                     <field name="pricelist_id"/>
                                     <field name="product_id" domain="[('id', 'in', parent.allowed_product_ids)]"/>
                                     <field name="currency_id" invisible="False"/>
-                                    <field name="currency_id" invisible="False"/>
                                     <field name="name"/>
                                     <field name="usage_id"/>
                                     <field name="account_id"/>
