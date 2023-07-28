@@ -19,7 +19,7 @@ class EmployeeBusinessTripType(models.Model):
         required=True
     )
     payable_account_id = fields.Many2one(
-        comodel_name="account.journal",
+        comodel_name="account.account",
         string="Payable Account",
         required=True
     )

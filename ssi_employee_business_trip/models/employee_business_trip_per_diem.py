@@ -42,3 +42,6 @@ class EmployeeBusinessTripPerDiem(models.Model):
     date = fields.Date(
         related="employee_business_trip_id.date_start"
     )
+    pricelist_id = fields.Many2one(
+        related="employee_business_trip_id.pricelist_id"
+    )

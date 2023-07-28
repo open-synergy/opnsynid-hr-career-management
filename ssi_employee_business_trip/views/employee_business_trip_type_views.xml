@@ -49,7 +49,7 @@
                             <field name="product_python_code" attrs="{'invisible':[('product_selection_method','!=','code')]}" />
                         </group>
                     </page>
-                    <page name="product" string="Currencies &amp; Pricelist">
+                    <page name="currency" string="Currencies &amp; Pricelist">
                         <group name="currency_1" col="2" colspan="4" string="Currencies">
                             <field name="currency_selection_method" />
                             <field name="currency_ids" attrs="{'invisible':[('currency_selection_method','!=','manual')]}" />

@@ -126,6 +126,25 @@
                 </xpath>
                 <xpath expr="//group[@name='header_right']" position="inside">
                     <field name="type_id"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field
+                        name="allowed_currency_ids"
+                        invisible="1"
+                        widget="many2many_tags"
+                    />
+                    <field
+                        name="currency_id"
+                        domain="[('id', 'in', allowed_currency_ids)]"
+                    />
+                    <field
+                        name="allowed_pricelist_ids"
+                        invisible="1"
+                        widget="many2many_tags"
+                    />
+                    <field
+                        name="pricelist_id"
+                        domain="[('id', 'in', allowed_pricelist_ids)]"
+                    />
                     <field
                         name="allowed_origin_ids"
                         invisible="1"
@@ -149,6 +168,11 @@
                         invisible="1"
                         widget="many2many_tags"
                     />
+                    <field
+                        name="product_id"
+                        domain="[('id', 'in', allowed_product_ids)]"
+                    />
+                    <field name="analytic_account_id"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                 </xpath>
@@ -189,6 +213,7 @@
                         <field name="tax_ids">
                             <tree editable="top">
                                 <field name="tax_id"/>
+                                <field name="name"/>
                                 <field name="currency_id" invisible="True"/>
                                 <field name="account_id"/>
                                 <field name="analytic_account_id"/>

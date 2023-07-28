@@ -21,6 +21,7 @@ class EmployeeBusinessTrip(models.Model):
         "mixin.company_currency",
         "mixin.account_move",
         "mixin.account_move_single_line",
+        "mixin.transaction_pricelist",
     ]
 
     # Multiple Approval Attribute
@@ -79,15 +80,6 @@ class EmployeeBusinessTrip(models.Model):
     type_id = fields.Many2one(
         comodel_name="employee_business_trip_type",
         string="Type",
-        required=True,
-        ondelete="restrict",
-        readonly=True,
-        states={"draft": [("readonly", False)]}
-    )
-    # additional
-    employee_partner_id = fields.Many2one(
-        'res.partner',
-        string='Partner',
         required=True,
         ondelete="restrict",
         readonly=True,
@@ -373,8 +365,6 @@ class EmployeeBusinessTrip(models.Model):
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
-
-                result = result.filtered(lambda r: r.currency_id.id in record.allowed_currency_ids.ids)
 
             record.allowed_pricelist_ids = result
 
