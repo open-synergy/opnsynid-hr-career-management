@@ -5,6 +5,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
+
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
@@ -83,7 +84,7 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     # Origin Destination
     origin_id = fields.Many2one(
@@ -92,14 +93,14 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     allowed_origin_ids = fields.Many2many(
         comodel_name="res.city",
         string="Allowed Origins",
         compute="_compute_allowed_origin_ids",
         store=False,
-        compute_sudo=True
+        compute_sudo=True,
     )
     destination_id = fields.Many2one(
         comodel_name="res.city",
@@ -107,26 +108,23 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     allowed_destination_ids = fields.Many2many(
         comodel_name="res.city",
         string="Allowed Destinations",
         compute="_compute_allowed_destination_ids",
         store=False,
-        compute_sudo=True
+        compute_sudo=True,
     )
     # Currency + additional
-    currency_id = fields.Many2one(
-        comodel_name='res.currency',
-        string='Currency'
-    )
+    currency_id = fields.Many2one(comodel_name="res.currency", string="Currency")
     allowed_currency_ids = fields.Many2many(
         comodel_name="res.currency",
         string="Allowed Currencies",
         compute="_compute_allowed_currency_ids",
         store=False,
-        compute_sudo=True
+        compute_sudo=True,
     )
     # Pricelist + additional
     pricelist_id = fields.Many2one(
@@ -135,14 +133,14 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     allowed_pricelist_ids = fields.Many2many(
         comodel_name="product.pricelist",
         string="Allowed Pricelists",
         compute="_compute_allowed_pricelist_ids",
         store=False,
-        compute_sudo=True
+        compute_sudo=True,
     )
     # Accounting
     journal_id = fields.Many2one(
@@ -151,7 +149,7 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     analytic_account_id = fields.Many2one(
         comodel_name="account.analytic.account",
@@ -159,7 +157,7 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     payable_account_id = fields.Many2one(
         comodel_name="account.account",
@@ -167,28 +165,20 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
-    move_id = fields.Many2one(
-        comodel_name="account.move",
-        string="Move",
-        readonly=True
-    )
+    move_id = fields.Many2one(comodel_name="account.move", string="Move", readonly=True)
     payable_move_line_id = fields.Many2one(
-        comodel_name="account.move.line",
-        string="Payable Move Line",
-        readonly=True
+        comodel_name="account.move.line", string="Payable Move Line", readonly=True
     )
     realized = fields.Boolean(
-        related="payable_move_line_id.reconciled",
-        string="Realized",
-        store=True
+        related="payable_move_line_id.reconciled", string="Realized", store=True
     )
     # Per diem
     per_diem_ids = fields.One2many(
         comodel_name="employee_business_trip.per_diem",
         inverse_name="employee_business_trip_id",
-        string="Per Diem"
+        string="Per Diem",
     )
     # Product
     product_id = fields.Many2one(
@@ -197,50 +187,50 @@ class EmployeeBusinessTrip(models.Model):
         required=True,
         ondelete="restrict",
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        states={"draft": [("readonly", False)]},
     )
     allowed_product_ids = fields.Many2many(
         comodel_name="product.product",
         string="Allowed Products",
         compute="_compute_allowed_product_ids",
         store=False,
-        compute_sudo=True
+        compute_sudo=True,
     )
     # Tax
     tax_ids = fields.One2many(
         comodel_name="employee_business_trip.tax",
         inverse_name="employee_business_trip_id",
-        string="Taxes"
+        string="Taxes",
     )
     amount_untaxed = fields.Monetary(
         compute="_compute_amount",
         string="Untaxed Amount",
         # currency_field="company_currency_id",
-        store=True
+        store=True,
     )
     amount_tax = fields.Monetary(
         compute="_compute_amount",
         string="Tax Amount",
         # currency_field="company_currency_id",
-        store=True
+        store=True,
     )
     amount_total = fields.Monetary(
         compute="_compute_amount",
         string="Total Amount",
         # currency_field="company_currency_id",
-        store=True
+        store=True,
     )
     amount_realized = fields.Monetary(
         compute="_compute_realized",
         string="Realized Amount",
         # currency_field="company_currency_id",
-        store=True
+        store=True,
     )
     amount_residual = fields.Monetary(
         compute="_compute_realized",
         string="Residual Amount",
         # currency_field="company_currency_id",
-        store=True
+        store=True,
     )
     state = fields.Selection(
         selection=[
@@ -249,10 +239,10 @@ class EmployeeBusinessTrip(models.Model):
             ("open", "In Progress"),
             ("done", "Done"),
             ("cancel", "Cancelled"),
-            ("reject", "Reject")
+            ("reject", "Reject"),
         ],
         string="Status",
-        default="draft"
+        default="draft",
     )
 
     @api.model
@@ -271,6 +261,13 @@ class EmployeeBusinessTrip(models.Model):
         ]
         res += policy_field
         return res
+
+    def _get_localdict(self):
+        self.ensure_one()
+        return {
+            "env": self.env,
+            "document": self,
+        }
 
     @api.onchange("type_id")
     def onchange_journal_id(self):
@@ -298,7 +295,12 @@ class EmployeeBusinessTrip(models.Model):
                 elif ttype.origin_selection_method == "code":
                     localdict = self._get_localdict()
                     try:
-                        safe_eval(ttype.origin_python_code, localdict, mode="exec", nocopy=True)
+                        safe_eval(
+                            ttype.origin_python_code,
+                            localdict,
+                            mode="exec",
+                            nocopy=True,
+                        )
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -319,7 +321,12 @@ class EmployeeBusinessTrip(models.Model):
                 elif ttype.destination_selection_method == "code":
                     localdict = self._get_localdict()
                     try:
-                        safe_eval(ttype.destination_python_code, localdict, mode="exec", nocopy=True)
+                        safe_eval(
+                            ttype.destination_python_code,
+                            localdict,
+                            mode="exec",
+                            nocopy=True,
+                        )
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -340,7 +347,12 @@ class EmployeeBusinessTrip(models.Model):
                 elif ttype.product_selection_method == "code":
                     localdict = self._get_localdict()
                     try:
-                        safe_eval(ttype.product_python_code, localdict, mode="exec", nocopy=True)
+                        safe_eval(
+                            ttype.product_python_code,
+                            localdict,
+                            mode="exec",
+                            nocopy=True,
+                        )
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -361,7 +373,12 @@ class EmployeeBusinessTrip(models.Model):
                 elif ttype.pricelist_selection_method == "code":
                     localdict = self._get_localdict()
                     try:
-                        safe_eval(ttype.pricelist_python_code, localdict, mode="exec", nocopy=True)
+                        safe_eval(
+                            ttype.pricelist_python_code,
+                            localdict,
+                            mode="exec",
+                            nocopy=True,
+                        )
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -382,7 +399,12 @@ class EmployeeBusinessTrip(models.Model):
                 elif ttype.currency_selection_method == "code":
                     localdict = self._get_localdict()
                     try:
-                        safe_eval(ttype.currency_python_code, localdict, mode="exec", nocopy=True)
+                        safe_eval(
+                            ttype.currency_python_code,
+                            localdict,
+                            mode="exec",
+                            nocopy=True,
+                        )
                         result = localdict["result"]
                     except Exception as error:
                         raise UserError(_("Error evaluating conditions.\n %s") % error)
@@ -408,8 +430,11 @@ class EmployeeBusinessTrip(models.Model):
             record.amount_tax = amount_tax
             record.amount_total = amount_total
 
-    @api.depends("payable_move_line_id", "payable_move_line_id.amount_residual_currency",
-                 "payable_move_line_id.reconciled")
+    @api.depends(
+        "payable_move_line_id",
+        "payable_move_line_id.amount_residual_currency",
+        "payable_move_line_id.reconciled",
+    )
     def _compute_realized(self):
         for record in self:
             amount_realized = 0.0
@@ -425,21 +450,21 @@ class EmployeeBusinessTrip(models.Model):
     @ssi_decorator.post_done_action
     def _create_accounting_entry(self):
         self.ensure_one()
-        self._create_standard_move() # Mixin
-        self._create_standard_ml() # Mixin
+        self._create_standard_move()  # Mixin
+        self._create_standard_ml()  # Mixin
 
         for per_diem in self.per_diem_ids:
-            per_diem._create_standard_ml() # Mixin
+            per_diem._create_standard_ml()  # Mixin
 
         for tax in self.tax_ids:
-            tax._create_standard_ml() # Mixin
+            tax._create_standard_ml()  # Mixin
 
-        self._post_standard_move() # Mixin
+        self._post_standard_move()  # Mixin
 
     @ssi_decorator.post_cancel_action
     def _delete_accounting_entry(self):
         self.ensure_one()
-        self._delete_standard_move() # Mixin
+        self._delete_standard_move()  # Mixin
 
     def action_compute_tax(self):
         for record in self:

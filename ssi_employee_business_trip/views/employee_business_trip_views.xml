@@ -14,21 +14,25 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id" widget="many2one_avatar_employee"/>
-                    <field name="department_id" optional="hide"/>
-                    <field name="manager_id" optional="hide" widget="many2one_avatar_employee"/>
-                    <field name="job_id" optional="hide"/>
-                    <field name="type_id"/>
-                    <field name="currency_id"/>
-                    <field name="origin_id"/>
-                    <field name="destination_id"/>
-                    <field name="date_start"/>
-                    <field name="date_end"/>
-                    <field name="amount_untaxed"/>
-                    <field name="amount_tax"/>
-                    <field name="amount_total"/>
-                    <field name="amount_realized"/>
-                    <field name="amount_residual"/>
+                    <field name="employee_id" widget="many2one_avatar_employee" />
+                    <field name="department_id" optional="hide" />
+                    <field
+                        name="manager_id"
+                        optional="hide"
+                        widget="many2one_avatar_employee"
+                    />
+                    <field name="job_id" optional="hide" />
+                    <field name="type_id" />
+                    <field name="currency_id" />
+                    <field name="origin_id" />
+                    <field name="destination_id" />
+                    <field name="date_start" />
+                    <field name="date_end" />
+                    <field name="amount_untaxed" />
+                    <field name="amount_tax" />
+                    <field name="amount_total" />
+                    <field name="amount_realized" />
+                    <field name="amount_residual" />
                 </xpath>
             </data>
         </field>
@@ -45,17 +49,17 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id"/>
-                    <field name="department_id"/>
-                    <field name="manager_id"/>
-                    <field name="job_id"/>
-                    <field name="type_id"/>
-                    <field name="currency_id"/>
-                    <field name="pricelist_id"/>
-                    <field name="origin_id"/>
-                    <field name="destination_id"/>
-                    <field name="date_start"/>
-                    <field name="date_end"/>
+                    <field name="employee_id" />
+                    <field name="department_id" />
+                    <field name="manager_id" />
+                    <field name="job_id" />
+                    <field name="type_id" />
+                    <field name="currency_id" />
+                    <field name="pricelist_id" />
+                    <field name="origin_id" />
+                    <field name="destination_id" />
+                    <field name="date_start" />
+                    <field name="date_end" />
                 </xpath>
                 <xpath expr="//group[@name='group_by']" position="inside">
                     <filter
@@ -114,19 +118,19 @@
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="employee_id" widget="many2one_avatar_employee"/>
-                    <field name="department_id" readonly="1" force_save="1"/>
+                    <field name="employee_id" widget="many2one_avatar_employee" />
+                    <field name="department_id" readonly="1" force_save="1" />
                     <field
                         name="manager_id"
                         widget="many2one_avatar_employee"
                         readonly="1"
                         force_save="1"
                     />
-                    <field name="job_id" readonly="1" force_save="1"/>
+                    <field name="job_id" readonly="1" force_save="1" />
                 </xpath>
                 <xpath expr="//group[@name='header_right']" position="inside">
-                    <field name="type_id"/>
-                    <field name="company_currency_id" invisible="1"/>
+                    <field name="type_id" />
+                    <field name="company_currency_id" invisible="1" />
                     <field
                         name="allowed_currency_ids"
                         invisible="1"
@@ -172,65 +176,66 @@
                         name="product_id"
                         domain="[('id', 'in', allowed_product_ids)]"
                     />
-                    <field name="analytic_account_id"/>
-                    <field name="date_start"/>
-                    <field name="date_end"/>
+                    <field name="analytic_account_id" />
+                    <field name="date_start" />
+                    <field name="date_end" />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="per_diem" string="Per Diem">
-                        <group name="per_diem_1" colspan="4" col="3">
-                            <field name="per_diem_ids">
-                                <tree editable="top">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="pricelist_id"/>
-                                    <field name="product_id" domain="[('id', 'in', parent.allowed_product_ids)]"/>
-                                    <field name="currency_id" invisible="False"/>
-                                    <field name="name"/>
-                                    <field name="usage_id"/>
-                                    <field name="account_id"/>
-                                    <field name="analytic_account_id"/>
-                                    <field name="uom_quantity"/>
-                                    <field name="uom_id"/>
-                                    <field name="price_unit"/>
-                                    <field name="tax_ids" widget="many2many_tags"/>
-                                    <field name="price_subtotal"/>
-                                </tree>
-                            </field>
-                        </group>
+                        <field name="per_diem_ids">
+                            <tree editable="top">
+                                <field name="sequence" widget="handle" />
+                                <field name="pricelist_id" />
+                                <field
+                                    name="product_id"
+                                    domain="[('id', 'in', parent.allowed_product_ids)]"
+                                />
+                                <field name="currency_id" invisible="False" />
+                                <field name="name" />
+                                <field name="usage_id" />
+                                <field name="account_id" />
+                                <field name="analytic_account_id" />
+                                <field name="uom_quantity" />
+                                <field name="uom_id" />
+                                <field name="price_unit" />
+                                <field name="tax_ids" widget="many2many_tags" />
+                                <field name="price_subtotal" />
+                            </tree>
+                        </field>
                     </page>
                     <page name="accounting" string="Accounting">
                         <group name="accounting_1" colspan="4" col="2">
                             <group name="accounting_1_1" colspan="1" col="2">
-                                <field name="journal_id"/>
-                                <field name="payable_account_id"/>
+                                <field name="journal_id" />
+                                <field name="payable_account_id" />
                             </group>
                             <group name="accounting_1_2" colspan="1" col="2">
-                                <field name="move_id"/>
-                                <field name="payable_move_line_id"/>
-                                <field name="realized"/>
+                                <field name="move_id" />
+                                <field name="payable_move_line_id" />
+                                <field name="realized" />
                             </group>
                         </group>
                         <field name="tax_ids">
                             <tree editable="top">
-                                <field name="tax_id"/>
-                                <field name="name"/>
-                                <field name="currency_id" invisible="True"/>
-                                <field name="account_id"/>
-                                <field name="analytic_account_id"/>
-                                <field name="manual" invisible="True"/>
-                                <field name="base_amount"/>
-                                <field name="tax_amount"/>
+                                <field name="tax_id" />
+                                <field name="name" />
+                                <field name="currency_id" invisible="True" />
+                                <field name="account_id" />
+                                <field name="analytic_account_id" />
+                                <field name="manual" invisible="True" />
+                                <field name="base_amount" />
+                                <field name="tax_amount" />
                             </tree>
                             <form>
                                 <group name="tax" colspan="4" col="2">
-                                    <field name="tax_id"/>
-                                    <field name="currency_id" invisible="True"/>
-                                    <field name="account_id"/>
-                                    <field name="analytic_account_id"/>
-                                    <field name="manual" invisible="True"/>
-                                    <field name="base_amount"/>
-                                    <field name="tax_amount"/>
-                                    <field name="account_move_line_id"/>
+                                    <field name="tax_id" />
+                                    <field name="currency_id" invisible="True" />
+                                    <field name="account_id" />
+                                    <field name="analytic_account_id" />
+                                    <field name="manual" invisible="True" />
+                                    <field name="base_amount" />
+                                    <field name="tax_amount" />
+                                    <field name="account_move_line_id" />
                                 </group>
                             </form>
                         </field>
