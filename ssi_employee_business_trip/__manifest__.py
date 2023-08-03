@@ -11,6 +11,7 @@
     "depends": [
         "ssi_hr",
         "ssi_hr_employee",
+        "ssi_hr_expense",
         "ssi_employee_document_mixin",
         "ssi_master_data_mixin",
         "ssi_transaction_confirm_mixin",
