@@ -1,12 +1,12 @@
 # Copyright 2023 OpenSynergy Indonesia
 # Copyright 2023 PT. Simetri Sinergi Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 {
     "name": "Employee Business Trip",
     "version": "14.0.1.0.0",
     "website": "https://simetri-sinergi.id",
-    "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
-    "license": "AGPL-3",
+    "author": "PT. Simetri Sinergi Indonesia, OpenSynergy Indonesia",
+    "license": "LGPL-3",
     "installable": True,
     "depends": [
         "ssi_hr",
@@ -17,6 +17,7 @@
         "ssi_transaction_open_mixin",
         "ssi_transaction_done_mixin",
         "ssi_transaction_cancel_mixin",
+        "ssi_transaction_pricelist_mixin",
         "ssi_company_currency_mixin",
         "ssi_duration_mixin",
         "base_address_city",
