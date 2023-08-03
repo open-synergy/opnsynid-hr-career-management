@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2023 OpenSynergy Indonesia
      Copyright 2023 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="employee_business_trip_internal_user_rule" model="ir.rule">
         <field name="name">Employee Business Trip - Internal Users</field>
@@ -49,9 +49,7 @@
     </record>
 
     <record id="employee_business_trip_company_rule" model="ir.rule">
-        <field
-            name="name"
-        >Employee Business Trip - Responsible to company data</field>
+        <field name="name">Employee Business Trip - Responsible to company data</field>
         <field name="model_id" ref="model_employee_business_trip" />
         <field
             name="groups"
@@ -83,10 +81,7 @@
     <record id="employee_business_trip_all_rule" model="ir.rule">
         <field name="name">Employee Business Trip - Responsible to all data</field>
         <field name="model_id" ref="model_employee_business_trip" />
-        <field
-            name="groups"
-            eval="[(4, ref('employee_business_trip_all_group'))]"
-        />
+        <field name="groups" eval="[(4, ref('employee_business_trip_all_group'))]" />
         <field name="domain_force">[(1,'=',1)]</field>
         <field name="perm_unlink" eval="1" />
         <field name="perm_write" eval="1" />

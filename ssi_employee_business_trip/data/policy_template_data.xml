@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2023 OpenSynergy Indonesia
      Copyright 2023 PT. Simetri Sinergi Indonesia
-     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <data noupdate="1">
         <record id="employee_business_trip_policy_template" model="policy.template">
@@ -20,10 +20,7 @@
             id="employee_business_trip_policy_template_detail_confirm"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','confirm_ok')]"
@@ -47,10 +44,7 @@
             id="employee_business_trip_policy_template_detail_approve"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','approve_ok')]"
@@ -72,10 +66,7 @@ if env.user.id in document.active_approver_user_ids.ids:
             id="employee_business_trip_policy_template_detail_reject"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','reject_ok')]"
@@ -97,10 +88,7 @@ if env.user.id in document.active_approver_user_ids.ids:
             id="employee_business_trip_policy_template_detail_restart_approval"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','restart_approval_ok')]"
@@ -127,10 +115,7 @@ if not document.approval_template_id:
             id="employee_business_trip_policy_template_detail_cancel"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','cancel_ok')]"
@@ -154,10 +139,7 @@ if not document.approval_template_id:
             id="employee_business_trip_policy_template_detail_restart"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','restart_ok')]"
@@ -181,10 +163,7 @@ if not document.approval_template_id:
             id="employee_business_trip_policy_template_detail_manual_number"
             model="policy.template_detail"
         >
-            <field
-                name="template_id"
-                ref="employee_business_trip_policy_template"
-            />
+            <field name="template_id" ref="employee_business_trip_policy_template" />
             <field
                 name="field_id"
                 search="[('model_id.model','=','employee_business_trip'),('name','=','manual_number_ok')]"

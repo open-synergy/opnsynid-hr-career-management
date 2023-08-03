@@ -1,16 +1,14 @@
 # Copyright 2023 OpenSynergy Indonesia
 # Copyright 2023 PT. Simetri Sinergi Indonesia
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class EmployeeBusinessTripTax(models.Model):
     _name = "employee_business_trip.tax"
     _description = "Employee Business Trip - Tax"
-    _inherit = [
-        "mixin.tax_line"
-    ]
+    _inherit = ["mixin.tax_line"]
 
     # account.move.line
     _partner_id_field_name = "employee_partner_id"
@@ -23,23 +21,17 @@ class EmployeeBusinessTripTax(models.Model):
         comodel_name="employee_business_trip",
         string="Employee Business Trip",
         required=True,
-        ondelete="cascade"
+        ondelete="cascade",
     )
-    move_id = fields.Many2one(
-        related="employee_business_trip_id.move_id"
-    )
-    currency_id = fields.Many2one(
-        related="employee_business_trip_id.currency_id"
-    )
+    move_id = fields.Many2one(related="employee_business_trip_id.move_id")
+    currency_id = fields.Many2one(related="employee_business_trip_id.currency_id")
     company_currency_id = fields.Many2one(
         related="employee_business_trip_id.company_currency_id"
     )
     employee_partner_id = fields.Many2one(
         related="employee_business_trip_id.employee_partner_id"
     )
-    date = fields.Date(
-        related="employee_business_trip_id.date_start"
-    )
+    date = fields.Date(related="employee_business_trip_id.date_start")
     # Additional
     account_move_line_id = fields.Many2one(
         string="Journal Item",
