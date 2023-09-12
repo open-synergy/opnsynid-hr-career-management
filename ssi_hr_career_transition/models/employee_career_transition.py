@@ -149,6 +149,12 @@ class HrCareerTransition(models.Model):
         string="Require Employee Status",
         related="type_id.require_employment_status",
     )
+    previous_history_id = fields.Many2one(
+        comodel_name="employee_career_transition",
+        string="Previous History",
+        ondelete="restrict",
+        readonly=True,
+    )
     archieve = fields.Boolean(
         string="Archieve",
         default=False,
@@ -254,41 +260,68 @@ class HrCareerTransition(models.Model):
 
             record.allowed_reason_ids = result
 
-    @api.onchange("employee_id")
+    @api.onchange(
+        "employee_id",
+        "archieve",
+    )
+    def onchange_previous_history_id(self):
+        self.previous_history_id = False
+        if not self.archieve and self.employee_id:
+            criteria = [
+                ("employee_id", "=", self.employee_id.id),
+                ("state", "in", ["ready", "done"]),
+            ]
+            histories = self.search(criteria)
+            if len(histories) > 0:
+                self.previous_history_id = histories[-1]
+
+    @api.onchange("previous_history_id")
     def onchange_previous_company_id(self):
-        self.previous_company_id = self.employee_id.company_id
+        self.previous_company_id = False
+        if self.previous_history_id:
+            self.previous_company_id = self.previous_history_id.new_company_id
 
     @api.depends("previous_company_id")
     def onchange_new_company_id(self):
         self.new_company_id = self.previous_company_id
 
-    @api.onchange("employee_id")
+    @api.onchange("previous_history_id")
     def onchange_previous_department_id(self):
-        self.previous_department_id = self.employee_id.department_id
+        self.previous_department_id = False
+        if self.previous_history_id:
+            self.previous_department_id = self.previous_history_id.new_department_id
 
     @api.depends("previous_department_id")
     def onchange_new_department_id(self):
         self.new_department_id = self.previous_department_id
 
-    @api.onchange("employee_id")
+    @api.onchange("previous_history_id")
     def onchange_previous_manager_id(self):
-        self.previous_manager_id = self.employee_id.manager_id
+        self.previous_manager_id = False
+        if self.previous_history_id:
+            self.previous_manager_id = self.previous_history_id.new_manager_id
 
     @api.depends("previous_manager_id")
     def onchange_new_manager_id(self):
         self.new_manager_id = self.previous_manager_id
 
-    @api.onchange("employee_id")
+    @api.onchange("previous_history_id")
     def onchange_previous_job_id(self):
-        self.previous_job_id = self.employee_id.job_id
+        self.previous_job_id = False
+        if self.previous_history_id:
+            self.previous_job_id = self.previous_history_id.new_job_id
 
     @api.depends("previous_job_id")
     def onchange_new_job_id(self):
         self.new_job_id = self.previous_job_id
 
-    @api.onchange("employee_id")
+    @api.onchange("previous_history_id")
     def onchange_previous_employment_status_id(self):
-        self.previous_employment_status_id = self.employee_id.employment_status_id
+        self.previous_employment_status_id = False
+        if self.previous_history_id:
+            self.previous_employment_status_id = (
+                self.previous_history_id.new_employment_status_id
+            )
 
     @api.depends("previous_employment_status_id")
     def onchange_new_employment_status_id(self):
