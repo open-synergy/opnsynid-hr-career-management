@@ -107,6 +107,7 @@
                     />
                     <field name="effective_date" />
                     <field name="archieve" />
+                    <field name="previous_history_id" force_save="1" />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="change_data" string="Career Transition Detail">
@@ -120,7 +121,7 @@
                             <field
                                 name="new_company_id"
                                 nolabel="1"
-                                attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=','require_company')]}"
+                                attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
                             />
                             <field
                                 name="previous_department_id"
@@ -131,7 +132,7 @@
                             <field
                                 name="new_department_id"
                                 nolabel="1"
-                                attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=','require_department')]}"
+                                attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=',True)]}"
                             />
                             <field
                                 name="previous_manager_id"
@@ -142,7 +143,7 @@
                             <field
                                 name="new_manager_id"
                                 nolabel="1"
-                                attrs="{'readonly':[('change_manager','=',False)], 'required':[('require_manager','=','require_manager')]}"
+                                attrs="{'readonly':[('change_manager','=',False)], 'required':[('require_manager','=',True)]}"
                             />
                             <field
                                 name="previous_job_id"
@@ -153,7 +154,7 @@
                             <field
                                 name="new_job_id"
                                 nolabel="1"
-                                attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=','require_job')]}"
+                                attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=',True)]}"
                             />
                             <field
                                 name="previous_employment_status_id"
@@ -164,7 +165,7 @@
                             <field
                                 name="new_employment_status_id"
                                 nolabel="1"
-                                attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=','require_employment_status')]}"
+                                attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
                             />
                         </group>
                     </page>
