@@ -96,6 +96,7 @@
                 </xpath>
                 <xpath expr="//group[@name='header_right']" position="inside">
                     <field name="type_id" />
+                    <field name="require_previous_transition" />
                     <field
                         name="reason_id"
                         domain="[('id', 'in', allowed_reason_ids)]"
@@ -107,7 +108,11 @@
                     />
                     <field name="effective_date" />
                     <field name="archieve" />
-                    <field name="previous_history_id" force_save="1" />
+                    <field
+                        name="previous_history_id"
+                        force_save="1"
+                        attrs="{'required':[('require_previous_transition','=',True)]}"
+                    />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="change_data" string="Career Transition Detail">

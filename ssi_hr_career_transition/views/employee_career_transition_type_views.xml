@@ -44,6 +44,7 @@
                     <page name="general" string="General">
                         <group name="general_1" col="2" colspan="4">
                             <field name="limit" />
+                            <field name="require_previous_transition" />
                         </group>
                     </page>
                     <page name="change" string="Data To Change">
