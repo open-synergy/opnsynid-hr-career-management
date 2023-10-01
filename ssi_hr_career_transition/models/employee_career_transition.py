@@ -74,6 +74,10 @@ class HrCareerTransition(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    require_previous_transition = fields.Boolean(
+        string="Require Previous Transition",
+        related="type_id.require_previous_transition",
+    )
     reason_id = fields.Many2one(
         comodel_name="employee_career_transition_type.reason",
         string="Reason",
@@ -262,14 +266,16 @@ class HrCareerTransition(models.Model):
 
     @api.onchange(
         "employee_id",
-        "archieve",
+        "type_id",
+        "effective_date",
     )
     def onchange_previous_history_id(self):
         self.previous_history_id = False
-        if not self.archieve and self.employee_id:
+        if self.effective_date and self.employee_id:
             criteria = [
                 ("employee_id", "=", self.employee_id.id),
                 ("state", "in", ["ready", "done"]),
+                ("effective_date", "<", self.effective_date),
             ]
             histories = self.search(criteria)
             if len(histories) > 0:

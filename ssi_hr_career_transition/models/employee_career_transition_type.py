@@ -21,6 +21,10 @@ class HrCareerTransitionType(models.Model):
         inverse_name="type_id",
         string="Reasons",
     )
+    require_previous_transition = fields.Boolean(
+        string="Require Previous Transition",
+        default=False,
+    )
     limit = fields.Integer(
         string="Transition Limit",
         default=0,
