@@ -19,7 +19,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_hr_award](ssi_hr_award/) | 14.0.1.3.1 |  | Employee Award
-[ssi_hr_career_transition](ssi_hr_career_transition/) | 14.0.1.1.0 |  | Human Resource Career Transition
+[ssi_hr_career_transition](ssi_hr_career_transition/) | 14.0.1.2.0 |  | Human Resource Career Transition
 [ssi_hr_dicipline](ssi_hr_dicipline/) | 14.0.1.1.1 |  | Employee Dicipline
 
 [//]: # (end addons)
