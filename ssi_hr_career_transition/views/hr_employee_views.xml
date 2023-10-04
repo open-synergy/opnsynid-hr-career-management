@@ -18,6 +18,7 @@
                             <field name="join_career_transition_id" />
                             <field name="terminate_career_transition_id" />
                             <field name="permanent_career_transition_id" />
+                            <field name="work_information_method" />
                         </group>
                         <group name="career_transition_1_2" col="2" colspan="4">
                             <field name="manual_date_join" />
