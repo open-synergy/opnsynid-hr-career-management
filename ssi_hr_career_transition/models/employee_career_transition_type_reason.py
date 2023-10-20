@@ -11,7 +11,7 @@ class HrCareerTransitionTypeReason(models.Model):
 
     name = fields.Char(
         string="Reason",
-        require=True,
+        required=True,
     )
     type_id = fields.Many2one(
         comodel_name="employee_career_transition_type",
