@@ -19,8 +19,11 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_hr_award](ssi_hr_award/) | 14.0.1.3.1 |  | Employee Award
+[ssi_hr_award_work_log](ssi_hr_award_work_log/) | 14.0.1.0.0 |  | Employee Award - Work Log Integration
 [ssi_hr_career_transition](ssi_hr_career_transition/) | 14.0.1.4.0 |  | Human Resource Career Transition
+[ssi_hr_career_transition_work_log](ssi_hr_career_transition_work_log/) | 14.0.1.0.0 |  | Human Resource Career Transition - Work Log Integration
 [ssi_hr_dicipline](ssi_hr_dicipline/) | 14.0.1.1.1 |  | Employee Dicipline
+[ssi_hr_dicipline_work_log](ssi_hr_dicipline_work_log/) | 14.0.1.0.0 |  | Employee Dicipline - Work Log Integration
 
 [//]: # (end addons)
 
