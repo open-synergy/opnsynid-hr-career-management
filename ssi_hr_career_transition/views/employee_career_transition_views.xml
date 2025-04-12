@@ -107,6 +107,9 @@
                         widget="many2many_tags"
                     />
                     <field name="contract" invisible="1" />
+                    <field name="join" invisible="1" />
+                    <field name="permanent" invisible="1" />
+                    <field name="terminate" invisible="1" />
                     <field
                         name="effective_date"
                         attrs="{'required':[('contract','&lt;&gt;',True)],'invisible':[('contract','=',True)]}"

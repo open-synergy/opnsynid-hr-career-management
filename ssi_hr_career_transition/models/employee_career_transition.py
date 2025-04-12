@@ -121,6 +121,61 @@ class HrCareerTransition(models.Model):
         compute="_compute_contract",
         store=False,
     )
+
+    @api.depends(
+        "type_id",
+    )
+    def _compute_join(self):
+        company = self.env.company
+        join_type_id = company.join_transition_type_id.id
+        for document in self:
+            document.join = False
+            if join_type_id:
+                if document.type_id.id == join_type_id:
+                    document.join = True
+
+    join = fields.Boolean(
+        string="Join",
+        compute="_compute_join",
+        store=False,
+    )
+
+    @api.depends(
+        "type_id",
+    )
+    def _compute_permanent(self):
+        company = self.env.company
+        permanent_type_id = company.permanent_transition_type_id.id
+        for document in self:
+            document.permanent = False
+            if permanent_type_id:
+                if document.type_id.id == permanent_type_id:
+                    document.permanent = True
+
+    permanent = fields.Boolean(
+        string="Permanent",
+        compute="_compute_permanent",
+        store=False,
+    )
+
+    @api.depends(
+        "type_id",
+    )
+    def _compute_terminate(self):
+        company = self.env.company
+        terminate_type_id = company.permanent_transition_type_id.id
+        for document in self:
+            document.terminate = False
+            if terminate_type_id:
+                if document.type_id.id == terminate_type_id:
+                    document.terminate = True
+
+    terminate = fields.Boolean(
+        string="Terminate",
+        compute="_compute_terminate",
+        store=False,
+    )
+
     date_contract_start = fields.Date(
         string="Contract Start Date",
         required=False,
@@ -329,12 +384,26 @@ class HrCareerTransition(models.Model):
     def onchange_new_employment_status_id(self):
         self.new_employment_status_id = self.previous_employment_status_id
 
-    @ssi_decorator.post_done_action
+    def _get_employment_status(self):
+        if self.join:
+            employment_status = self.env.company.join_employment_status_id.id
+        elif self.contract:
+            employment_status = self.env.company.contract_employment_status_id.id
+        elif self.permanent:
+            employment_status = self.env.company.permanent_employment_status_id.id
+        elif self.terminate:
+            employment_status = self.env.company.terminate_employment_status_id.id
+        else:
+            employment_status = self.new_employment_status_id.id
+        return employment_status
+
+    @ssi_decorator.post_done_action()
     def _01_change_employee_information(self):
         if self.archieve:
             return True
 
-        self.write({self.employee_id: self._prepare_change_employee_information()})
+        employment_status = self._get_employment_status()
+        self.write({"new_employment_status_id": employment_status})
 
     def _prepare_change_employee_information(self):
         result = [
