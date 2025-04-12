@@ -20,3 +20,7 @@ class Company(models.Model):
         comodel_name="employee_career_transition_type",
         string="Permanent Transition Type",
     )
+    contract_transition_type_id = fields.Many2one(
+        comodel_name="employee_career_transition_type",
+        string="Contract Transition Type",
+    )

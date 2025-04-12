@@ -99,20 +99,41 @@ class HrCareerTransition(models.Model):
     )
     effective_date = fields.Date(
         string="Effective Date",
-        required=True,
+        required=False,
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    # need_previous_history = fields.Boolean(
-    #     string="Need Previous History",
-    #     related="type_id.need_previous_history",
-    # )
-    # previous_history_id = fields.Many2one(
-    #     comodel_name="employee_career_transition",
-    #     string="Previous History",
-    #     ondelete="restrict",
-    #     readonly=True,
-    # )
+
+    @api.depends(
+        "type_id",
+    )
+    def _compute_contract(self):
+        company = self.env.company
+        contract_type_id = \
+                company.contract_transition_type_id.id
+        for document in self:
+            document.contract = False
+            if contract_type_id:
+                if document.type_id.id == contract_type_id:
+                    document.contract = True
+
+    contract = fields.Boolean(
+        string="Contract",
+        compute="_compute_contract",
+        store=False,
+    )
+    date_contract_start = fields.Date(
+        string="Contract Start Date",
+        required=False,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
+    date_contract_end = fields.Date(
+        string="Contract End Date",
+        required=False,
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+    )
     change_company = fields.Boolean(
         string="Change Company",
         related="type_id.change_company",
@@ -121,13 +142,13 @@ class HrCareerTransition(models.Model):
         string="Require Company",
         related="type_id.require_company",
     )
-    change_manager = fields.Boolean(
+    change_parent = fields.Boolean(
         string="Change Manager",
-        related="type_id.change_manager",
+        related="type_id.change_parent",
     )
-    require_manager = fields.Boolean(
+    require_parent = fields.Boolean(
         string="Require Manager",
-        related="type_id.require_manager",
+        related="type_id.require_parent",
     )
     change_job = fields.Boolean(
         string="Change Job Position",
@@ -153,47 +174,40 @@ class HrCareerTransition(models.Model):
         string="Require Employee Status",
         related="type_id.require_employment_status",
     )
-    previous_history_id = fields.Many2one(
-        comodel_name="employee_career_transition",
-        string="Previous History",
-        ondelete="restrict",
-        readonly=True,
-    )
     archieve = fields.Boolean(
         string="Archieve",
         default=False,
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
+    require_previous_transition = fields.Boolean(
+        string="Need Previous History",
+        related="type_id.require_previous_transition",
+    )
+    previous_history_id = fields.Many2one(
+        string="Previous History",
+        comodel_name="employee_career_transition",
+        related="employee_id.latest_career_transition_id",
+    )
     previous_company_id = fields.Many2one(
-        comodel_name="res.company",
         string="Previous Company",
-        ondelete="restrict",
-        readonly=True,
+        related="previous_history_id.new_company_id",
     )
     previous_department_id = fields.Many2one(
-        comodel_name="hr.department",
         string="Previous Department",
-        ondelete="restrict",
-        readonly=True,
+        related="previous_history_id.new_department_id",
     )
     previous_job_id = fields.Many2one(
-        comodel_name="hr.job",
         string="Previous Job Position",
-        ondelete="restrict",
-        readonly=True,
+        related="previous_history_id.new_job_id",
     )
-    previous_manager_id = fields.Many2one(
-        comodel_name="hr.employee",
+    previous_parent_id = fields.Many2one(
         string="Previous Manager",
-        ondelete="restrict",
-        readonly=True,
+        related="previous_history_id.new_parent_id",
     )
     previous_employment_status_id = fields.Many2one(
-        comodel_name="hr.employment_status",
         string="Previous Employment Status",
-        ondelete="restrict",
-        readonly=True,
+        related="previous_history_id.new_employment_status_id",
     )
     new_company_id = fields.Many2one(
         comodel_name="res.company",
@@ -210,7 +224,7 @@ class HrCareerTransition(models.Model):
         string="New Job Position",
         ondelete="restrict",
     )
-    new_manager_id = fields.Many2one(
+    new_parent_id = fields.Many2one(
         comodel_name="hr.employee",
         string="New Manager",
         ondelete="restrict",
@@ -264,23 +278,6 @@ class HrCareerTransition(models.Model):
 
             record.allowed_reason_ids = result
 
-    @api.onchange(
-        "employee_id",
-        "type_id",
-        "effective_date",
-    )
-    def onchange_previous_history_id(self):
-        self.previous_history_id = False
-        if self.effective_date and self.employee_id:
-            criteria = [
-                ("employee_id", "=", self.employee_id.id),
-                ("state", "in", ["ready", "done"]),
-                ("effective_date", "<", self.effective_date),
-            ]
-            histories = self.search(criteria)
-            if len(histories) > 0:
-                self.previous_history_id = histories[-1]
-
     @api.onchange("previous_history_id")
     def onchange_previous_company_id(self):
         self.previous_company_id = False
@@ -302,14 +299,14 @@ class HrCareerTransition(models.Model):
         self.new_department_id = self.previous_department_id
 
     @api.onchange("previous_history_id")
-    def onchange_previous_manager_id(self):
-        self.previous_manager_id = False
+    def onchange_previous_parent_id(self):
+        self.previous_parent_id = False
         if self.previous_history_id:
-            self.previous_manager_id = self.previous_history_id.new_manager_id
+            self.previous_parent_id = self.previous_history_id.new_parent_id
 
-    @api.depends("previous_manager_id")
-    def onchange_new_manager_id(self):
-        self.new_manager_id = self.previous_manager_id
+    @api.depends("previous_parent_id")
+    def onchange_new_parent_id(self):
+        self.new_parent_id = self.previous_parent_id
 
     @api.onchange("previous_history_id")
     def onchange_previous_job_id(self):
@@ -345,7 +342,7 @@ class HrCareerTransition(models.Model):
             ("company_id", "=", self.new_company_id.id),
             ("department_id", "=", self.new_department_id.id),
             ("job_id", "=", self.new_job_id.id),
-            ("manager_id", "=", self.new_manager_id.id),
+            ("manager_id", "=", self.new_parent_id.id),
             ("employment_status_id", "=", self.new_employment_status_id.id),
         ]
         return result
@@ -362,7 +359,7 @@ class HrCareerTransition(models.Model):
             ("company_id", "=", self.previous_company_id.id),
             ("department_id", "=", self.previous_department_id.id),
             ("job_id", "=", self.previous_job_id.id),
-            ("manager_id", "=", self.previous_manager_id.id),
+            ("manager_id", "=", self.previous_parent_id.id),
             ("employment_status_id", "=", self.previous_employment_status_id.id),
         ]
         return result
@@ -382,3 +379,62 @@ class HrCareerTransition(models.Model):
                         % (self.id)
                     )
                     raise ValidationError(error_message)
+                
+    @ssi_decorator.pre_confirm_check()
+    def _01_check_limit_before_confirm(self):
+        if not self._check_limit():
+            error_message = _(
+            """
+            Context: Validation Error
+            Database ID: %s
+            Problem: This transaction has exceeded the limit %s
+            Solution: Change the limit or please contact HR
+            """
+                % (self.id, self.type_id.limit)
+            )
+            raise ValidationError(error_message)
+                
+    @api.constrains(
+        "date_contract_start",
+        "date_contract_end",
+    )
+    def _check_date_contract_start_end(self):
+        for record in self.sudo():
+            if record.date_contract_start and record.date_contract_end:
+                strWarning = _("Contract Date end must be greater than Contract Date Start")
+                if record.date_contract_end < record.date_contract_start:
+                    raise UserError(strWarning)
+                
+    def _check_limit(self):
+        self.ensure_one()
+        result = True
+        limit = self.type_id.limit
+
+        if limit > 0:
+            criteria = [
+                ("type_id", "=", self.type_id.id),
+                ("employee_id", "=", self.employee_id.id),
+                ("state", "=", "done"),
+                ("id", "<>", self.id)
+            ]
+            transition_ids = self.search(criteria)
+            if len(transition_ids) >= limit:
+                result = False
+        return result
+    
+    @api.constrains(
+        "type_id",
+    )
+    def _check_limit_transaction(self):
+        for record in self.sudo():
+            if not record._check_limit():
+                error_message = _(
+                """
+                Context: Validation Error
+                Database ID: %s
+                Problem: This transaction has exceeded the limit %s
+                Solution: Change the limit or please contact HR
+                """
+                    % (record.id, self.type_id.limit)
+                )
+                raise ValidationError(error_message)

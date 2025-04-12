@@ -2,7 +2,8 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrEmployee(models.Model):
@@ -42,6 +43,13 @@ class HrEmployee(models.Model):
         store=True,
         readonly=True,
     )
+    contract_career_transition_id = fields.Many2one(
+        comodel_name="employee_career_transition",
+        compute="_compute_career_transition",
+        string="Contract Career Transition",
+        store=True,
+        readonly=True,
+    )
     work_information_method = fields.Selection(
         string="Work Information Method",
         selection=[
@@ -50,56 +58,95 @@ class HrEmployee(models.Model):
         ],
     )
     manual_company_id = fields.Many2one(
-        comodel_name="res.company", string="Manual Company"
+        string="Manual Company",
+        comodel_name="res.company",
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
         string="Company",
         compute="_compute_company_id",
         store=True,
+        related=False,
     )
-    manual_manager_id = fields.Many2one(
-        comodel_name="hr.employee", string="Manual Manager"
-    )
-    manager_id = fields.Many2one(
+    manual_parent_id = fields.Many2one(
+        string="Manual Manager",
         comodel_name="hr.employee",
+    )
+    parent_id = fields.Many2one(
         string="Manager",
-        compute="_compute_manager_id",
+        comodel_name="hr.employee",
+        compute="_compute_parent_id",
         store=True,
     )
-    manual_job_id = fields.Many2one(comodel_name="hr.job", string="Manual Job")
+    manual_job_id = fields.Many2one(
+        string="Manual Job",
+        comodel_name="hr.job",
+    )
     job_id = fields.Many2one(
-        comodel_name="hr.job", string="Job", compute="_compute_job_id", store=True
+        string="Job",
+        comodel_name="hr.job",
+        compute="_compute_job_id",
+        store=True,
     )
     manual_department_id = fields.Many2one(
-        comodel_name="hr.department", string="Manual Department"
+        string="Manual Department",
+        comodel_name="hr.department",
     )
     department_id = fields.Many2one(
-        comodel_name="hr.department",
         string="Department",
+        comodel_name="hr.department",
         compute="_compute_department_id",
         store=True,
     )
     manual_employment_status_id = fields.Many2one(
-        comodel_name="hr.employment_status", string="Manual Employee Status"
+        string="Manual Employee Status",
+        comodel_name="hr.employment_status",
     )
     employment_status_id = fields.Many2one(
-        comodel_name="hr.employment_status",
         string="Employee Status",
+        comodel_name="hr.employment_status",
         compute="_compute_employment_status_id",
         store=True,
     )
-    manual_date_join = fields.Date(string="Manual Date Join")
+    manual_date_join = fields.Date(
+        string="Manual Join Date",
+    )
     date_join = fields.Date(
-        string="Date Join", compute="_compute_date_join", store=True
+        string="Join Date",
+        compute="_compute_date_join",
+        store=True,
     )
-    manual_date_terminate = fields.Date(string="Manual Date Terminate")
-    date_terminate = fields.Date(
-        string="Date Terminate", compute="_compute_date_terminate", store=True
+    manual_date_termination = fields.Date(
+        string="Manual Termination Date",
     )
-    manual_date_permanent = fields.Date(string="Manual Date Permanent")
+    date_termination = fields.Date(
+        string="Termination Date",
+        compute="_compute_date_termination",
+        store=True,
+    )
+    manual_date_permanent = fields.Date(
+        string="Manual Permanent Date",
+    )
     date_permanent = fields.Date(
-        string="Date Permanent", compute="_compute_date_permanent", store=True
+        string="Permanent Date",
+        compute="_compute_date_permanent",
+        store=True,
+    )
+    manual_date_contract_start = fields.Date(
+        string="Manual Contract Start Date",
+    )
+    manual_date_contract_end = fields.Date(
+        string="Manual Contract End Date",
+    )
+    date_contract_start = fields.Date(
+        string="Contract Start Date",
+        compute="_compute_date_contract_start",
+        store=True,
+    )
+    date_contract_end = fields.Date(
+        string="Contract End Date",
+        compute="_compute_date_contract_end",
+        store=True,
     )
 
     @api.depends(
@@ -109,8 +156,15 @@ class HrEmployee(models.Model):
     )
     def _compute_career_transition(self):
         for record in self:
-            if len(record.career_transition_ids) > 0:
-                record.latest_career_transition_id = record.career_transition_ids[0]
+            latest = self.env["employee_career_transition"].search(
+                [
+                    ("state", "=", "done"),
+                    ("employee_id", "=", record.id),
+                ]
+            )
+
+            if len(latest) > 0:
+                record.latest_career_transition_id = latest[0]
 
             joins = self.env["employee_career_transition"].search(
                 [
@@ -145,59 +199,86 @@ class HrEmployee(models.Model):
             if len(permanents) > 0:
                 record.permanent_career_transition_id = permanents[0]
 
+            contracts = self.env["employee_career_transition"].search(
+                [
+                    ("state", "=", "done"),
+                    ("type_id", "=", record.company_id.contract_transition_type_id.id),
+                    ("employee_id", "=", record.id),
+                ]
+            )
+
+            if len(contracts) > 0:
+                record.contract_career_transition_id = contracts[0]
+
     @api.depends(
-        "work_information_method", "latest_career_transition_id", "manual_company_id"
+        "work_information_method",
+        "latest_career_transition_id",
+        "manual_company_id",
     )
     def _compute_company_id(self):
         for record in self:
-            record.company_id = record.manual_company_id
-
-            if (
+            record.company_id = self.env.company
+            if record.work_information_method == "manual":
+                record.company_id = record.manual_company_id
+            elif(
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.company_id = record.latest_career_transition_id.new_company_id
+                if record.latest_career_transition_id.new_company_id:
+                    record.company_id = record.latest_career_transition_id.new_company_id
 
     @api.depends(
-        "work_information_method", "latest_career_transition_id", "manual_department_id"
+        "work_information_method",
+        "latest_career_transition_id",
+        "manual_department_id",
     )
     def _compute_department_id(self):
         for record in self:
-            record.department_id = record.manual_department_id
-
-            if (
+            if record.work_information_method == "manual":
+                record.department_id = record.manual_department_id
+            elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
                 record.department_id = (
                     record.latest_career_transition_id.new_department_id
                 )
+            else:
+                record.department_id = False
 
     @api.depends(
-        "work_information_method", "latest_career_transition_id", "manual_job_id"
+        "work_information_method",
+        "latest_career_transition_id",
+        "manual_job_id",
     )
     def _compute_job_id(self):
         for record in self:
-            record.job_id = record.manual_job_id
-
-            if (
+            if record.work_information_method == "manual":
+                record.job_id = record.manual_job_id
+            elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
                 record.job_id = record.latest_career_transition_id.new_job_id
+            else:
+                record.job_id = False
 
     @api.depends(
-        "work_information_method", "latest_career_transition_id", "manual_manager_id"
+        "work_information_method",
+        "latest_career_transition_id",
+        "manual_parent_id",
     )
-    def _compute_manager_id(self):
+    def _compute_parent_id(self):
         for record in self:
-            record.manager_id = record.manual_manager_id
-
-            if (
+            if record.work_information_method == "manual":
+                record.parent_id = record.manual_parent_id
+            elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.manager_id = record.latest_career_transition_id.new_manager_id
+                record.parent_id = record.latest_career_transition_id.new_parent_id
+            else:
+                record.parent_id = False
 
     @api.depends(
         "work_information_method",
@@ -206,59 +287,104 @@ class HrEmployee(models.Model):
     )
     def _compute_employment_status_id(self):
         for record in self:
-            record.employment_status_id = record.manual_employment_status_id
-
-            if (
+            if record.work_information_method == "manual":
+                record.employment_status_id = record.manual_employment_status_id
+            elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
                 record.employment_status_id = (
                     record.latest_career_transition_id.new_employment_status_id
                 )
+            else:
+                record.employment_status_id = False
 
     @api.depends(
-        "work_information_method", "latest_career_transition_id", "manual_date_join"
+        "work_information_method",
+        "join_career_transition_id",
+        "manual_date_join",
     )
     def _compute_date_join(self):
         for record in self:
-            record.date_join = record.manual_date_join
-
-            if (
+            if record.work_information_method == "manual":
+                record.date_join = record.manual_date_join
+            elif (
                 record.work_information_method == "career_transition"
                 and record.join_career_transition_id
             ):
                 record.date_join = record.join_career_transition_id.effective_date
+            else:
+                record.date_join = False
 
     @api.depends(
         "work_information_method",
-        "latest_career_transition_id",
-        "manual_date_terminate",
+        "terminate_career_transition_id",
+        "manual_date_termination",
     )
-    def _compute_date_terminate(self):
+    def _compute_date_termination(self):
         for record in self:
-            record.date_terminate = record.manual_date_terminate
-
-            if (
+            if record.work_information_method == "manual":
+                record.date_termination = record.manual_date_termination
+            elif (
                 record.work_information_method == "career_transition"
                 and record.terminate_career_transition_id
             ):
-                record.date_terminate = (
+                record.date_termination = (
                     record.terminate_career_transition_id.effective_date
                 )
+            else:
+                record.date_termination = False
 
     @api.depends(
         "work_information_method",
-        "latest_career_transition_id",
+        "permanent_career_transition_id",
         "manual_date_permanent",
     )
     def _compute_date_permanent(self):
         for record in self:
-            record.date_permanent = record.manual_date_permanent
-
-            if (
+            if record.work_information_method == "manual":
+                record.date_permanent = record.manual_date_permanent
+            elif (
                 record.work_information_method == "career_transition"
                 and record.permanent_career_transition_id
             ):
                 record.date_permanent = (
                     record.permanent_career_transition_id.effective_date
                 )
+            else:
+                record.date_permanent = False
+
+    @api.depends(
+        "work_information_method",
+        "contract_career_transition_id",
+        "manual_date_contract_start",
+    )
+    def _compute_date_contract_start(self):
+        for record in self:
+            if record.work_information_method == "manual":
+                record.date_contract_start = record.manual_date_contract_start
+            elif (
+                record.work_information_method == "career_transition"
+                and record.contract_career_transition_id
+            ):
+                record.date_contract_start = \
+                    record.contract_career_transition_id.date_contract_start
+            else:
+                record.date_contract_start = False
+
+    @api.depends(
+        "work_information_method",
+        "contract_career_transition_id",
+        "manual_date_contract_end",
+    )
+    def _compute_date_contract_end(self):
+        for record in self:
+            if record.work_information_method == "manual":
+                record.date_contract_end = record.manual_date_contract_end
+            elif (
+                record.work_information_method == "career_transition"
+                and record.contract_career_transition_id
+            ):
+                record.date_contract_end = record.contract_career_transition_id.date_contract_end
+            else:
+                record.date_contract_end = False

@@ -52,14 +52,14 @@
                             <field name="change_company" />
                             <field name="change_department" />
                             <field name="change_job" />
-                            <field name="change_manager" />
+                            <field name="change_parent" />
                             <field name="change_employment_status" />
                         </group>
                         <group name="change_1_2" col="2" colspan="4">
                             <field name="require_company" />
                             <field name="require_department" />
                             <field name="require_job" />
-                            <field name="require_manager" />
+                            <field name="require_parent" />
                             <field name="require_employment_status" />
                         </group>
                     </page>

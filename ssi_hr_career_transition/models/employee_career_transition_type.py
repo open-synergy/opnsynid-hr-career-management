@@ -35,10 +35,10 @@ class HrCareerTransitionType(models.Model):
     require_company = fields.Boolean(
         string="Require Company",
     )
-    change_manager = fields.Boolean(
+    change_parent = fields.Boolean(
         string="Change Manager",
     )
-    require_manager = fields.Boolean(
+    require_parent = fields.Boolean(
         string="Require Manager",
     )
     change_job = fields.Boolean(

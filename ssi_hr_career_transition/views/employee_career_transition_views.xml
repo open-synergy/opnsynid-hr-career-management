@@ -106,72 +106,103 @@
                         invisible="1"
                         widget="many2many_tags"
                     />
-                    <field name="effective_date" />
+                    <field name="contract" invisible="1"/>
+                    <field
+                        name="effective_date"
+                        attrs="{'required':[('contract','&lt;&gt;',True)],'invisible':[('contract','=',True)]}"
+                    />
+                    <field
+                        name="date_contract_start"
+                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','&lt;&gt;',True)]}"
+                    />
+                    <field
+                        name="date_contract_end"
+                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','&lt;&gt;',True)]}"
+                    />
                     <field name="archieve" />
+                    <field name="require_previous_transition" />
                     <field
                         name="previous_history_id"
                         force_save="1"
-                        attrs="{'required':[('require_previous_transition','=',True)]}"
+                        attrs="{'invisible':[('require_previous_transition','&lt;&gt;',True)]}"
                     />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
-                    <page name="change_data" string="Career Transition Detail">
-                        <group name="change_data_1" colspan="4" col="3">
-                            <field
-                                name="previous_company_id"
-                                string="Company"
-                                readonly="1"
-                                force_save="1"
-                            />
-                            <field
-                                name="new_company_id"
-                                nolabel="1"
-                                attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
-                            />
-                            <field
-                                name="previous_department_id"
-                                string="Department"
-                                readonly="1"
-                                force_save="1"
-                            />
-                            <field
-                                name="new_department_id"
-                                nolabel="1"
-                                attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=',True)]}"
-                            />
-                            <field
-                                name="previous_manager_id"
-                                string="Manager"
-                                readonly="1"
-                                force_save="1"
-                            />
-                            <field
-                                name="new_manager_id"
-                                nolabel="1"
-                                attrs="{'readonly':[('change_manager','=',False)], 'required':[('require_manager','=',True)]}"
-                            />
-                            <field
-                                name="previous_job_id"
-                                string="Job Position"
-                                readonly="1"
-                                force_save="1"
-                            />
-                            <field
-                                name="new_job_id"
-                                nolabel="1"
-                                attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=',True)]}"
-                            />
-                            <field
-                                name="previous_employment_status_id"
-                                string="Employment Status"
-                                readonly="1"
-                                force_save="1"
-                            />
-                            <field
-                                name="new_employment_status_id"
-                                nolabel="1"
-                                attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
-                            />
+                    <page
+                        name="detail_previous"
+                        string="Career Transition Detail"
+                        attrs="{'invisible':[('require_previous_transition','&lt;&gt;',True)]}"
+                    >
+                        <group name="detail_previous_1" colspan="4" col="2">
+                            <group name="detail_previous_1_1" colspan="1" col="2" string="Previous">
+                                <field name="previous_company_id" string="Company"/>
+                                <field name="previous_department_id" string="Department"/>
+                                <field name="previous_parent_id" string="Manager"/>
+                                <field name="previous_job_id" string="Job"/>
+                                <field name="previous_employment_status_id" string="Employment Status"/>
+                            </group>
+                            <group name="detail_previous_1_2" colspan="1" col="2" string="New">
+                                <field 
+                                    string="Company"
+                                    name="new_company_id"
+                                    attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
+                                />
+                                <field
+                                    string="Department"
+                                    name="new_department_id"
+                                    attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=',True)]}"
+                                />
+                                <field
+                                    string="Manager"
+                                    name="new_parent_id"
+                                    attrs="{'readonly':[('change_parent','=',False)], 'required':[('require_parent','=',True)]}"
+                                />
+                                <field
+                                    string="Job"
+                                    name="new_job_id"
+                                    attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=',True)]}"
+                                />
+                                <field
+                                    string="Employment Status"
+                                    name="new_employment_status_id"
+                                    attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
+                                />
+                            </group>
+                        </group>
+                    </page>
+                    <page
+                        name="detail_new"
+                        string="Career Transition Detail"
+                        attrs="{'invisible':[('require_previous_transition','=',True)]}"
+                    >
+                        <group name="detail_new_1" colspan="4" col="2">
+                            <group name="detail_new_1_1" colspan="1" col="2">
+                                <field 
+                                    string="Company"
+                                    name="new_company_id"
+                                    attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
+                                />
+                                <field
+                                    string="Department"
+                                    name="new_department_id"
+                                    attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=',True)]}"
+                                />
+                                <field
+                                    string="Manager"
+                                    name="new_parent_id"
+                                    attrs="{'readonly':[('change_parent','=',False)], 'required':[('require_parent','=',True)]}"
+                                />
+                                <field
+                                    string="Job"
+                                    name="new_job_id"
+                                    attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=',True)]}"
+                                />
+                                <field
+                                    string="Employment Status"
+                                    name="new_employment_status_id"
+                                    attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
+                                />
+                            </group>
                         </group>
                     </page>
                     <page
@@ -184,14 +215,14 @@
                                 <field name="change_company" />
                                 <field name="change_department" />
                                 <field name="change_job" />
-                                <field name="change_manager" />
+                                <field name="change_parent" />
                                 <field name="change_employment_status" />
                             </group>
                             <group name="change_policy_1_2" colspan="1" col="2">
                                 <field name="require_company" />
                                 <field name="require_department" />
                                 <field name="require_job" />
-                                <field name="require_manager" />
+                                <field name="require_parent" />
                                 <field name="require_employment_status" />
                             </group>
                         </group>
