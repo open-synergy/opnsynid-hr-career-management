@@ -394,7 +394,7 @@ class HrCareerTransition(models.Model):
         elif self.terminate:
             employment_status = self.env.company.terminate_employment_status_id.id
         else:
-            employment_status = self.new_employment_status_id.id
+            employment_status = False
         return employment_status
 
     @ssi_decorator.post_done_action()
@@ -403,17 +403,8 @@ class HrCareerTransition(models.Model):
             return True
 
         employment_status = self._get_employment_status()
-        self.write({"new_employment_status_id": employment_status})
-
-    def _prepare_change_employee_information(self):
-        result = [
-            ("company_id", "=", self.new_company_id.id),
-            ("department_id", "=", self.new_department_id.id),
-            ("job_id", "=", self.new_job_id.id),
-            ("manager_id", "=", self.new_parent_id.id),
-            ("employment_status_id", "=", self.new_employment_status_id.id),
-        ]
-        return result
+        if employment_status:
+            self.write({"new_employment_status_id": employment_status})
 
     @ssi_decorator.post_cancel_action
     def _01_revert_employee_information(self):

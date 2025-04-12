@@ -241,9 +241,10 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.department_id = (
-                    record.latest_career_transition_id.new_department_id
-                )
+                if record.latest_career_transition_id.new_department_id:
+                    record.department_id = (
+                        record.latest_career_transition_id.new_department_id
+                    )
             else:
                 record.department_id = False
 
@@ -260,7 +261,8 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.job_id = record.latest_career_transition_id.new_job_id
+                if record.latest_career_transition_id.new_job_id:
+                    record.job_id = record.latest_career_transition_id.new_job_id
             else:
                 record.job_id = False
 
@@ -277,7 +279,8 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.parent_id = record.latest_career_transition_id.new_parent_id
+                if record.latest_career_transition_id.new_parent_id:
+                    record.parent_id = record.latest_career_transition_id.new_parent_id
             else:
                 record.parent_id = False
 
@@ -294,9 +297,10 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                record.employment_status_id = (
-                    record.latest_career_transition_id.new_employment_status_id
-                )
+                if record.latest_career_transition_id.new_employment_status_id:
+                    record.employment_status_id = (
+                        record.latest_career_transition_id.new_employment_status_id
+                    )
             else:
                 record.employment_status_id = False
 
@@ -313,7 +317,8 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.join_career_transition_id
             ):
-                record.date_join = record.join_career_transition_id.effective_date
+                if record.join_career_transition_id.effective_date:
+                    record.date_join = record.join_career_transition_id.effective_date
             else:
                 record.date_join = False
 
@@ -330,9 +335,10 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.terminate_career_transition_id
             ):
-                record.date_termination = (
-                    record.terminate_career_transition_id.effective_date
-                )
+                if record.terminate_career_transition_id.effective_date:
+                    record.date_termination = (
+                        record.terminate_career_transition_id.effective_date
+                    )
             else:
                 record.date_termination = False
 
@@ -349,9 +355,10 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.permanent_career_transition_id
             ):
-                record.date_permanent = (
-                    record.permanent_career_transition_id.effective_date
-                )
+                if record.permanent_career_transition_id.effective_date:
+                    record.date_permanent = (
+                        record.permanent_career_transition_id.effective_date
+                    )
             else:
                 record.date_permanent = False
 
@@ -368,9 +375,10 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                record.date_contract_start = (
-                    record.contract_career_transition_id.date_contract_start
-                )
+                if record.contract_career_transition_id.date_contract_start:
+                    record.date_contract_start = (
+                        record.contract_career_transition_id.date_contract_start
+                    )
             else:
                 record.date_contract_start = False
 
@@ -387,8 +395,9 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                record.date_contract_end = (
-                    record.contract_career_transition_id.date_contract_end
-                )
+                if record.contract_career_transition_id.date_contract_end:
+                    record.date_contract_end = (
+                        record.contract_career_transition_id.date_contract_end
+                    )
             else:
                 record.date_contract_end = False
