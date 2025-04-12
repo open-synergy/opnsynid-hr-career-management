@@ -109,8 +109,7 @@ class HrCareerTransition(models.Model):
     )
     def _compute_contract(self):
         company = self.env.company
-        contract_type_id = \
-                company.contract_transition_type_id.id
+        contract_type_id = company.contract_transition_type_id.id
         for document in self:
             document.contract = False
             if contract_type_id:
@@ -379,12 +378,12 @@ class HrCareerTransition(models.Model):
                         % (self.id)
                     )
                     raise ValidationError(error_message)
-                
+
     @ssi_decorator.pre_confirm_check()
     def _01_check_limit_before_confirm(self):
         if not self._check_limit():
             error_message = _(
-            """
+                """
             Context: Validation Error
             Database ID: %s
             Problem: This transaction has exceeded the limit %s
@@ -393,7 +392,7 @@ class HrCareerTransition(models.Model):
                 % (self.id, self.type_id.limit)
             )
             raise ValidationError(error_message)
-                
+
     @api.constrains(
         "date_contract_start",
         "date_contract_end",
@@ -401,10 +400,12 @@ class HrCareerTransition(models.Model):
     def _check_date_contract_start_end(self):
         for record in self.sudo():
             if record.date_contract_start and record.date_contract_end:
-                strWarning = _("Contract Date end must be greater than Contract Date Start")
+                strWarning = _(
+                    "Contract Date end must be greater than Contract Date Start"
+                )
                 if record.date_contract_end < record.date_contract_start:
-                    raise UserError(strWarning)
-                
+                    raise ValidationError(strWarning)
+
     def _check_limit(self):
         self.ensure_one()
         result = True
@@ -415,13 +416,13 @@ class HrCareerTransition(models.Model):
                 ("type_id", "=", self.type_id.id),
                 ("employee_id", "=", self.employee_id.id),
                 ("state", "=", "done"),
-                ("id", "<>", self.id)
+                ("id", "<>", self.id),
             ]
             transition_ids = self.search(criteria)
             if len(transition_ids) >= limit:
                 result = False
         return result
-    
+
     @api.constrains(
         "type_id",
     )
@@ -429,7 +430,7 @@ class HrCareerTransition(models.Model):
         for record in self.sudo():
             if not record._check_limit():
                 error_message = _(
-                """
+                    """
                 Context: Validation Error
                 Database ID: %s
                 Problem: This transaction has exceeded the limit %s

@@ -2,8 +2,7 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
 
 
 class HrEmployee(models.Model):
@@ -220,12 +219,14 @@ class HrEmployee(models.Model):
             record.company_id = self.env.company
             if record.work_information_method == "manual":
                 record.company_id = record.manual_company_id
-            elif(
+            elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
                 if record.latest_career_transition_id.new_company_id:
-                    record.company_id = record.latest_career_transition_id.new_company_id
+                    record.company_id = (
+                        record.latest_career_transition_id.new_company_id
+                    )
 
     @api.depends(
         "work_information_method",
@@ -367,8 +368,9 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                record.date_contract_start = \
+                record.date_contract_start = (
                     record.contract_career_transition_id.date_contract_start
+                )
             else:
                 record.date_contract_start = False
 
@@ -385,6 +387,8 @@ class HrEmployee(models.Model):
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                record.date_contract_end = record.contract_career_transition_id.date_contract_end
+                record.date_contract_end = (
+                    record.contract_career_transition_id.date_contract_end
+                )
             else:
                 record.date_contract_end = False

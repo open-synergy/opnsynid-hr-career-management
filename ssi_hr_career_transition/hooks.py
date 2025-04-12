@@ -1,7 +1,6 @@
 # Copyright 2025 OpenSynergy Indonesia
 # Copyright 20202523 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import SUPERUSER_ID, api
 
 
 def post_init_hook(cr, registry):

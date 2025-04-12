@@ -106,7 +106,7 @@
                         invisible="1"
                         widget="many2many_tags"
                     />
-                    <field name="contract" invisible="1"/>
+                    <field name="contract" invisible="1" />
                     <field
                         name="effective_date"
                         attrs="{'required':[('contract','&lt;&gt;',True)],'invisible':[('contract','=',True)]}"
@@ -134,15 +134,31 @@
                         attrs="{'invisible':[('require_previous_transition','&lt;&gt;',True)]}"
                     >
                         <group name="detail_previous_1" colspan="4" col="2">
-                            <group name="detail_previous_1_1" colspan="1" col="2" string="Previous">
-                                <field name="previous_company_id" string="Company"/>
-                                <field name="previous_department_id" string="Department"/>
-                                <field name="previous_parent_id" string="Manager"/>
-                                <field name="previous_job_id" string="Job"/>
-                                <field name="previous_employment_status_id" string="Employment Status"/>
+                            <group
+                                name="detail_previous_1_1"
+                                colspan="1"
+                                col="2"
+                                string="Previous"
+                            >
+                                <field name="previous_company_id" string="Company" />
+                                <field
+                                    name="previous_department_id"
+                                    string="Department"
+                                />
+                                <field name="previous_parent_id" string="Manager" />
+                                <field name="previous_job_id" string="Job" />
+                                <field
+                                    name="previous_employment_status_id"
+                                    string="Employment Status"
+                                />
                             </group>
-                            <group name="detail_previous_1_2" colspan="1" col="2" string="New">
-                                <field 
+                            <group
+                                name="detail_previous_1_2"
+                                colspan="1"
+                                col="2"
+                                string="New"
+                            >
+                                <field
                                     string="Company"
                                     name="new_company_id"
                                     attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
@@ -177,7 +193,7 @@
                     >
                         <group name="detail_new_1" colspan="4" col="2">
                             <group name="detail_new_1_1" colspan="1" col="2">
-                                <field 
+                                <field
                                     string="Company"
                                     name="new_company_id"
                                     attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
