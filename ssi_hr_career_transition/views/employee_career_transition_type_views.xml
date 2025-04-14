@@ -45,6 +45,15 @@
                         <group name="general_1" col="2" colspan="4">
                             <field name="limit" />
                             <field name="require_previous_transition" />
+                            <field
+                                name="allowed_employment_status_ids"
+                                widget="many2many_tags"
+                            />
+                            <field
+                                name="default_employment_status_id"
+                                options='{"no_open": True, "no_create": True}'
+                                domain="[('id', 'in', allowed_employment_status_ids)]"
+                            />
                         </group>
                     </page>
                     <page name="change" string="Data To Change">

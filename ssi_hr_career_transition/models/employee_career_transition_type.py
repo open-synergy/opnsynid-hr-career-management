@@ -59,3 +59,15 @@ class HrCareerTransitionType(models.Model):
     require_employment_status = fields.Boolean(
         string="Require Employee Status",
     )
+
+    allowed_employment_status_ids = fields.Many2many(
+        string="Allowed Employment Status",
+        comodel_name="hr.employment_status",
+        relation="rel_transition_type_2_employment_status",
+        column1="type_id",
+        column2="employment_status_id",
+    )
+    default_employment_status_id = fields.Many2one(
+        string="Default Employment Status",
+        comodel_name="hr.employment_status",
+    )

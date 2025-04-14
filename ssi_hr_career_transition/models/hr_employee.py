@@ -235,18 +235,14 @@ class HrEmployee(models.Model):
     )
     def _compute_department_id(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.department_id = record.manual_department_id
-            elif (
+            record.department_id = record.manual_department_id
+            if (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                if record.latest_career_transition_id.new_department_id:
-                    record.department_id = (
-                        record.latest_career_transition_id.new_department_id
-                    )
-            else:
-                record.department_id = False
+                record.department_id = (
+                    record.latest_career_transition_id.new_department_id
+                )
 
     @api.depends(
         "work_information_method",
@@ -255,16 +251,12 @@ class HrEmployee(models.Model):
     )
     def _compute_job_id(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.job_id = record.manual_job_id
-            elif (
+            record.job_id = record.manual_job_id
+            if (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                if record.latest_career_transition_id.new_job_id:
-                    record.job_id = record.latest_career_transition_id.new_job_id
-            else:
-                record.job_id = False
+                record.job_id = record.latest_career_transition_id.new_job_id
 
     @api.depends(
         "work_information_method",
@@ -273,16 +265,12 @@ class HrEmployee(models.Model):
     )
     def _compute_parent_id(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.parent_id = record.manual_parent_id
-            elif (
+            record.parent_id = record.manual_parent_id
+            if (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                if record.latest_career_transition_id.new_parent_id:
-                    record.parent_id = record.latest_career_transition_id.new_parent_id
-            else:
-                record.parent_id = False
+                record.parent_id = record.latest_career_transition_id.new_parent_id
 
     @api.depends(
         "work_information_method",
@@ -291,18 +279,14 @@ class HrEmployee(models.Model):
     )
     def _compute_employment_status_id(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.employment_status_id = record.manual_employment_status_id
-            elif (
+            record.employment_status_id = record.manual_employment_status_id
+            if (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
             ):
-                if record.latest_career_transition_id.new_employment_status_id:
-                    record.employment_status_id = (
-                        record.latest_career_transition_id.new_employment_status_id
-                    )
-            else:
-                record.employment_status_id = False
+                record.employment_status_id = (
+                    record.latest_career_transition_id.new_employment_status_id
+                )
 
     @api.depends(
         "work_information_method",
@@ -311,16 +295,12 @@ class HrEmployee(models.Model):
     )
     def _compute_date_join(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.date_join = record.manual_date_join
-            elif (
+            record.date_join = record.manual_date_join
+            if (
                 record.work_information_method == "career_transition"
                 and record.join_career_transition_id
             ):
-                if record.join_career_transition_id.effective_date:
-                    record.date_join = record.join_career_transition_id.effective_date
-            else:
-                record.date_join = False
+                record.date_join = record.join_career_transition_id.effective_date
 
     @api.depends(
         "work_information_method",
@@ -329,18 +309,14 @@ class HrEmployee(models.Model):
     )
     def _compute_date_termination(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.date_termination = record.manual_date_termination
-            elif (
+            record.date_termination = record.manual_date_termination
+            if (
                 record.work_information_method == "career_transition"
                 and record.terminate_career_transition_id
             ):
-                if record.terminate_career_transition_id.effective_date:
-                    record.date_termination = (
-                        record.terminate_career_transition_id.effective_date
-                    )
-            else:
-                record.date_termination = False
+                record.date_termination = (
+                    record.terminate_career_transition_id.effective_date
+                )
 
     @api.depends(
         "work_information_method",
@@ -349,18 +325,14 @@ class HrEmployee(models.Model):
     )
     def _compute_date_permanent(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.date_permanent = record.manual_date_permanent
-            elif (
+            record.date_permanent = record.manual_date_permanent
+            if (
                 record.work_information_method == "career_transition"
                 and record.permanent_career_transition_id
             ):
-                if record.permanent_career_transition_id.effective_date:
-                    record.date_permanent = (
-                        record.permanent_career_transition_id.effective_date
-                    )
-            else:
-                record.date_permanent = False
+                record.date_permanent = (
+                    record.permanent_career_transition_id.effective_date
+                )
 
     @api.depends(
         "work_information_method",
@@ -369,18 +341,14 @@ class HrEmployee(models.Model):
     )
     def _compute_date_contract_start(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.date_contract_start = record.manual_date_contract_start
-            elif (
+            record.date_contract_start = record.manual_date_contract_start
+            if (
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                if record.contract_career_transition_id.date_contract_start:
-                    record.date_contract_start = (
-                        record.contract_career_transition_id.date_contract_start
-                    )
-            else:
-                record.date_contract_start = False
+                record.date_contract_start = (
+                    record.contract_career_transition_id.date_contract_start
+                )
 
     @api.depends(
         "work_information_method",
@@ -389,15 +357,11 @@ class HrEmployee(models.Model):
     )
     def _compute_date_contract_end(self):
         for record in self:
-            if record.work_information_method == "manual":
-                record.date_contract_end = record.manual_date_contract_end
-            elif (
+            record.date_contract_end = record.manual_date_contract_end
+            if (
                 record.work_information_method == "career_transition"
                 and record.contract_career_transition_id
             ):
-                if record.contract_career_transition_id.date_contract_end:
-                    record.date_contract_end = (
-                        record.contract_career_transition_id.date_contract_end
-                    )
-            else:
-                record.date_contract_end = False
+                record.date_contract_end = (
+                    record.contract_career_transition_id.date_contract_end
+                )

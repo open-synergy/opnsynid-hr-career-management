@@ -13,12 +13,7 @@
             <xpath expr="//notebook" position="inside">
                 <page name="career_transition" string="Career Transition">
                     <group name="career_transition_1" col="2" colspan="4">
-                        <group
-                                name="career_transition_1_1"
-                                colspan="1"
-                                col="2"
-                                string="Career Transition"
-                            >
+                        <group name="career_transition_1_1" colspan="1" col="2">
                             <field name="join_transition_type_id" string="Join" />
                             <field
                                     name="terminate_transition_type_id"
@@ -30,26 +25,6 @@
                                 />
                             <field
                                     name="contract_transition_type_id"
-                                    string="Contract"
-                                />
-                        </group>
-                        <group
-                                name="career_transition_1_2"
-                                colspan="1"
-                                col="2"
-                                string="Employment Status"
-                            >
-                            <field name="join_employment_status_id" string="Join" />
-                            <field
-                                    name="terminate_employment_status_id"
-                                    string="Terminate"
-                                />
-                            <field
-                                    name="permanent_employment_status_id"
-                                    string="Permanent"
-                                />
-                            <field
-                                    name="contract_employment_status_id"
                                     string="Contract"
                                 />
                         </group>

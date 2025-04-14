@@ -13,7 +13,6 @@ class HrCareerTransition(models.Model):
     _description = "Career Transition"
     _inherit = [
         "mixin.transaction_confirm",
-        "mixin.transaction_ready",
         "mixin.transaction_done",
         "mixin.transaction_cancel",
         "mixin.employee_document",
@@ -21,19 +20,18 @@ class HrCareerTransition(models.Model):
 
     # Multiple Approval Attribute
     _approval_from_state = "draft"
-    _approval_to_state = "ready"
+    _approval_to_state = "done"
     _approval_state = "confirm"
-    _after_approved_method = "action_ready"
+    _after_approved_method = "action_done"
 
     # Attributes related to add element on view automatically
     _automatically_insert_view_element = True
 
     # Attributes related to add element on form view automatically
     _automatically_insert_multiple_approval_page = True
-    _statusbar_visible_label = "draft,confirm,ready,done"
+    _statusbar_visible_label = "draft,confirm,done"
     _policy_field_order = [
         "confirm_ok",
-        "ready_ok",
         "approve_ok",
         "reject_ok",
         "restart_approval_ok",
@@ -64,7 +62,7 @@ class HrCareerTransition(models.Model):
     _order = "effective_date desc, employee_id, id"
 
     # Sequence attribute
-    _create_sequence_state = "ready"
+    _create_sequence_state = "done"
 
     type_id = fields.Many2one(
         comodel_name="employee_career_transition_type",
@@ -176,6 +174,24 @@ class HrCareerTransition(models.Model):
         store=False,
     )
 
+    @api.depends(
+        "reason_id",
+        "type_id",
+    )
+    def _compute_limit(self):
+        for document in self:
+            document.limit = 0
+            if document.reason_id:
+                document.limit = document.reason_id.limit
+            else:
+                document.limit = document.type_id.limit
+
+    limit = fields.Integer(
+        string="Limit",
+        compute="_compute_limit",
+        store=False,
+    )
+
     date_contract_start = fields.Date(
         string="Contract Start Date",
         required=False,
@@ -238,30 +254,30 @@ class HrCareerTransition(models.Model):
         string="Need Previous History",
         related="type_id.require_previous_transition",
     )
-    previous_history_id = fields.Many2one(
-        string="Previous History",
-        comodel_name="employee_career_transition",
-        related="employee_id.latest_career_transition_id",
-    )
     previous_company_id = fields.Many2one(
         string="Previous Company",
-        related="previous_history_id.new_company_id",
+        comodel_name="res.company",
+        readonly=True,
     )
     previous_department_id = fields.Many2one(
         string="Previous Department",
-        related="previous_history_id.new_department_id",
+        comodel_name="hr.department",
+        readonly=True,
     )
     previous_job_id = fields.Many2one(
         string="Previous Job Position",
-        related="previous_history_id.new_job_id",
+        comodel_name="hr.job",
+        readonly=True,
     )
     previous_parent_id = fields.Many2one(
         string="Previous Manager",
-        related="previous_history_id.new_parent_id",
+        comodel_name="hr.employee",
+        readonly=True,
     )
     previous_employment_status_id = fields.Many2one(
         string="Previous Employment Status",
-        related="previous_history_id.new_employment_status_id",
+        comodel_name="hr.employment_status",
+        readonly=True,
     )
     new_company_id = fields.Many2one(
         comodel_name="res.company",
@@ -283,6 +299,33 @@ class HrCareerTransition(models.Model):
         string="New Manager",
         ondelete="restrict",
     )
+
+    @api.depends("type_id", "archieve")
+    def _compute_allowed_employment_status_ids(self):
+        obj_hr_employment_status = self.env["hr.employment_status"]
+        for record in self:
+            if record.archieve:
+                criteria = []
+                employment_status_ids = obj_hr_employment_status.search(criteria)
+                result = employment_status_ids.ids
+            elif record.type_id:
+                criteria = [
+                    ("id", "in", record.type_id.allowed_employment_status_ids.ids)
+                ]
+                employment_status_ids = obj_hr_employment_status.search(criteria)
+                result = employment_status_ids.ids
+            else:
+                result = []
+            record.allowed_employment_status_ids = result
+
+    allowed_employment_status_ids = fields.Many2many(
+        comodel_name="hr.employment_status",
+        string="Allowed Employment Status",
+        compute="_compute_allowed_employment_status_ids",
+        compute_sudo=True,
+        store=False,
+    )
+
     new_employment_status_id = fields.Many2one(
         comodel_name="hr.employment_status",
         string="New Employment Status",
@@ -294,7 +337,6 @@ class HrCareerTransition(models.Model):
         selection=[
             ("draft", "Draft"),
             ("confirm", "Waiting for Approval"),
-            ("ready", "Ready to Start"),
             ("done", "Done"),
             ("cancel", "Cancelled"),
             ("reject", "Rejected"),
@@ -308,7 +350,6 @@ class HrCareerTransition(models.Model):
         res = super(HrCareerTransition, self)._get_policy_field()
         policy_field = [
             "confirm_ok",
-            "ready_ok",
             "approve_ok",
             "reject_ok",
             "restart_approval_ok",
@@ -332,96 +373,101 @@ class HrCareerTransition(models.Model):
 
             record.allowed_reason_ids = result
 
-    @api.onchange("previous_history_id")
+    @api.onchange(
+        "employee_id",
+    )
     def onchange_previous_company_id(self):
         self.previous_company_id = False
-        if self.previous_history_id:
-            self.previous_company_id = self.previous_history_id.new_company_id
+        if self.employee_id:
+            self.previous_company_id = self.employee_id.company_id
 
-    @api.depends("previous_company_id")
+    @api.onchange(
+        "previous_company_id",
+        "archieve",
+    )
     def onchange_new_company_id(self):
-        self.new_company_id = self.previous_company_id
+        self.new_company_id = False
+        if self.previous_company_id and self.archieve:
+            self.new_company_id = self.previous_company_id
 
-    @api.onchange("previous_history_id")
+    @api.onchange(
+        "employee_id",
+    )
     def onchange_previous_department_id(self):
         self.previous_department_id = False
-        if self.previous_history_id:
-            self.previous_department_id = self.previous_history_id.new_department_id
+        if self.employee_id:
+            self.previous_department_id = self.employee_id.department_id
 
-    @api.depends("previous_department_id")
+    @api.onchange(
+        "previous_department_id",
+        "archieve",
+    )
     def onchange_new_department_id(self):
-        self.new_department_id = self.previous_department_id
+        self.new_department_id = False
+        if self.previous_department_id and self.archieve:
+            self.new_department_id = self.previous_department_id
 
-    @api.onchange("previous_history_id")
+    @api.onchange(
+        "employee_id",
+    )
     def onchange_previous_parent_id(self):
         self.previous_parent_id = False
-        if self.previous_history_id:
-            self.previous_parent_id = self.previous_history_id.new_parent_id
+        if self.employee_id:
+            self.previous_parent_id = self.employee_id.parent_id
 
-    @api.depends("previous_parent_id")
+    @api.onchange(
+        "previous_parent_id",
+        "archieve",
+    )
     def onchange_new_parent_id(self):
-        self.new_parent_id = self.previous_parent_id
+        self.new_parent_id = False
+        if self.previous_parent_id and self.archieve:
+            self.new_parent_id = self.previous_parent_id
 
-    @api.onchange("previous_history_id")
+    @api.onchange(
+        "employee_id",
+    )
     def onchange_previous_job_id(self):
         self.previous_job_id = False
-        if self.previous_history_id:
-            self.previous_job_id = self.previous_history_id.new_job_id
+        if self.employee_id:
+            self.previous_job_id = self.employee_id.job_id
 
-    @api.depends("previous_job_id")
+    @api.onchange(
+        "previous_job_id",
+        "archieve",
+    )
     def onchange_new_job_id(self):
-        self.new_job_id = self.previous_job_id
+        self.new_job_id = False
+        if self.previous_job_id and self.archieve:
+            self.new_job_id = self.previous_job_id
 
-    @api.onchange("previous_history_id")
+    @api.onchange(
+        "employee_id",
+    )
     def onchange_previous_employment_status_id(self):
         self.previous_employment_status_id = False
-        if self.previous_history_id:
-            self.previous_employment_status_id = (
-                self.previous_history_id.new_employment_status_id
-            )
+        if self.employee_id:
+            self.previous_employment_status_id = self.employee_id.employment_status_id
 
-    @api.depends("previous_employment_status_id")
+    @api.onchange(
+        "previous_employment_status_id",
+        "archieve",
+        "type_id",
+    )
     def onchange_new_employment_status_id(self):
-        self.new_employment_status_id = self.previous_employment_status_id
+        self.new_employment_status_id = False
+        if self.previous_employment_status_id and self.archieve:
+            self.new_employment_status_id = self.previous_employment_status_id
+        elif self.type_id and not self.archieve:
+            self.new_employment_status_id = self.type_id.default_employment_status_id
 
-    def _get_employment_status(self):
-        if self.join:
-            employment_status = self.env.company.join_employment_status_id.id
-        elif self.contract:
-            employment_status = self.env.company.contract_employment_status_id.id
-        elif self.permanent:
-            employment_status = self.env.company.permanent_employment_status_id.id
-        elif self.terminate:
-            employment_status = self.env.company.terminate_employment_status_id.id
-        else:
-            employment_status = False
-        return employment_status
-
-    @ssi_decorator.post_done_action()
-    def _01_change_employee_information(self):
-        if self.archieve:
-            return True
-
-        employment_status = self._get_employment_status()
-        if employment_status:
-            self.write({"new_employment_status_id": employment_status})
-
-    @ssi_decorator.post_cancel_action
-    def _01_revert_employee_information(self):
-        if self.archieve:
-            return True
-
-        self.write({self.employee_id: self._prepare_revert_employee_information()})
-
-    def _prepare_revert_employee_information(self):
-        result = [
-            ("company_id", "=", self.previous_company_id.id),
-            ("department_id", "=", self.previous_department_id.id),
-            ("job_id", "=", self.previous_job_id.id),
-            ("manager_id", "=", self.previous_parent_id.id),
-            ("employment_status_id", "=", self.previous_employment_status_id.id),
-        ]
-        return result
+    @api.onchange(
+        "date_contract_start",
+    )
+    def onchange_effective_date(self):
+        self.effective_date = False
+        if self.date_contract_start:
+            self.effective_date = self.date_contract_start
 
     @ssi_decorator.post_cancel_check
     def _01_check_latest_history_when_cancel(self):
@@ -441,17 +487,7 @@ class HrCareerTransition(models.Model):
 
     @ssi_decorator.pre_confirm_check()
     def _01_check_limit_before_confirm(self):
-        if not self._check_limit():
-            error_message = _(
-                """
-            Context: Validation Error
-            Database ID: %s
-            Problem: This transaction has exceeded the limit %s
-            Solution: Change the limit or please contact HR
-            """
-                % (self.id, self.type_id.limit)
-            )
-            raise ValidationError(error_message)
+        self._check_limit_transaction()
 
     @api.constrains(
         "date_contract_start",
@@ -466,36 +502,79 @@ class HrCareerTransition(models.Model):
                 if record.date_contract_end < record.date_contract_start:
                     raise ValidationError(strWarning)
 
-    def _check_limit(self):
-        self.ensure_one()
-        result = True
-        limit = self.type_id.limit
-
-        if limit > 0:
-            criteria = [
-                ("type_id", "=", self.type_id.id),
-                ("employee_id", "=", self.employee_id.id),
-                ("state", "=", "done"),
-                ("id", "<>", self.id),
-            ]
-            transition_ids = self.search(criteria)
-            if len(transition_ids) >= limit:
-                result = False
-        return result
-
     @api.constrains(
+        "employee_id",
         "type_id",
+        "reason_id",
     )
     def _check_limit_transaction(self):
         for record in self.sudo():
-            if not record._check_limit():
-                error_message = _(
-                    """
-                Context: Validation Error
-                Database ID: %s
-                Problem: This transaction has exceeded the limit %s
-                Solution: Change the limit or please contact HR
-                """
-                    % (record.id, self.type_id.limit)
-                )
-                raise ValidationError(error_message)
+            if record.limit > 0:
+                if record.employee_id and record.reason_id:
+                    transition_ids = record.employee_id.career_transition_ids.filtered(
+                        lambda x: x.reason_id.id == record.reason_id.id
+                    )
+                    if len(transition_ids.ids) > record.limit:
+                        error_message = _(
+                            """
+                        Context: Validation Error
+                        Database ID: %s
+                        Problem: This transaction has exceeded the limit %s
+                        Solution: Change the limit or please contact HR
+                        """
+                            % (record.id, record.limit)
+                        )
+                        raise ValidationError(error_message)
+                elif record.employee_id and record.type_id:
+                    transition_ids = record.employee_id.career_transition_ids.filtered(
+                        lambda x: x.type_id.id == record.type_id.id
+                    )
+                    if len(transition_ids.ids) > record.limit:
+                        error_message = _(
+                            """
+                        Context: Validation Error
+                        Database ID: %s
+                        Problem: This transaction has exceeded the limit %s
+                        Solution: Change the limit or please contact HR
+                        """
+                            % (record.id, record.limit)
+                        )
+                        raise ValidationError(error_message)
+
+    @api.constrains(
+        "effective_date",
+        "archieve",
+        "employee_id",
+    )
+    def _check_effective_date(self):
+        for record in self.sudo():
+            latest_effective_date = (
+                record.employee_id.latest_career_transition_id
+                and record.employee_id.latest_career_transition_id.effective_date
+                or False
+            )
+            if latest_effective_date:
+                if record.archieve:
+                    if record.effective_date > latest_effective_date:
+                        error_message = _(
+                            """
+                        Context: Validation Error
+                        Database ID: %s
+                        Problem: Effective date on archieve data cannot be greater than %s
+                        Solution: Change the effective date or please contact HR
+                        """
+                            % (record.id, latest_effective_date)
+                        )
+                        raise ValidationError(error_message)
+                else:
+                    if record.effective_date < latest_effective_date:
+                        error_message = _(
+                            """
+                        Context: Validation Error
+                        Database ID: %s
+                        Problem: Effective date on non-archieve data must be greater than %s
+                        Solution: Change the effective date or please contact HR
+                        """
+                            % (record.id, latest_effective_date)
+                        )
+                        raise ValidationError(error_message)
