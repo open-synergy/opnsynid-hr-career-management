@@ -144,7 +144,7 @@
                     <page
                         name="detail_previous"
                         string="Career Transition Detail"
-                        attrs="{'invisible':[('archieve','&lt;&gt;',True)]}"
+                        attrs="{'invisible':[('archieve','=',True)]}"
                     >
                         <group name="detail_previous_1" colspan="4" col="2">
                             <group
@@ -208,7 +208,7 @@
                     <page
                         name="detail_new"
                         string="Career Transition Detail"
-                        attrs="{'invisible':[('archieve','=',True)]}"
+                        attrs="{'invisible':[('archieve','&lt;&gt;',True)]}"
                     >
                         <group name="detail_new_1" colspan="4" col="2">
                             <group name="detail_new_1_1" colspan="1" col="2">

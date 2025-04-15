@@ -53,7 +53,7 @@ class HrEmployee(models.Model):
         string="Work Information Method",
         selection=[
             ("manual", "Manual"),
-            ("career_transition", "Form Career Transition"),
+            ("career_transition", "From Career Transition"),
         ],
     )
     manual_company_id = fields.Many2one(
@@ -365,3 +365,11 @@ class HrEmployee(models.Model):
                 record.date_contract_end = (
                     record.contract_career_transition_id.date_contract_end
                 )
+
+    def action_set_method_2_career(self):
+        for record in self:
+            record.work_information_method = "career_transition"
+
+    def action_set_method_2_manual(self):
+        for record in self:
+            record.work_information_method = "manual"

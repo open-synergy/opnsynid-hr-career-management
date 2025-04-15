@@ -72,10 +72,6 @@ class HrCareerTransition(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    require_previous_transition = fields.Boolean(
-        string="Require Previous Transition",
-        related="type_id.require_previous_transition",
-    )
     reason_id = fields.Many2one(
         comodel_name="employee_career_transition_type.reason",
         string="Reason",
@@ -250,10 +246,6 @@ class HrCareerTransition(models.Model):
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
-    require_previous_transition = fields.Boolean(
-        string="Need Previous History",
-        related="type_id.require_previous_transition",
-    )
     previous_company_id = fields.Many2one(
         string="Previous Company",
         comodel_name="res.company",
@@ -304,18 +296,12 @@ class HrCareerTransition(models.Model):
     def _compute_allowed_employment_status_ids(self):
         obj_hr_employment_status = self.env["hr.employment_status"]
         for record in self:
-            if record.archieve:
-                criteria = []
-                employment_status_ids = obj_hr_employment_status.search(criteria)
+            result = []
+            criteria = [("id", "in", record.type_id.allowed_employment_status_ids.ids)]
+            employment_status_ids = obj_hr_employment_status.search(criteria)
+            if employment_status_ids:
                 result = employment_status_ids.ids
-            elif record.type_id:
-                criteria = [
-                    ("id", "in", record.type_id.allowed_employment_status_ids.ids)
-                ]
-                employment_status_ids = obj_hr_employment_status.search(criteria)
-                result = employment_status_ids.ids
-            else:
-                result = []
+
             record.allowed_employment_status_ids = result
 
     allowed_employment_status_ids = fields.Many2many(
@@ -387,7 +373,7 @@ class HrCareerTransition(models.Model):
     )
     def onchange_new_company_id(self):
         self.new_company_id = False
-        if self.previous_company_id and self.archieve:
+        if self.previous_company_id and not self.archieve:
             self.new_company_id = self.previous_company_id
 
     @api.onchange(
@@ -404,7 +390,7 @@ class HrCareerTransition(models.Model):
     )
     def onchange_new_department_id(self):
         self.new_department_id = False
-        if self.previous_department_id and self.archieve:
+        if self.previous_department_id and not self.archieve:
             self.new_department_id = self.previous_department_id
 
     @api.onchange(
@@ -421,7 +407,7 @@ class HrCareerTransition(models.Model):
     )
     def onchange_new_parent_id(self):
         self.new_parent_id = False
-        if self.previous_parent_id and self.archieve:
+        if self.previous_parent_id and not self.archieve:
             self.new_parent_id = self.previous_parent_id
 
     @api.onchange(
@@ -438,7 +424,7 @@ class HrCareerTransition(models.Model):
     )
     def onchange_new_job_id(self):
         self.new_job_id = False
-        if self.previous_job_id and self.archieve:
+        if self.previous_job_id and not self.archieve:
             self.new_job_id = self.previous_job_id
 
     @api.onchange(
@@ -456,9 +442,9 @@ class HrCareerTransition(models.Model):
     )
     def onchange_new_employment_status_id(self):
         self.new_employment_status_id = False
-        if self.previous_employment_status_id and self.archieve:
+        if self.previous_employment_status_id and not self.archieve:
             self.new_employment_status_id = self.previous_employment_status_id
-        elif self.type_id and not self.archieve:
+        else:
             self.new_employment_status_id = self.type_id.default_employment_status_id
 
     @api.onchange(
