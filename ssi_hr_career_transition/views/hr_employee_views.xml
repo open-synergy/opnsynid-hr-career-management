@@ -24,10 +24,10 @@
                         <field
                                 name="work_information_method"
                                 string="Method"
-                                invisible="1"
+                                invisible="0"
                             />
                     </group>
-                    <button
+                    <!-- <button
                             name="action_set_method_2_career"
                             string="From Career Transition"
                             type="object"
@@ -40,7 +40,7 @@
                             type="object"
                             icon="fa-cogs"
                             attrs="{'invisible':[('work_information_method','&lt;&gt;', False)]}"
-                        />
+                        /> -->
                     <group
                             name="career_transition_1_2"
                             col="2"
