@@ -155,6 +155,11 @@ class HrEmployee(models.Model):
     )
     def _compute_career_transition(self):
         for record in self:
+            record.latest_career_transition_id = False
+            record.join_career_transition_id = False
+            record.terminate_career_transition_id = False
+            record.permanent_career_transition_id = False
+            record.contract_career_transition_id = False
             latest = self.env["employee_career_transition"].search(
                 [
                     ("state", "=", "done"),
@@ -218,7 +223,8 @@ class HrEmployee(models.Model):
         for record in self:
             record.company_id = self.env.company
             if record.work_information_method == "manual":
-                record.company_id = record.manual_company_id
+                if record.manual_company_id:
+                    record.company_id = record.manual_company_id
             elif (
                 record.work_information_method == "career_transition"
                 and record.latest_career_transition_id
