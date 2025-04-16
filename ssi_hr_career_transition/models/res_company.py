@@ -10,7 +10,8 @@ class Company(models.Model):
     _inherit = ["res.company"]
 
     join_transition_type_id = fields.Many2one(
-        comodel_name="employee_career_transition_type", string="Join Transition Type"
+        string="Join Transition Type",
+        comodel_name="employee_career_transition_type",
     )
     terminate_transition_type_id = fields.Many2one(
         comodel_name="employee_career_transition_type",
@@ -19,4 +20,8 @@ class Company(models.Model):
     permanent_transition_type_id = fields.Many2one(
         comodel_name="employee_career_transition_type",
         string="Permanent Transition Type",
+    )
+    contract_transition_type_id = fields.Many2one(
+        comodel_name="employee_career_transition_type",
+        string="Contract Transition Type",
     )
