@@ -212,6 +212,7 @@
                                 <field
                                     string="Employment Status"
                                     name="new_employment_status_id"
+                                    force_save="1"
                                     options='{"no_open": True, "no_create": True}'
                                     domain="[('id', 'in', allowed_employment_status_ids)]"
                                     attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
