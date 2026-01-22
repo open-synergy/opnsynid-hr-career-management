@@ -108,7 +108,7 @@ class HrDicipline(models.Model):
 
     @api.model
     def _get_policy_field(self):
-        res = super(HrDicipline, self)._get_policy_field()
+        res = super()._get_policy_field()
         policy_field = [
             "confirm_ok",
             "approve_ok",
