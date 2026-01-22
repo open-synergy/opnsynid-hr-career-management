@@ -20,6 +20,7 @@ class HrEmployee(models.Model):
         string="Latest Career Transition",
         store=True,
         readonly=True,
+        compute_sudo=True,
     )
     join_career_transition_id = fields.Many2one(
         comodel_name="employee_career_transition",
@@ -27,6 +28,7 @@ class HrEmployee(models.Model):
         string="Join Career Transition",
         store=True,
         readonly=True,
+        compute_sudo=True,
     )
     terminate_career_transition_id = fields.Many2one(
         comodel_name="employee_career_transition",
@@ -34,6 +36,7 @@ class HrEmployee(models.Model):
         string="Terminate Career Transition",
         store=True,
         readonly=True,
+        compute_sudo=True,
     )
     permanent_career_transition_id = fields.Many2one(
         comodel_name="employee_career_transition",
@@ -41,6 +44,7 @@ class HrEmployee(models.Model):
         string="Permanent Career Transition",
         store=True,
         readonly=True,
+        compute_sudo=True,
     )
     contract_career_transition_id = fields.Many2one(
         comodel_name="employee_career_transition",
@@ -48,6 +52,7 @@ class HrEmployee(models.Model):
         string="Contract Career Transition",
         store=True,
         readonly=True,
+        compute_sudo=True,
     )
     work_information_method = fields.Selection(
         string="Work Information Method",
@@ -66,6 +71,7 @@ class HrEmployee(models.Model):
         compute="_compute_company_id",
         store=True,
         related=False,
+        compute_sudo=True,
     )
     manual_parent_id = fields.Many2one(
         string="Manual Manager",
@@ -76,6 +82,7 @@ class HrEmployee(models.Model):
         comodel_name="hr.employee",
         compute="_compute_parent_id",
         store=True,
+        compute_sudo=True,
     )
     manual_job_id = fields.Many2one(
         string="Manual Job",
@@ -86,6 +93,7 @@ class HrEmployee(models.Model):
         comodel_name="hr.job",
         compute="_compute_job_id",
         store=True,
+        compute_sudo=True,
     )
     manual_department_id = fields.Many2one(
         string="Manual Department",
@@ -96,6 +104,7 @@ class HrEmployee(models.Model):
         comodel_name="hr.department",
         compute="_compute_department_id",
         store=True,
+        compute_sudo=True,
     )
     manual_employment_status_id = fields.Many2one(
         string="Manual Employee Status",
@@ -106,6 +115,7 @@ class HrEmployee(models.Model):
         comodel_name="hr.employment_status",
         compute="_compute_employment_status_id",
         store=True,
+        compute_sudo=True,
     )
     manual_date_join = fields.Date(
         string="Manual Join Date",
@@ -114,6 +124,7 @@ class HrEmployee(models.Model):
         string="Join Date",
         compute="_compute_date_join",
         store=True,
+        compute_sudo=True,
     )
     manual_date_termination = fields.Date(
         string="Manual Termination Date",
@@ -122,6 +133,7 @@ class HrEmployee(models.Model):
         string="Termination Date",
         compute="_compute_date_termination",
         store=True,
+        compute_sudo=True,
     )
     manual_date_permanent = fields.Date(
         string="Manual Permanent Date",
@@ -130,6 +142,7 @@ class HrEmployee(models.Model):
         string="Permanent Date",
         compute="_compute_date_permanent",
         store=True,
+        compute_sudo=True,
     )
     manual_date_contract_start = fields.Date(
         string="Manual Contract Start Date",
@@ -141,11 +154,13 @@ class HrEmployee(models.Model):
         string="Contract Start Date",
         compute="_compute_date_contract_start",
         store=True,
+        compute_sudo=True,
     )
     date_contract_end = fields.Date(
         string="Contract End Date",
         compute="_compute_date_contract_end",
         store=True,
+        compute_sudo=True,
     )
 
     @api.depends(
