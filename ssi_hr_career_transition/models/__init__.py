@@ -2,7 +2,7 @@
 # Copyright 2023 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from . import (
+from . import (  # noqa: F401
     employee_career_transition,
     employee_career_transition_type,
     employee_career_transition_type_reason,

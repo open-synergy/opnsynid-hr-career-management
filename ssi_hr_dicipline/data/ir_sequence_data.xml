@@ -1,5 +1,4 @@
-<odoo>
-<data noupdate="1">
+<odoo noupdate="1">
 <record id="sequence_dicipline" model="ir.sequence">
     <field name="name">Default Employee Dicipline</field>
     <field name="code">hr.dicipline</field>
@@ -10,5 +9,4 @@
     <field name="use_date_range" eval="1" />
     <field eval="False" name="company_id" />
 </record>
-</data>
 </odoo>
