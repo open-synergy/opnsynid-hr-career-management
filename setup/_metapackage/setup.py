@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo14-addon-ssi_hr_award_work_log',
         'odoo14-addon-ssi_hr_career_transition',
         'odoo14-addon-ssi_hr_career_transition_documenso_signing',
+        'odoo14-addon-ssi_hr_career_transition_operating_unit',
         'odoo14-addon-ssi_hr_career_transition_work_log',
         'odoo14-addon-ssi_hr_dicipline',
         'odoo14-addon-ssi_hr_dicipline_documenso_signing',
