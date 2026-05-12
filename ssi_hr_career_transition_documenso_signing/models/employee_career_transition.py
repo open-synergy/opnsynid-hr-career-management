@@ -9,7 +9,7 @@ class HrCareerTransition(models.Model):
     _name = "employee_career_transition"
     _inherit = [
         "employee_career_transition",
-        "mixin.documenso_signing",
+        "mixin.documenso_signing_approval",
     ]
 
     _documenso_signing_create_page = True
