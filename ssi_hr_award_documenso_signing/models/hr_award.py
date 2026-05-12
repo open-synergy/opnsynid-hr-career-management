@@ -9,7 +9,7 @@ class HrAward(models.Model):
     _name = "hr.award"
     _inherit = [
         "hr.award",
-        "mixin.documenso_signing",
+        "mixin.documenso_signing_approval",
     ]
 
     _documenso_signing_create_page = True
