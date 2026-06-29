@@ -249,6 +249,7 @@ msgstr ""
 
 #. module: ssi_hr_award
 #: model:ir.model.fields,field_description:ssi_hr_award.field_hr_award__department_id
+#: model_terms:ir.ui.view,arch_db:ssi_hr_award.hr_award_view_search
 msgid "Department"
 msgstr ""
 
@@ -284,6 +285,7 @@ msgstr ""
 
 #. module: ssi_hr_award
 #: model:ir.model.fields,field_description:ssi_hr_award.field_hr_award__employee_id
+#: model_terms:ir.ui.view,arch_db:ssi_hr_award.hr_award_view_search
 msgid "Employee"
 msgstr ""
 
