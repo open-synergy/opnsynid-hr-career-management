@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo14-addon-ssi_hr_award',
         'odoo14-addon-ssi_hr_award_documenso_signing',
+        'odoo14-addon-ssi_hr_award_operating_unit',
         'odoo14-addon-ssi_hr_award_work_log',
         'odoo14-addon-ssi_hr_career_transition',
         'odoo14-addon-ssi_hr_career_transition_documenso_signing',
@@ -17,6 +18,7 @@ setuptools.setup(
         'odoo14-addon-ssi_hr_career_transition_work_log',
         'odoo14-addon-ssi_hr_dicipline',
         'odoo14-addon-ssi_hr_dicipline_documenso_signing',
+        'odoo14-addon-ssi_hr_dicipline_operating_unit',
         'odoo14-addon-ssi_hr_dicipline_work_log',
     ],
     classifiers=[
