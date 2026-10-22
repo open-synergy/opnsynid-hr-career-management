@@ -83,6 +83,13 @@
                                 <field name="limit" />
                                 <field name="note" />
                             </tree>
+                            <form>
+                                <group name="reason_form" col="2">
+                                    <field name="name" />
+                                    <field name="limit" />
+                                    <field name="note" />
+                                </group>
+                            </form>
                         </field>
                     </page>
                 </xpath>

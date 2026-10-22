@@ -4,6 +4,12 @@
 
 
 def post_init_hook(cr, registry):
+    """Copy employee career fields into their manual counterparts.
+
+    :param cr: the database cursor
+    :param registry: the model registry
+    :return: nothing; updates ``hr_employee`` rows
+    """
     cr.execute(
         """
     UPDATE

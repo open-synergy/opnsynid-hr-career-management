@@ -17,6 +17,10 @@ class TestEmployeeCareerTransition(YamlTransactionCase):
         """Run the terminate and permanent flag compute scenarios."""
         self.run_yaml_scenario("test_data_employee_career_transition_compute.yaml")
 
+    def test_type_inline_reason(self):
+        """Run the transition type inline reason scenario."""
+        self.run_yaml_scenario("test_data_employee_career_transition_type_reason.yaml")
+
     def test_job_grade(self):
         """Run the job grade onchange, compute and required scenarios."""
         self.run_yaml_scenario("test_data_employee_career_transition_job_grade.yaml")

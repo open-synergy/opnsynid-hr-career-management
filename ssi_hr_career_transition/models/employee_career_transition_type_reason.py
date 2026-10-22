@@ -5,7 +5,9 @@
 from odoo import fields, models
 
 
-class HrCareerTransitionTypeReason(models.Model):
+class EmployeeCareerTransitionTypeReason(models.Model):
+    """Reasons that can be chosen for a career transition type."""
+
     _name = "employee_career_transition_type.reason"
     _description = "Employee Career Transition Type Reason"
 
