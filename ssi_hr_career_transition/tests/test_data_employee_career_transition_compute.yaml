@@ -1,0 +1,134 @@
+setup:
+  steps:
+    - step: "Create terminate transition type"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_terminate"
+      values:
+        name: "Test Terminate Type"
+        code: "/"
+
+    - step: "Create permanent transition type"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_permanent"
+      values:
+        name: "Test Permanent Type"
+        code: "/"
+
+    - step: "Create other transition type"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_other"
+      values:
+        name: "Test Other Type"
+        code: "/"
+
+    - step: "Assign terminate and permanent types to the company"
+      action: "write"
+      target: "company"
+      values:
+        terminate_transition_type_id: "REC: type_terminate.id"
+        permanent_transition_type_id: "REC: type_permanent.id"
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Career Transition Employee"
+
+scenarios:
+  - name: "Terminate type sets terminate only"
+    steps:
+      - step: "Create transition of terminate type"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: type_terminate.id"
+
+      - step: "Assert terminate and permanent flags"
+        action: "assert"
+        target: "transition"
+        refresh: true
+        asserts:
+          terminate:
+            type: "value"
+            expected: true
+          permanent:
+            type: "value"
+            expected: false
+
+  - name: "Permanent type sets permanent only (regression)"
+    steps:
+      - step: "Create transition of permanent type"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: type_permanent.id"
+
+      - step: "Assert terminate and permanent flags"
+        action: "assert"
+        target: "transition"
+        refresh: true
+        asserts:
+          terminate:
+            type: "value"
+            expected: false
+          permanent:
+            type: "value"
+            expected: true
+
+  - name: "Other type sets neither flag"
+    steps:
+      - step: "Create transition of other type"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: type_other.id"
+
+      - step: "Assert terminate and permanent flags"
+        action: "assert"
+        target: "transition"
+        refresh: true
+        asserts:
+          terminate:
+            type: "value"
+            expected: false
+          permanent:
+            type: "value"
+            expected: false
+
+  - name: "Unset company terminate type leaves terminate false"
+    steps:
+      - step: "Clear the terminate type on the company"
+        action: "write"
+        target: "company"
+        values:
+          terminate_transition_type_id: false
+
+      - step: "Create transition of terminate type"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: type_terminate.id"
+
+      - step: "Assert terminate and permanent flags"
+        action: "assert"
+        target: "transition"
+        refresh: true
+        asserts:
+          terminate:
+            type: "value"
+            expected: false
+          permanent:
+            type: "value"
+            expected: false
