@@ -44,6 +44,14 @@ setup:
         work_information_method: "career_transition"
         manual_job_grade_id: "REC: grade_g1.id"
 
+    - step: "Create employee using manual method without any grade"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee_no_grade"
+      values:
+        name: "Test Grade Employee Without Grade"
+        work_information_method: "manual"
+
     - step: "Create employee using manual method with grade G1"
       action: "create"
       model: "hr.employee"
@@ -214,8 +222,7 @@ scenarios:
         as_user: "base.user_admin"
         expect_error:
           type: "AssertionError"
-          message_contains: "new_job_grade_id"
+          message_contains: "new_job_grade_id is a required field"
         ops:
-          - set: {employee_id: "REC: employee_manual"}
+          - set: {employee_id: "REC: employee_no_grade"}
           - set: {type_id: "REC: type_require"}
-          - set: {new_job_grade_id: false}

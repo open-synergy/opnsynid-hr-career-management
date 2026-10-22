@@ -30,7 +30,9 @@ class TestEmployeeCareerTransition(YamlTransactionCase):
         ``mute_logger("odoo.sql_db")`` silences the PostgreSQL ERROR line,
         otherwise ``oca_checklog_odoo`` fails the CI.
         """
-        grade = self.env["hr.job_grade"].create({"name": "Test Restrict Grade"})
+        grade = self.env["hr.job_grade"].create(
+            {"name": "Test Restrict Grade", "code": "/"}
+        )
         transition_type = self.env["employee_career_transition_type"].create(
             {"name": "Test Restrict Type", "code": "/"}
         )

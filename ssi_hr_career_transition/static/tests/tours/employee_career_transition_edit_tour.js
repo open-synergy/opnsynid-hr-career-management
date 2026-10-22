@@ -82,11 +82,11 @@ odoo.define("ssi_hr_career_transition.employee_career_transition_edit_tour", fun
                 content: "Select the new Job Grade",
                 trigger: ".o_field_many2one[name='new_job_grade_id'] input",
                 extra_trigger: ".o_form_view.o_form_editable",
-                run: "text TOUR CT GRADE G2",
+                run: "text TOUR CT GRADE G1",
             },
             {
                 content: "Pick the new Job Grade from the dropdown",
-                trigger: ".ui-autocomplete .ui-menu-item a:contains(TOUR CT GRADE G2)",
+                trigger: ".ui-autocomplete .ui-menu-item a:contains(TOUR CT GRADE G1)",
                 in_modal: false,
             },
 
