@@ -291,6 +291,12 @@ msgid "Change Employee Status"
 msgstr ""
 
 #. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__change_job_grade
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition_type__change_job_grade
+msgid "Change Job Grade"
+msgstr ""
+
+#. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__change_job
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition_type__change_job
 msgid "Change Job Position"
@@ -613,6 +619,13 @@ msgid "Job"
 msgstr ""
 
 #. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_hr_employee__job_grade_id
+#: model_terms:ir.ui.view,arch_db:ssi_hr_career_transition.employee_career_transition_view_form
+#: model_terms:ir.ui.view,arch_db:ssi_hr_career_transition.hr_employee_view_form
+msgid "Job Grade"
+msgstr ""
+
+#. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__job_id
 msgid "Job Position"
 msgstr ""
@@ -725,6 +738,11 @@ msgid "Manual Job"
 msgstr ""
 
 #. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_hr_employee__manual_job_grade_id
+msgid "Manual Job Grade"
+msgstr ""
+
+#. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_hr_employee__manual_date_join
 msgid "Manual Join Date"
 msgstr ""
@@ -820,6 +838,12 @@ msgstr ""
 #. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__new_employment_status_id
 msgid "New Employment Status"
+msgstr ""
+
+#. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__new_job_grade_id
+#: model_terms:ir.ui.view,arch_db:ssi_hr_career_transition.employee_career_transition_view_form
+msgid "New Job Grade"
 msgstr ""
 
 #. module: ssi_hr_career_transition
@@ -940,6 +964,11 @@ msgid "Previous Employment Status"
 msgstr ""
 
 #. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__previous_job_grade_id
+msgid "Previous Job Grade"
+msgstr ""
+
+#. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__previous_job_id
 msgid "Previous Job Position"
 msgstr ""
@@ -992,6 +1021,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__require_employment_status
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition_type__require_employment_status
 msgid "Require Employee Status"
+msgstr ""
+
+#. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__require_job_grade
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition_type__require_job_grade
+msgid "Require Job Grade"
 msgstr ""
 
 #. module: ssi_hr_career_transition
