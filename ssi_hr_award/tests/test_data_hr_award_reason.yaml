@@ -1,0 +1,70 @@
+scenarios:
+  - name: "Award Reason - Create"
+    steps:
+      - step: "Create award reason"
+        action: "create"
+        model: "hr.award_reason"
+        save_as: "master"
+        values:
+          name: "Test Award Reason"
+          code: "/"
+
+      - step: "Assert award reason created"
+        action: "assert"
+        target: "master"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Test Award Reason"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Award Reason - Edit"
+    steps:
+      - step: "Create award reason"
+        action: "create"
+        model: "hr.award_reason"
+        save_as: "master"
+        values:
+          name: "Test Award Reason Edit"
+          code: "/"
+
+      - step: "Rename award reason"
+        action: "write"
+        target: "master"
+        values:
+          name: "Test Award Reason Edit Renamed"
+
+      - step: "Assert award reason renamed"
+        action: "assert"
+        target: "master"
+        refresh: true
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Award Reason Edit Renamed"
+
+  - name: "Award Reason - Unlink"
+    steps:
+      - step: "Create award reason"
+        action: "create"
+        model: "hr.award_reason"
+        save_as: "master"
+        values:
+          name: "Test Award Reason Unlink"
+          code: "/"
+
+      - step: "Delete award reason"
+        action: "unlink"
+        target: "master"
+
+      - step: "Search deleted award reason"
+        action: "search"
+        model: "hr.award_reason"
+        domain: [["name", "=", "Test Award Reason Unlink"]]
+        save_as: "found"
+        expect_count: 0

@@ -1,0 +1,70 @@
+scenarios:
+  - name: "Award Type - Create"
+    steps:
+      - step: "Create award type"
+        action: "create"
+        model: "hr.award_type"
+        save_as: "master"
+        values:
+          name: "Test Award Type"
+          code: "/"
+
+      - step: "Assert award type created"
+        action: "assert"
+        target: "master"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Test Award Type"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Award Type - Edit"
+    steps:
+      - step: "Create award type"
+        action: "create"
+        model: "hr.award_type"
+        save_as: "master"
+        values:
+          name: "Test Award Type Edit"
+          code: "/"
+
+      - step: "Rename award type"
+        action: "write"
+        target: "master"
+        values:
+          name: "Test Award Type Edit Renamed"
+
+      - step: "Assert award type renamed"
+        action: "assert"
+        target: "master"
+        refresh: true
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Award Type Edit Renamed"
+
+  - name: "Award Type - Unlink"
+    steps:
+      - step: "Create award type"
+        action: "create"
+        model: "hr.award_type"
+        save_as: "master"
+        values:
+          name: "Test Award Type Unlink"
+          code: "/"
+
+      - step: "Delete award type"
+        action: "unlink"
+        target: "master"
+
+      - step: "Search deleted award type"
+        action: "search"
+        model: "hr.award_type"
+        domain: [["name", "=", "Test Award Type Unlink"]]
+        save_as: "found"
+        expect_count: 0

@@ -19,6 +19,25 @@ To install this module, you need to:
 5.  Search For *Employee Award*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Create Employee Award Type <docs/hr_award_type/01-create.html>`_
+* `Edit Employee Award Type <docs/hr_award_type/02-edit.html>`_
+* `Delete Employee Award Type <docs/hr_award_type/03-delete.html>`_
+* `Create Employee Award Reason <docs/hr_award_reason/01-create.html>`_
+* `Edit Employee Award Reason <docs/hr_award_reason/02-edit.html>`_
+* `Delete Employee Award Reason <docs/hr_award_reason/03-delete.html>`_
+* `Create Employee Award <docs/hr_award/01-create.html>`_
+* `Edit Employee Award <docs/hr_award/02-edit.html>`_
+* `Delete Employee Award <docs/hr_award/03-delete.html>`_
+* `Confirm Employee Award <docs/hr_award/04-confirm.html>`_
+* `Approve Employee Award <docs/hr_award/05-approve.html>`_
+* `Reject Employee Award <docs/hr_award/06-reject.html>`_
+* `Cancel Employee Award <docs/hr_award/10-cancel.html>`_
+* `Restart Employee Award <docs/hr_award/12-restart.html>`_
+* `Restart Approval Process of Employee Award <docs/hr_award/14-restart-approval.html>`_
+
 Bug Tracker
 ===========
 

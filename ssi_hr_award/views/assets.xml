@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_tests"
+        name="ssi_hr_award assets tests"
+        inherit_id="web.assets_tests"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_type_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_type_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_type_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_reason_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_reason_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_reason_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_confirm_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_approve_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_reject_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_cancel_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_restart_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_award/static/tests/tours/hr_award_restart_approval_tour.js"
+            />
+        </xpath>
+    </template>
+</odoo>

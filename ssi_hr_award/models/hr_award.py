@@ -4,8 +4,17 @@
 
 from odoo import api, fields, models
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class HrAward(models.Model):
+    """Record an award granted to an employee.
+
+    The document carries the award type, the reasons and the award date,
+    and follows the confirm, approval and done workflow of the SSI
+    transaction mixins.
+    """
+
     _name = "hr.award"
     _inherit = [
         "mixin.transaction_confirm",
@@ -105,6 +114,12 @@ class HrAward(models.Model):
         default="draft",
         copy=False,
     )
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch
 
     @api.model
     def _get_policy_field(self):

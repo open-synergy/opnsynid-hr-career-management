@@ -1,0 +1,235 @@
+options:
+  auto_refresh: true
+
+setup:
+  steps:
+    - step: "Create award type"
+      action: "create"
+      model: "hr.award_type"
+      save_as: "award_type"
+      values:
+        name: "Test Award Type"
+        code: "/"
+
+    - step: "Create award reason"
+      action: "create"
+      model: "hr.award_reason"
+      save_as: "award_reason"
+      values:
+        name: "Test Award Reason"
+        code: "/"
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Award Employee"
+
+scenarios:
+  - name: "Award - Draft to Done with numbered document"
+    steps:
+      - step: "Create award"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REF: base.user_admin"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+
+      - step: "Assert award in draft and not yet numbered"
+        action: "assert"
+        target: "award"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          name:
+            type: "value"
+            expected: "/"
+
+      - step: "Confirm award"
+        action: "call"
+        target: "award"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Approve award"
+        action: "call"
+        target: "award"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "done"
+          name:
+            type: "value"
+            operator: "not_equals"
+            expected: "/"
+
+  - name: "Award - Reject then restart"
+    steps:
+      - step: "Create award"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REF: base.user_admin"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+
+      - step: "Confirm award"
+        action: "call"
+        target: "award"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Reject award"
+        action: "call"
+        target: "award"
+        method: "action_reject_approval"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "reject"
+
+      - step: "Restart award"
+        action: "call"
+        target: "award"
+        method: "action_restart"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+
+  - name: "Award - Cancel through the reason wizard"
+    steps:
+      - step: "Create cancel reason"
+        action: "create"
+        model: "base.cancel_reason"
+        save_as: "cancel_reason"
+        values:
+          name: "Test Award Cancel Reason"
+          code: "TESTAWCXL"
+          global_use: true
+
+      - step: "Create award"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REF: base.user_admin"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+
+      - step: "Cancel award through the wizard"
+        action: "wizard"
+        model: "base.select_cancel_reason"
+        target: "award"
+        as_user: "base.user_admin"
+        values:
+          cancel_reason_id: "REC: cancel_reason"
+        method: "action_confirm"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "cancel"
+
+  - name: "Award - Create without type is rejected"
+    steps:
+      - step: "Create award without type"
+        action: "form"
+        model: "hr.award"
+        as_user: "base.user_admin"
+        expect_error:
+          type: "AssertionError"
+          message_contains: "type_id is a required field"
+        values:
+          employee_id: "REC: employee"
+          date: "2026-01-15"
+          date_start: "2026-01-01"
+          date_end: "2026-12-31"
+
+  - name: "Award - Approve without approval right is rejected"
+    steps:
+      - step: "Create user without approval right"
+        action: "create"
+        model: "res.users"
+        save_as: "outsider"
+        values:
+          name: "Test Award Outsider"
+          login: "test.award.outsider@example.com"
+          groups_id: [[6, 0, ["REF: base.group_user", "REF: hr.group_hr_user"]]]
+
+      - step: "Create award owned by the user"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REC: outsider.id"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+
+      - step: "Confirm award"
+        action: "call"
+        target: "award"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Approve as a user who is not an approver"
+        action: "call"
+        target: "award"
+        method: "action_approve_approval"
+        as_user: "outsider"
+        expect_error:
+          type: "UserError"
