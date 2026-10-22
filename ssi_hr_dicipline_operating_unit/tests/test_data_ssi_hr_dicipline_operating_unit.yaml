@@ -1,0 +1,85 @@
+setup:
+  steps:
+    - step: "Create dicipline type"
+      action: "create"
+      model: "hr.dicipline_type"
+      save_as: "dicipline_type"
+      values:
+        name: "Test Dicipline OU Type"
+        code: "/"
+
+    - step: "Create dicipline reason"
+      action: "create"
+      model: "hr.dicipline_reason"
+      save_as: "dicipline_reason"
+      values:
+        name: "Test Dicipline OU Reason"
+        code: "/"
+
+    - step: "Create employee owned by the main operating unit"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Dicipline OU Employee"
+        operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+    - step: "Create dicipline owned by the main operating unit"
+      action: "create"
+      model: "hr.dicipline"
+      save_as: "dicipline"
+      as_user: "base.user_admin"
+      values:
+        employee_id: "REC: employee.id"
+        type_id: "REC: dicipline_type.id"
+        reason_ids:
+          - - 6
+            - 0
+            - - "REC: dicipline_reason.id"
+        date: "2026-01-10"
+        date_start: "2026-01-10"
+        date_end: "2026-02-10"
+        operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+    - step: "Create user assigned to another operating unit only"
+      action: "create"
+      model: "res.users"
+      save_as: "user_ou_b"
+      values:
+        name: "Dicipline OU User B"
+        login: "dicipline_ou_user_b@example.com"
+        groups_id:
+          - - 6
+            - 0
+            - - "REF: base.group_user"
+              - "REF: ssi_hr_dicipline.hr_dicipline_viewer_group"
+              - "REF: ssi_hr_dicipline_operating_unit.dicipline_ou_group"
+        assigned_operating_unit_ids:
+          - - 6
+            - 0
+            - - "REF: operating_unit.b2b_operating_unit"
+
+scenarios:
+  - name: "Employee operating unit is copied to the dicipline by onchange"
+    steps:
+      - step: "Select the employee in the form"
+        action: "form"
+        model: "hr.dicipline"
+        as_user: "base.user_admin"
+        save: false
+        values:
+          employee_id: "REC: employee"
+        asserts:
+          operating_unit_id.code:
+            type: "value"
+            expected: "EVAL: env.ref('operating_unit.main_operating_unit').code"
+
+  - name: "Dicipline of another operating unit is hidden by the record rule"
+    steps:
+      - step: "User of another operating unit finds nothing"
+        action: "search"
+        model: "hr.dicipline"
+        domain: [["id", "=", "REC: dicipline.id"]]
+        save_as: "found"
+        as_user: "user_ou_b"
+        expect_count: 0

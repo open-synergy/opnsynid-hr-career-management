@@ -19,6 +19,11 @@ To install this module, you need to:
 5.  Search For *Employee Dicipline + Operating Unit*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Create Dicipline <docs/hr_dicipline/01-create.html>`_
+
 Bug Tracker
 ===========
 
