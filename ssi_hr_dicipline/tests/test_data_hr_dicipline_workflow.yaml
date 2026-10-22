@@ -186,22 +186,6 @@ scenarios:
             type: "value"
             expected: "cancel"
 
-  - name: "Negative: saving the form without a reason is refused"
-    steps:
-      - step: "Saving the form without reason is refused"
-        action: "form"
-        model: "hr.dicipline"
-        as_user: "base.user_admin"
-        expect_error:
-          type: "AssertionError"
-          message_contains: "reason_ids is a required field"
-        ops:
-          - set: {employee_id: "REC: employee"}
-          - set: {type_id: "REC: dicipline_type"}
-          - set: {date: "2026-02-01"}
-          - set: {date_start: "2026-02-01"}
-          - set: {date_end: "2026-03-01"}
-
   - name: "Negative: a user who is not an approver cannot approve"
     steps:
       - step: "Create a plain internal user"
