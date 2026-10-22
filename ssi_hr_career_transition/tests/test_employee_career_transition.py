@@ -25,6 +25,10 @@ class TestEmployeeCareerTransition(YamlTransactionCase):
         """Run the job grade onchange, compute and required scenarios."""
         self.run_yaml_scenario("test_data_employee_career_transition_job_grade.yaml")
 
+    def test_form_new_job(self):
+        """Run the form scenario filling the new job on a single field."""
+        self.run_yaml_scenario("test_data_employee_career_transition_form.yaml")
+
     @mute_logger("odoo.sql_db")
     def test_job_grade_restrict_delete(self):
         """Reject deleting a job grade used as a new job grade.

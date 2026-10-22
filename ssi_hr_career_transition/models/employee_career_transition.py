@@ -8,7 +8,13 @@ from odoo.exceptions import ValidationError
 from odoo.addons.ssi_decorator import ssi_decorator
 
 
-class HrCareerTransition(models.Model):
+class EmployeeCareerTransition(models.Model):
+    """Employee career transition document.
+
+    Records a change of company, department, manager, job, job grade
+    or employment status for an employee, with approval workflow.
+    """
+
     _name = "employee_career_transition"
     _description = "Career Transition"
     _inherit = [
@@ -353,6 +359,12 @@ class HrCareerTransition(models.Model):
         default="draft",
         copy=False,
     )
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch
 
     @api.model
     def _get_policy_field(self):

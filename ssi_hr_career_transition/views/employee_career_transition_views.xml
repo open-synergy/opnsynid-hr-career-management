@@ -102,6 +102,14 @@
                         force_save="1"
                     />
                     <field name="job_id" readonly="1" force_save="1" />
+                    <field name="effective_date" />
+                    <field name="archieve" />
+                    <field
+                        string="New Job Grade"
+                        name="new_job_grade_id"
+                        options='{"no_open": True, "no_create": True}'
+                        attrs="{'readonly':[('change_job_grade','=',False)], 'required':[('require_job_grade','=',True)]}"
+                    />
                 </xpath>
                 <xpath expr="//group[@name='header_right']" position="inside">
                     <field
@@ -132,14 +140,6 @@
                         name="date_contract_end"
                         attrs="{'required':[('contract','=',True)],'invisible':[('contract','!=',True)]}"
                     />
-                    <field name="effective_date" />
-                    <field name="archieve" />
-                    <field
-                        string="New Job Grade"
-                        name="new_job_grade_id"
-                        options='{"no_open": True, "no_create": True}'
-                        attrs="{'readonly':[('change_job_grade','=',False)], 'required':[('require_job_grade','=',True)]}"
-                    />
                     <field
                         name="allowed_employment_status_ids"
                         widget="many2many_tags"
@@ -147,17 +147,14 @@
                     />
                 </xpath>
                 <xpath expr="//page[1]" position="before">
-                    <page
-                        name="detail_previous"
-                        string="Career Transition Detail"
-                        attrs="{'invisible':[('archieve','=',True)]}"
-                    >
+                    <page name="detail_previous" string="Career Transition Detail">
                         <group name="detail_previous_1" colspan="4" col="2">
                             <group
                                 name="detail_previous_1_1"
                                 colspan="1"
                                 col="2"
                                 string="Previous"
+                                attrs="{'invisible':[('archieve','=',True)]}"
                             >
                                 <field
                                     name="previous_company_id"
@@ -196,48 +193,6 @@
                                 col="2"
                                 string="New"
                             >
-                                <field
-                                    string="Company"
-                                    name="new_company_id"
-                                    options='{"no_open": True, "no_create": True}'
-                                    attrs="{'readonly':[('change_company','=',False)], 'required':[('require_company','=',True)]}"
-                                />
-                                <field
-                                    string="Department"
-                                    name="new_department_id"
-                                    options='{"no_open": True, "no_create": True}'
-                                    attrs="{'readonly':[('change_department','=',False)], 'required':[('require_department','=',True)]}"
-                                />
-                                <field
-                                    string="Manager"
-                                    name="new_parent_id"
-                                    options='{"no_open": True, "no_create": True}'
-                                    attrs="{'readonly':[('change_parent','=',False)], 'required':[('require_parent','=',True)]}"
-                                />
-                                <field
-                                    string="Job"
-                                    name="new_job_id"
-                                    options='{"no_open": True, "no_create": True}'
-                                    attrs="{'readonly':[('change_job','=',False)], 'required':[('require_job','=',True)]}"
-                                />
-                                <field
-                                    string="Employment Status"
-                                    name="new_employment_status_id"
-                                    force_save="1"
-                                    options='{"no_open": True, "no_create": True}'
-                                    domain="[('id', 'in', allowed_employment_status_ids)]"
-                                    attrs="{'readonly':[('change_employment_status','=',False)], 'required':[('require_employment_status','=',True)]}"
-                                />
-                            </group>
-                        </group>
-                    </page>
-                    <page
-                        name="detail_new"
-                        string="Career Transition Detail"
-                        attrs="{'invisible':[('archieve','!=',True)]}"
-                    >
-                        <group name="detail_new_1" colspan="4" col="2">
-                            <group name="detail_new_1_1" colspan="1" col="2">
                                 <field
                                     string="Company"
                                     name="new_company_id"

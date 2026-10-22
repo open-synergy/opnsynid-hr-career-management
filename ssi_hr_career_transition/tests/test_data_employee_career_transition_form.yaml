@@ -1,0 +1,46 @@
+setup:
+  steps:
+    - step: "Create job to move the employee to"
+      action: "create"
+      model: "hr.job"
+      save_as: "job_new"
+      values:
+        name: "Test Form Job"
+
+    - step: "Create transition type that changes job"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_job"
+      values:
+        name: "Test Form Job Change Type"
+        code: "/"
+        change_job: true
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Form Employee"
+
+scenarios:
+  - name: "Job change type allows filling and saving the new job"
+    steps:
+      - step: "Fill the transition form with the new job and save"
+        action: "form"
+        model: "employee_career_transition"
+        as_user: "base.user_admin"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee"
+          type_id: "REC: type_job"
+          new_job_id: "REC: job_new"
+
+      - step: "Assert the new job is stored on the transition"
+        action: "assert"
+        target: "transition"
+        refresh: true
+        asserts:
+          new_job_id:
+            type: "m2o"
+            expected: "REC: job_new"
