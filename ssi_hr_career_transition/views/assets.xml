@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_tests"
+        name="ssi_hr_career_transition assets tests"
+        inherit_id="web.assets_tests"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_confirm_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_approve_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_reject_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_finish_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_cancel_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_restart_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_career_transition/static/tests/tours/employee_career_transition_restart_approval_tour.js"
+            />
+        </xpath>
+    </template>
+</odoo>

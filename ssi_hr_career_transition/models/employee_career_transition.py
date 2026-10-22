@@ -229,6 +229,14 @@ class HrCareerTransition(models.Model):
         string="Require Job Position",
         related="type_id.require_job",
     )
+    change_job_grade = fields.Boolean(
+        string="Change Job Grade",
+        related="type_id.change_job_grade",
+    )
+    require_job_grade = fields.Boolean(
+        string="Require Job Grade",
+        related="type_id.require_job_grade",
+    )
     change_department = fields.Boolean(
         string="Change Department",
         related="type_id.change_department",
@@ -266,6 +274,11 @@ class HrCareerTransition(models.Model):
         comodel_name="hr.job",
         readonly=True,
     )
+    previous_job_grade_id = fields.Many2one(
+        string="Previous Job Grade",
+        comodel_name="hr.job_grade",
+        readonly=True,
+    )
     previous_parent_id = fields.Many2one(
         string="Previous Manager",
         comodel_name="hr.employee",
@@ -289,6 +302,11 @@ class HrCareerTransition(models.Model):
     new_job_id = fields.Many2one(
         comodel_name="hr.job",
         string="New Job Position",
+        ondelete="restrict",
+    )
+    new_job_grade_id = fields.Many2one(
+        comodel_name="hr.job_grade",
+        string="New Job Grade",
         ondelete="restrict",
     )
     new_parent_id = fields.Many2one(
@@ -431,6 +449,33 @@ class HrCareerTransition(models.Model):
         self.new_job_id = False
         if self.previous_job_id and not self.archieve:
             self.new_job_id = self.previous_job_id
+
+    @api.onchange(
+        "employee_id",
+    )
+    def onchange_previous_job_grade_id(self):
+        """Set the previous job grade from the selected employee.
+
+        Clears ``previous_job_grade_id`` and, when an employee is
+        selected, copies the employee's current job grade.
+        """
+        self.previous_job_grade_id = False
+        if self.employee_id:
+            self.previous_job_grade_id = self.employee_id.job_grade_id
+
+    @api.onchange(
+        "previous_job_grade_id",
+        "archieve",
+    )
+    def onchange_new_job_grade_id(self):
+        """Default the new job grade to the previous job grade.
+
+        Clears ``new_job_grade_id`` and, unless the document is an
+        archive record, copies ``previous_job_grade_id`` into it.
+        """
+        self.new_job_grade_id = False
+        if self.previous_job_grade_id and not self.archieve:
+            self.new_job_grade_id = self.previous_job_grade_id
 
     @api.onchange(
         "employee_id",

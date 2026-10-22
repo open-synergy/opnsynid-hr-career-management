@@ -43,6 +43,12 @@ class HrCareerTransitionType(models.Model):
     require_job = fields.Boolean(
         string="Require Job Position",
     )
+    change_job_grade = fields.Boolean(
+        string="Change Job Grade",
+    )
+    require_job_grade = fields.Boolean(
+        string="Require Job Grade",
+    )
     change_department = fields.Boolean(
         string="Change Department",
     )

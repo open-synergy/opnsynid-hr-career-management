@@ -60,6 +60,7 @@
                             <field name="change_company" />
                             <field name="change_department" />
                             <field name="change_job" />
+                            <field name="change_job_grade" />
                             <field name="change_parent" />
                             <field name="change_employment_status" />
                         </group>
@@ -67,6 +68,7 @@
                             <field name="require_company" />
                             <field name="require_department" />
                             <field name="require_job" />
+                            <field name="require_job_grade" />
                             <field name="require_parent" />
                             <field name="require_employment_status" />
                         </group>
