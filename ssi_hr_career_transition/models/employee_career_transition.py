@@ -108,6 +108,11 @@ class EmployeeCareerTransition(models.Model):
         "type_id",
     )
     def _compute_contract(self):
+        """Compute whether the transition is of the contract type.
+
+        Sets ``contract`` to True when ``type_id`` equals the
+        ``contract_transition_type_id`` of the current company.
+        """
         company = self.env.company
         contract_type_id = company.contract_transition_type_id.id
         for document in self:
@@ -126,6 +131,11 @@ class EmployeeCareerTransition(models.Model):
         "type_id",
     )
     def _compute_join(self):
+        """Compute whether the transition is of the join type.
+
+        Sets ``join`` to True when ``type_id`` equals the
+        ``join_transition_type_id`` of the current company.
+        """
         company = self.env.company
         join_type_id = company.join_transition_type_id.id
         for document in self:
@@ -144,6 +154,11 @@ class EmployeeCareerTransition(models.Model):
         "type_id",
     )
     def _compute_permanent(self):
+        """Compute whether the transition is of the permanent type.
+
+        Sets ``permanent`` to True when ``type_id`` equals the
+        ``permanent_transition_type_id`` of the current company.
+        """
         company = self.env.company
         permanent_type_id = company.permanent_transition_type_id.id
         for document in self:
@@ -186,6 +201,11 @@ class EmployeeCareerTransition(models.Model):
         "type_id",
     )
     def _compute_limit(self):
+        """Compute the maximum number of allowed transactions.
+
+        Sets ``limit`` from ``reason_id`` when a reason is selected,
+        otherwise from ``type_id``.
+        """
         for document in self:
             document.limit = 0
             if document.reason_id:
@@ -323,6 +343,11 @@ class EmployeeCareerTransition(models.Model):
 
     @api.depends("type_id", "archieve")
     def _compute_allowed_employment_status_ids(self):
+        """Compute the employment statuses selectable for this transition.
+
+        Sets ``allowed_employment_status_ids`` from the
+        ``allowed_employment_status_ids`` of ``type_id``.
+        """
         obj_hr_employment_status = self.env["hr.employment_status"]
         for record in self:
             result = []
@@ -384,6 +409,12 @@ class EmployeeCareerTransition(models.Model):
 
     @api.depends("type_id")
     def _compute_allowed_reason_ids(self):
+        """Compute the reasons selectable for this transition.
+
+        Sets ``allowed_reason_ids`` to the
+        ``employee_career_transition_type.reason`` records that belong
+        to ``type_id``.
+        """
         for record in self:
             result = []
             if record.type_id:
@@ -519,6 +550,12 @@ class EmployeeCareerTransition(models.Model):
 
     @ssi_decorator.post_cancel_check
     def _01_check_latest_history_when_cancel(self):
+        """Ensure only the latest done transition can be cancelled.
+
+        Runs after the cancel check. Raises ``ValidationError`` when the
+        transition is in ``done`` state, is not archived, and is not the
+        ``latest_career_transition_id`` of its employee.
+        """
         if self.id != self.employee_id.latest_career_transition_id.id:
             if not self.archieve:
                 if self.state == "done":
@@ -535,6 +572,11 @@ class EmployeeCareerTransition(models.Model):
 
     @ssi_decorator.pre_confirm_check()
     def _01_check_limit_before_confirm(self):
+        """Validate the transaction limit before the confirm action.
+
+        Runs before the confirm check by calling
+        ``_check_limit_transaction``.
+        """
         self._check_limit_transaction()
 
     @api.constrains(
@@ -542,6 +584,11 @@ class EmployeeCareerTransition(models.Model):
         "date_contract_end",
     )
     def _check_date_contract_start_end(self):
+        """Validate the contract date range.
+
+        :raises ValidationError: when ``date_contract_end`` is earlier
+            than ``date_contract_start``
+        """
         for record in self.sudo():
             if record.date_contract_start and record.date_contract_end:
                 strWarning = _(
@@ -556,6 +603,13 @@ class EmployeeCareerTransition(models.Model):
         "reason_id",
     )
     def _check_limit_transaction(self):
+        """Validate the transaction count against ``limit``.
+
+        Counts the employee transitions with the same reason (or the same
+        type when no reason is set).
+
+        :raises ValidationError: when the count exceeds ``limit``
+        """
         for record in self.sudo():
             if record.limit > 0:
                 if record.employee_id and record.reason_id:
@@ -595,6 +649,12 @@ class EmployeeCareerTransition(models.Model):
         "employee_id",
     )
     def _check_effective_date(self):
+        """Validate ``effective_date`` against the latest transition.
+
+        :raises ValidationError: when an archived transition is dated
+            after the latest transition of the employee, or a
+            non-archived one is dated before it
+        """
         for record in self.sudo():
             latest_effective_date = (
                 record.employee_id.latest_career_transition_id
