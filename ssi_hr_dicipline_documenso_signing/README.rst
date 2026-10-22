@@ -10,6 +10,12 @@ This module integrates Documenso digital signing into the HR Discipline module.
 It adds a Documenso signing tab to the employee discipline form view.
 
 
+Work Instruction
+================
+
+* `Employee Dicipline <docs/hr_dicipline/index.html>`_
+
+
 Bug Tracker
 ===========
 
