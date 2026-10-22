@@ -12,10 +12,12 @@
     "depends": [
         "ssi_hr_career_transition",
         "ssi_operating_unit_mixin",
+        "web_tour",
     ],
     "data": [
         "security/res_group/res_group_data.xml",
         "security/ir_rule/ir_rule_data.xml",
         "views/employee_career_transition_views.xml",
+        "views/assets.xml",
     ],
 }

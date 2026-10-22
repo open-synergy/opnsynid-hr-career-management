@@ -1,0 +1,93 @@
+setup:
+  steps:
+    - step: "Create transition type"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_other"
+      values:
+        name: "Test Career Transition OU Type"
+        code: "/"
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Career Transition OU Employee"
+
+    - step: "Create transition owned by the main operating unit"
+      action: "create"
+      model: "employee_career_transition"
+      save_as: "transition"
+      as_user: "base.user_admin"
+      values:
+        employee_id: "REC: employee.id"
+        type_id: "REC: type_other.id"
+        operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+    - step: "Create user assigned to the main operating unit"
+      action: "create"
+      model: "res.users"
+      save_as: "user_ou_a"
+      values:
+        name: "Career Transition OU User A"
+        login: "career_transition_ou_user_a@example.com"
+        groups_id:
+          - - 6
+            - 0
+            - - "REF: base.group_user"
+              - "REF: ssi_hr_career_transition.employee_career_transition_viewer_group"
+              - "REF:
+                ssi_hr_career_transition_operating_unit.employee_career_transition_ou_group"
+        assigned_operating_unit_ids:
+          - - 6
+            - 0
+            - - "REF: operating_unit.main_operating_unit"
+
+    - step: "Create user assigned to another operating unit only"
+      action: "create"
+      model: "res.users"
+      save_as: "user_ou_b"
+      values:
+        name: "Career Transition OU User B"
+        login: "career_transition_ou_user_b@example.com"
+        groups_id:
+          - - 6
+            - 0
+            - - "REF: base.group_user"
+              - "REF: ssi_hr_career_transition.employee_career_transition_viewer_group"
+              - "REF:
+                ssi_hr_career_transition_operating_unit.employee_career_transition_ou_group"
+        assigned_operating_unit_ids:
+          - - 6
+            - 0
+            - - "REF: operating_unit.b2b_operating_unit"
+
+scenarios:
+  - name: "Transition stores its operating unit and is visible to that unit"
+    steps:
+      - step: "Operating unit is stored on the transition"
+        action: "assert"
+        target: "transition"
+        asserts:
+          operating_unit_id.code:
+            type: "value"
+            expected: "EVAL: env.ref('operating_unit.main_operating_unit').code"
+
+      - step: "User of the same operating unit finds the transition"
+        action: "search"
+        model: "employee_career_transition"
+        domain: [["id", "=", "REC: transition.id"]]
+        save_as: "found"
+        as_user: "user_ou_a"
+        expect_count: 1
+
+  - name: "Transition of another operating unit is hidden by the record rule"
+    steps:
+      - step: "User of another operating unit finds nothing"
+        action: "search"
+        model: "employee_career_transition"
+        domain: [["id", "=", "REC: transition.id"]]
+        save_as: "found"
+        as_user: "user_ou_b"
+        expect_count: 0
