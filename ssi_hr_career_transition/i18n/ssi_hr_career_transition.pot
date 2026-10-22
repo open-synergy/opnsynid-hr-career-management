@@ -1167,6 +1167,18 @@ msgid "Waiting for Approval"
 msgstr ""
 
 #. module: ssi_hr_career_transition
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition__website_message_ids
+#: model:ir.model.fields,field_description:ssi_hr_career_transition.field_employee_career_transition_type__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: ssi_hr_career_transition
+#: model:ir.model.fields,help:ssi_hr_career_transition.field_employee_career_transition__website_message_ids
+#: model:ir.model.fields,help:ssi_hr_career_transition.field_employee_career_transition_type__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: ssi_hr_career_transition
 #: model:ir.model.fields,field_description:ssi_hr_career_transition.field_hr_employee__work_information_method
 msgid "Work Information Method"
 msgstr ""
