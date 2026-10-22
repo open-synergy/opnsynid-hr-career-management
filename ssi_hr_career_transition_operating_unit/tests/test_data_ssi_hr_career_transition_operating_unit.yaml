@@ -64,7 +64,7 @@ setup:
             - - "REF: operating_unit.b2b_operating_unit"
 
 scenarios:
-  - name: "Transition stores its operating unit and is visible to that unit"
+  - name: "Transition keeps its operating unit and the record rule scopes access"
     steps:
       - step: "Operating unit is stored on the transition"
         action: "assert"
@@ -82,12 +82,10 @@ scenarios:
         as_user: "user_ou_a"
         expect_count: 1
 
-  - name: "Transition of another operating unit is hidden by the record rule"
-    steps:
-      - step: "User of another operating unit finds nothing"
+      - step: "User of another operating unit finds nothing (record rule)"
         action: "search"
         model: "employee_career_transition"
         domain: [["id", "=", "REC: transition.id"]]
-        save_as: "found"
+        save_as: "found_b"
         as_user: "user_ou_b"
         expect_count: 0
