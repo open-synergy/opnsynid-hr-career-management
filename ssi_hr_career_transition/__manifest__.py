@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Human Resource Career Transition",
-    "version": "14.0.2.4.1",
+    "version": "14.0.2.5.0",
     "website": "https://simetri-sinergi.id",
     "author": "OpenSynergy Indonesia, PT. Simetri Sinergi Indonesia",
     "license": "AGPL-3",
@@ -16,6 +16,7 @@
         "ssi_transaction_cancel_mixin",
         "ssi_company_currency_mixin",
         "ssi_duration_mixin",
+        "web_tour",
     ],
     "data": [
         "security/ir_module_category_data.xml",
@@ -30,6 +31,7 @@
         "views/employee_career_transition_views.xml",
         "views/hr_employee_views.xml",
         "views/res_company_views.xml",
+        "views/assets.xml",
     ],
     "post_init_hook": "post_init_hook",
     "demo": [],

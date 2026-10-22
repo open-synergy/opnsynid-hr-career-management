@@ -105,6 +105,7 @@
                         <field name="manual_company_id" string="Company" />
                         <field name="manual_department_id" string="Department" />
                         <field name="manual_job_id" string="Job" />
+                        <field name="manual_job_grade_id" string="Job Grade" />
                         <field name="manual_parent_id" string="Manager" />
                         <field
                                 name="manual_employment_status_id"

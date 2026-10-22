@@ -19,6 +19,20 @@ To install this module, you need to:
 5.  Search For *Human Resource Career Transition*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Create Career Transition <docs/employee_career_transition/01-create.html>`_
+* `Edit Career Transition <docs/employee_career_transition/02-edit.html>`_
+* `Delete Career Transition <docs/employee_career_transition/03-delete.html>`_
+* `Confirm Career Transition <docs/employee_career_transition/04-confirm.html>`_
+* `Approve Career Transition <docs/employee_career_transition/05-approve.html>`_
+* `Reject Career Transition <docs/employee_career_transition/06-reject.html>`_
+* `Finish Career Transition <docs/employee_career_transition/09-finish.html>`_
+* `Cancel Career Transition <docs/employee_career_transition/10-cancel.html>`_
+* `Restart Career Transition <docs/employee_career_transition/12-restart.html>`_
+* `Restart Approval Process of Career Transition <docs/employee_career_transition/14-restart-approval.html>`_
+
 Bug Tracker
 ===========
 

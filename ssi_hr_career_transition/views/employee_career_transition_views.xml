@@ -135,6 +135,12 @@
                     <field name="effective_date" />
                     <field name="archieve" />
                     <field
+                        string="New Job Grade"
+                        name="new_job_grade_id"
+                        options='{"no_open": True, "no_create": True}'
+                        attrs="{'readonly':[('change_job_grade','=',False)], 'required':[('require_job_grade','=',True)]}"
+                    />
+                    <field
                         name="allowed_employment_status_ids"
                         widget="many2many_tags"
                         invisible="1"
@@ -171,6 +177,11 @@
                                 <field
                                     name="previous_job_id"
                                     string="Job"
+                                    force_save="1"
+                                />
+                                <field
+                                    name="previous_job_grade_id"
+                                    string="Job Grade"
                                     force_save="1"
                                 />
                                 <field
@@ -272,6 +283,7 @@
                                 <field name="change_company" />
                                 <field name="change_department" />
                                 <field name="change_job" />
+                                <field name="change_job_grade" />
                                 <field name="change_parent" />
                                 <field name="change_employment_status" />
                             </group>
@@ -280,6 +292,7 @@
                                 <field name="require_company" />
                                 <field name="require_department" />
                                 <field name="require_job" />
+                                <field name="require_job_grade" />
                                 <field name="require_parent" />
                                 <field name="require_employment_status" />
                             </group>

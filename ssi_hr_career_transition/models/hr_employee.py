@@ -95,6 +95,17 @@ class HrEmployee(models.Model):
         store=True,
         compute_sudo=True,
     )
+    manual_job_grade_id = fields.Many2one(
+        string="Manual Job Grade",
+        comodel_name="hr.job_grade",
+    )
+    job_grade_id = fields.Many2one(
+        string="Job Grade",
+        comodel_name="hr.job_grade",
+        compute="_compute_job_grade_id",
+        store=True,
+        compute_sudo=True,
+    )
     manual_department_id = fields.Many2one(
         string="Manual Department",
         comodel_name="hr.department",
@@ -278,6 +289,28 @@ class HrEmployee(models.Model):
                 and record.latest_career_transition_id
             ):
                 record.job_id = record.latest_career_transition_id.new_job_id
+
+    @api.depends(
+        "work_information_method",
+        "latest_career_transition_id",
+        "manual_job_grade_id",
+    )
+    def _compute_job_grade_id(self):
+        """Compute the job grade of the employee.
+
+        Uses ``manual_job_grade_id`` by default. When the work information
+        method is ``career_transition`` and a latest transition exists, the
+        job grade follows ``new_job_grade_id`` of that transition.
+        """
+        for record in self:
+            record.job_grade_id = record.manual_job_grade_id
+            if (
+                record.work_information_method == "career_transition"
+                and record.latest_career_transition_id
+            ):
+                record.job_grade_id = (
+                    record.latest_career_transition_id.new_job_grade_id
+                )
 
     @api.depends(
         "work_information_method",
