@@ -98,7 +98,7 @@ scenarios:
             expected: "done"
           name:
             type: "value"
-            operator: "!="
+            operator: "not_equals"
             expected: "/"
 
   - name: "Reject flow: confirm, reject, then restart to draft"
