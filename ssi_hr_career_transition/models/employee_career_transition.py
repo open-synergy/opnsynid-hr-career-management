@@ -156,8 +156,13 @@ class HrCareerTransition(models.Model):
         "type_id",
     )
     def _compute_terminate(self):
+        """Compute whether the transition is of the terminate type.
+
+        Sets ``terminate`` to True when ``type_id`` equals the
+        ``terminate_transition_type_id`` of the current company.
+        """
         company = self.env.company
-        terminate_type_id = company.permanent_transition_type_id.id
+        terminate_type_id = company.terminate_transition_type_id.id
         for document in self:
             document.terminate = False
             if terminate_type_id:
