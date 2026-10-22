@@ -126,11 +126,11 @@
                     <field name="terminate" invisible="1" />
                     <field
                         name="date_contract_start"
-                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','&lt;&gt;',True)]}"
+                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','!=',True)]}"
                     />
                     <field
                         name="date_contract_end"
-                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','&lt;&gt;',True)]}"
+                        attrs="{'required':[('contract','=',True)],'invisible':[('contract','!=',True)]}"
                     />
                     <field name="effective_date" />
                     <field name="archieve" />
@@ -234,7 +234,7 @@
                     <page
                         name="detail_new"
                         string="Career Transition Detail"
-                        attrs="{'invisible':[('archieve','&lt;&gt;',True)]}"
+                        attrs="{'invisible':[('archieve','!=',True)]}"
                     >
                         <group name="detail_new_1" colspan="4" col="2">
                             <group name="detail_new_1_1" colspan="1" col="2">
