@@ -16,6 +16,7 @@
         "ssi_transaction_done_mixin",
         "ssi_transaction_cancel_mixin",
         "ssi_duration_mixin",
+        "web_tour",
     ],
     "data": [
         "security/ir_module_category_data.xml",
@@ -29,6 +30,7 @@
         "views/hr_dicipline_reason_views.xml",
         "views/hr_dicipline_type_views.xml",
         "views/hr_dicipline_views.xml",
+        "views/assets.xml",
     ],
     "demo": [],
 }

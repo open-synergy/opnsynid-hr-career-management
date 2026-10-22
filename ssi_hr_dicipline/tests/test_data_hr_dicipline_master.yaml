@@ -1,0 +1,81 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Dicipline type: create, edit and unlink"
+    steps:
+      - step: "Create a dicipline type"
+        action: "create"
+        model: "hr.dicipline_type"
+        save_as: "dicipline_type"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Master Type"
+          code: "/"
+
+      - step: "Assert the type is created"
+        action: "assert"
+        target: "dicipline_type"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Master Type"
+
+      - step: "Edit the dicipline type"
+        action: "write"
+        target: "dicipline_type"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Master Type Changed"
+
+      - step: "Assert the type is updated"
+        action: "assert"
+        target: "dicipline_type"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Master Type Changed"
+
+      - step: "Unlink the dicipline type"
+        action: "unlink"
+        target: "dicipline_type"
+        as_user: "base.user_admin"
+
+  - name: "Dicipline reason: create, edit and unlink"
+    steps:
+      - step: "Create a dicipline reason"
+        action: "create"
+        model: "hr.dicipline_reason"
+        save_as: "dicipline_reason"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Master Reason"
+          code: "/"
+
+      - step: "Assert the reason is created"
+        action: "assert"
+        target: "dicipline_reason"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Master Reason"
+
+      - step: "Edit the dicipline reason"
+        action: "write"
+        target: "dicipline_reason"
+        as_user: "base.user_admin"
+        values:
+          name: "Test Master Reason Changed"
+
+      - step: "Assert the reason is updated"
+        action: "assert"
+        target: "dicipline_reason"
+        asserts:
+          name:
+            type: "value"
+            expected: "Test Master Reason Changed"
+
+      - step: "Unlink the dicipline reason"
+        action: "unlink"
+        target: "dicipline_reason"
+        as_user: "base.user_admin"

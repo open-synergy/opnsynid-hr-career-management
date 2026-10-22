@@ -6,6 +6,8 @@ from odoo import fields, models
 
 
 class HrDiciplineType(models.Model):
+    """Master data of the types of an employee disciplinary action."""
+
     _name = "hr.dicipline_type"
     _inherit = ["mixin.master_data"]
     _description = "Employee Dicipline Reason"
