@@ -4,8 +4,17 @@
 
 from odoo import api, fields, models
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class HrDicipline(models.Model):
+    """Disciplinary action recorded against an employee.
+
+    A transactional document with confirm, multiple approval, done and
+    cancel states. It stores the discipline type, the reasons and the
+    period the disciplinary action applies to.
+    """
+
     _name = "hr.dicipline"
     _inherit = [
         "mixin.transaction_confirm",
@@ -105,6 +114,12 @@ class HrDicipline(models.Model):
         default="draft",
         copy=False,
     )
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch
 
     @api.model
     def _get_policy_field(self):

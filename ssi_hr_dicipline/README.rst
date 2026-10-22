@@ -19,6 +19,25 @@ To install this module, you need to:
 5.  Search For *Employee Dicipline*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Create Dicipline <docs/hr_dicipline/01-create.html>`_
+* `Edit Dicipline <docs/hr_dicipline/02-edit.html>`_
+* `Delete Dicipline <docs/hr_dicipline/03-delete.html>`_
+* `Confirm Dicipline <docs/hr_dicipline/04-confirm.html>`_
+* `Approve Dicipline <docs/hr_dicipline/05-approve.html>`_
+* `Reject Dicipline <docs/hr_dicipline/06-reject.html>`_
+* `Cancel Dicipline <docs/hr_dicipline/10-cancel.html>`_
+* `Restart Dicipline <docs/hr_dicipline/12-restart.html>`_
+* `Restart Approval Process of Dicipline <docs/hr_dicipline/14-restart-approval.html>`_
+* `Create Employee Dicipline Type <docs/hr_dicipline_type/01-create.html>`_
+* `Edit Employee Dicipline Type <docs/hr_dicipline_type/02-edit.html>`_
+* `Delete Employee Dicipline Type <docs/hr_dicipline_type/03-delete.html>`_
+* `Create Employee Dicipline Reason <docs/hr_dicipline_reason/01-create.html>`_
+* `Edit Employee Dicipline Reason <docs/hr_dicipline_reason/02-edit.html>`_
+* `Delete Employee Dicipline Reason <docs/hr_dicipline_reason/03-delete.html>`_
+
 Bug Tracker
 ===========
 

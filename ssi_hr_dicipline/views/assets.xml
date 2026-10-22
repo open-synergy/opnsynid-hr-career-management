@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 OpenSynergy Indonesia
+     Copyright 2026 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_tests"
+        name="ssi_hr_dicipline assets tests"
+        inherit_id="web.assets_tests"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_confirm_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_approve_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_reject_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_cancel_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_restart_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_restart_approval_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_type_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_type_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_type_delete_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_reason_create_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_reason_edit_tour.js"
+            />
+            <script
+                type="text/javascript"
+                src="/ssi_hr_dicipline/static/tests/tours/hr_dicipline_reason_delete_tour.js"
+            />
+        </xpath>
+    </template>
+</odoo>
