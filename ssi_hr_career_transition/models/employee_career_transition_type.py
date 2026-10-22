@@ -5,7 +5,9 @@
 from odoo import fields, models
 
 
-class HrCareerTransitionType(models.Model):
+class EmployeeCareerTransitionType(models.Model):
+    """Master data of employee career transition types."""
+
     _name = "employee_career_transition_type"
     _description = "Employee Career Transition Type"
     _inherit = ["mixin.master_data"]

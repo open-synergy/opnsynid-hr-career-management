@@ -3,13 +3,23 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 import logging
 
+from openupgradelib import openupgrade
 
-def migrate(cr, version):
+
+@openupgrade.migrate()
+def migrate(env, version):
+    """Copy employee career fields into their manual counterparts.
+
+    :param env: the migration environment
+    :param version: the version being migrated from
+    :return: nothing; updates ``hr_employee`` rows
+    """
     if not version:
         return
     logger = logging.getLogger(__name__)
     logger.info("Updating hr_employee...")
-    cr.execute(
+    openupgrade.logged_query(
+        env.cr,
         """
     UPDATE
         hr_employee dest
@@ -27,6 +37,6 @@ def migrate(cr, version):
     FROM hr_employee src
     WHERE
         dest.id = src.id;
-    """
+    """,
     )
     logger.info("Successfully updated hr_employee tables")

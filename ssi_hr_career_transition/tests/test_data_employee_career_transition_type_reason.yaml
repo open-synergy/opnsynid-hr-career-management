@@ -1,0 +1,26 @@
+scenarios:
+  - name: "Type created with inline reason keeps the reason linked"
+    steps:
+      - step: "Create transition type with one inline reason"
+        action: "create"
+        model: "employee_career_transition_type"
+        save_as: "type_inline"
+        values:
+          name: "Test Inline Reason Type"
+          code: "/"
+          require_reason: true
+          reason_ids:
+            - - 0
+              - 0
+              - name: "Test Inline Reason"
+                limit: 2
+
+      - step: "Reason is stored and linked to the type"
+        action: "assert"
+        target: "type_inline"
+        refresh: true
+        asserts:
+          reason_ids:
+            type: "o2m"
+            check: "count"
+            expected_count: 1
