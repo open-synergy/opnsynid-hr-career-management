@@ -732,3 +732,17 @@ msgstr ""
 #: model:ir.model.fields.selection,name:ssi_hr_dicipline.selection__hr_dicipline__state__confirm
 msgid "Waiting for Approval"
 msgstr ""
+
+#. module: ssi_hr_dicipline
+#: model:ir.model.fields,field_description:ssi_hr_dicipline.field_hr_dicipline__website_message_ids
+#: model:ir.model.fields,field_description:ssi_hr_dicipline.field_hr_dicipline_reason__website_message_ids
+#: model:ir.model.fields,field_description:ssi_hr_dicipline.field_hr_dicipline_type__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: ssi_hr_dicipline
+#: model:ir.model.fields,help:ssi_hr_dicipline.field_hr_dicipline__website_message_ids
+#: model:ir.model.fields,help:ssi_hr_dicipline.field_hr_dicipline_reason__website_message_ids
+#: model:ir.model.fields,help:ssi_hr_dicipline.field_hr_dicipline_type__website_message_ids
+msgid "Website communication history"
+msgstr ""
