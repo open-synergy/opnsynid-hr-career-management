@@ -7,6 +7,12 @@ Employee Dicipline - Work Log Integration
 =========================================
 
 
+Work Instruction
+================
+
+* `Create Employee Dicipline <docs/hr_dicipline/index.html>`_
+
+
 Installation
 ============
 

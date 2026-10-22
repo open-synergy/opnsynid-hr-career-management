@@ -11,8 +11,11 @@
     "depends": [
         "ssi_hr_dicipline",
         "ssi_work_log_mixin",
+        "web_tour",
     ],
-    "data": [],
+    "data": [
+        "views/assets.xml",
+    ],
     "demo": [],
     "images": [],
 }
