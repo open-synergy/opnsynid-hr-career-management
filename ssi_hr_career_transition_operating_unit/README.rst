@@ -10,6 +10,12 @@ This module integrates Operating Unit support into the Career Transition module.
 It allows career transition documents to be scoped to a specific operating unit.
 
 
+Work Instruction
+================
+
+* `Create Career Transition <docs/employee_career_transition/index.html>`_
+
+
 Bug Tracker
 ===========
 
