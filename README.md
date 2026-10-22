@@ -26,7 +26,7 @@ addon | version | maintainers | summary
 [ssi_hr_career_transition_documenso_signing](ssi_hr_career_transition_documenso_signing/) | 14.0.2.0.0 |  | HR Career Transition - Documenso Signing Integration
 [ssi_hr_career_transition_operating_unit](ssi_hr_career_transition_operating_unit/) | 14.0.1.0.0 |  | Human Resource Career Transition - Operating Unit Integration
 [ssi_hr_career_transition_work_log](ssi_hr_career_transition_work_log/) | 14.0.1.0.0 |  | Human Resource Career Transition - Work Log Integration
-[ssi_hr_dicipline](ssi_hr_dicipline/) | 14.0.1.2.0 |  | Employee Dicipline
+[ssi_hr_dicipline](ssi_hr_dicipline/) | 14.0.1.2.1 |  | Employee Dicipline
 [ssi_hr_dicipline_documenso_signing](ssi_hr_dicipline_documenso_signing/) | 14.0.2.0.0 |  | HR Discipline - Documenso Signing Integration
 [ssi_hr_dicipline_operating_unit](ssi_hr_dicipline_operating_unit/) | 14.0.1.0.0 |  | Employee Dicipline + Operating Unit
 [ssi_hr_dicipline_work_log](ssi_hr_dicipline_work_log/) | 14.0.1.0.0 |  | Employee Dicipline - Work Log Integration
