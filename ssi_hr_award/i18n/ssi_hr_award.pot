@@ -732,3 +732,17 @@ msgstr ""
 #: model:ir.model.fields.selection,name:ssi_hr_award.selection__hr_award__state__confirm
 msgid "Waiting for Approval"
 msgstr ""
+
+#. module: ssi_hr_award
+#: model:ir.model.fields,field_description:ssi_hr_award.field_hr_award__website_message_ids
+#: model:ir.model.fields,field_description:ssi_hr_award.field_hr_award_reason__website_message_ids
+#: model:ir.model.fields,field_description:ssi_hr_award.field_hr_award_type__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: ssi_hr_award
+#: model:ir.model.fields,help:ssi_hr_award.field_hr_award__website_message_ids
+#: model:ir.model.fields,help:ssi_hr_award.field_hr_award_reason__website_message_ids
+#: model:ir.model.fields,help:ssi_hr_award.field_hr_award_type__website_message_ids
+msgid "Website communication history"
+msgstr ""
