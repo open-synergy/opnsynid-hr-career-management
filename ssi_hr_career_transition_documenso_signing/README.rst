@@ -10,6 +10,12 @@ This module integrates Documenso digital signing into the HR Career Transition m
 It adds a Documenso signing tab to the employee career transition form view.
 
 
+Work Instruction
+================
+
+* `Approve Career Transition <docs/employee_career_transition/05-approve.html>`_
+
+
 Bug Tracker
 ===========
 

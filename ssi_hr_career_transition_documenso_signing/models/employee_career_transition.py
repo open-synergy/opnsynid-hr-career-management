@@ -5,7 +5,7 @@
 from odoo import models
 
 
-class HrCareerTransition(models.Model):
+class EmployeeCareerTransition(models.Model):
     _name = "employee_career_transition"
     _inherit = [
         "employee_career_transition",
