@@ -1,0 +1,68 @@
+setup:
+  steps:
+    - step: "Create job grade G1"
+      action: "create"
+      model: "hr.job_grade"
+      save_as: "grade_g1"
+      values:
+        name: "Test Documenso Grade G1"
+        code: "/"
+
+    - step: "Create job grade G2"
+      action: "create"
+      model: "hr.job_grade"
+      save_as: "grade_g2"
+      values:
+        name: "Test Documenso Grade G2"
+        code: "/"
+
+    - step: "Create transition type that changes job grade"
+      action: "create"
+      model: "employee_career_transition_type"
+      save_as: "type_grade"
+      values:
+        name: "Test Documenso Type"
+        code: "/"
+        change_job_grade: true
+        require_job_grade: true
+
+    - step: "Create employee using career transition method"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee_ct"
+      values:
+        name: "Test Documenso Employee"
+        work_information_method: "career_transition"
+        manual_job_grade_id: "REC: grade_g1.id"
+
+scenarios:
+  - name: "Draft transition is confirmed and exposes the signature field"
+    steps:
+      - step: "Create career transition in draft"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee_ct.id"
+          type_id: "REC: type_grade.id"
+          effective_date: "2026-01-01"
+          new_job_grade_id: "REC: grade_g2.id"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          approval_signature_request_id:
+            type: "m2o"
+            expected: false
+
+      - step: "Confirm the transition"
+        action: "call"
+        target: "transition"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        refresh: true
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
