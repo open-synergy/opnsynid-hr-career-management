@@ -19,6 +19,11 @@ To install this module, you need to:
 5.  Search For *Employee Award + Operating Unit*
 6.  Install the module
 
+Work Instruction
+================
+
+* `Create Award <docs/hr_award/01-create.html>`_
+
 Bug Tracker
 ===========
 
