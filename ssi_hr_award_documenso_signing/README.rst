@@ -10,6 +10,12 @@ This module integrates Documenso digital signing into the HR Award module.
 It adds a Documenso signing tab to the employee award form view.
 
 
+Work Instruction
+================
+
+* `Approve Employee Award <docs/hr_award/05-approve.html>`_
+
+
 Bug Tracker
 ===========
 
