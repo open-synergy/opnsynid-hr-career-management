@@ -1,0 +1,114 @@
+setup:
+  steps:
+    - step: "Create award type"
+      action: "create"
+      model: "hr.award_type"
+      save_as: "award_type"
+      values:
+        name: "Test Award OU Type"
+        code: "/"
+
+    - step: "Create award reason"
+      action: "create"
+      model: "hr.award_reason"
+      save_as: "award_reason"
+      values:
+        name: "Test Award OU Reason"
+        code: "/"
+
+    - step: "Create employee owned by the main operating unit"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Award OU Employee"
+        operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+    - step: "Create award owned by the main operating unit"
+      action: "create"
+      model: "hr.award"
+      save_as: "award"
+      as_user: "base.user_admin"
+      values:
+        user_id: "REF: base.user_admin"
+        employee_id: "REC: employee.id"
+        type_id: "REC: award_type.id"
+        reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+        date: 2026-01-15
+        date_start: 2026-01-01
+        date_end: 2026-12-31
+        operating_unit_id: "REF: operating_unit.main_operating_unit"
+
+    - step: "Create user assigned to the main operating unit"
+      action: "create"
+      model: "res.users"
+      save_as: "user_ou_a"
+      values:
+        name: "Award OU User A"
+        login: "award_ou_user_a@example.com"
+        groups_id:
+          - - 6
+            - 0
+            - - "REF: base.group_user"
+              - "REF: ssi_hr_award.hr_award_viewer_group"
+              - "REF: ssi_hr_award_operating_unit.award_ou_group"
+        assigned_operating_unit_ids:
+          - - 6
+            - 0
+            - - "REF: operating_unit.main_operating_unit"
+
+    - step: "Create user assigned to another operating unit only"
+      action: "create"
+      model: "res.users"
+      save_as: "user_ou_b"
+      values:
+        name: "Award OU User B"
+        login: "award_ou_user_b@example.com"
+        groups_id:
+          - - 6
+            - 0
+            - - "REF: base.group_user"
+              - "REF: ssi_hr_award.hr_award_viewer_group"
+              - "REF: ssi_hr_award_operating_unit.award_ou_group"
+        assigned_operating_unit_ids:
+          - - 6
+            - 0
+            - - "REF: operating_unit.b2b_operating_unit"
+
+scenarios:
+  - name: "Onchange fills the operating unit and the record rule scopes access"
+    steps:
+      - step: "Selecting the employee fills the operating unit (onchange)"
+        action: "form"
+        model: "hr.award"
+        save: false
+        values:
+          employee_id: "REC: employee"
+        asserts:
+          operating_unit_id.code:
+            type: "value"
+            expected: "EVAL: env.ref('operating_unit.main_operating_unit').code"
+
+      - step: "Operating unit is stored on the award"
+        action: "assert"
+        target: "award"
+        asserts:
+          operating_unit_id.code:
+            type: "value"
+            expected: "EVAL: env.ref('operating_unit.main_operating_unit').code"
+
+      - step: "User of the same operating unit finds the award"
+        action: "search"
+        model: "hr.award"
+        domain: [["id", "=", "REC: award.id"]]
+        save_as: "found"
+        as_user: "user_ou_a"
+        expect_count: 1
+
+      - step: "User of another operating unit finds nothing (record rule)"
+        action: "search"
+        model: "hr.award"
+        domain: [["id", "=", "REC: award.id"]]
+        save_as: "found_b"
+        as_user: "user_ou_b"
+        expect_count: 0
