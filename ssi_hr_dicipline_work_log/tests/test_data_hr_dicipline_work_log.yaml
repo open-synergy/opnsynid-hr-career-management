@@ -1,0 +1,106 @@
+options:
+  auto_refresh: true
+
+setup:
+  steps:
+    - step: "Create dicipline type"
+      action: "create"
+      model: "hr.dicipline_type"
+      save_as: "dicipline_type"
+      as_user: "base.user_admin"
+      values:
+        name: "Test Work Log Type"
+        code: "/"
+
+    - step: "Create dicipline reason"
+      action: "create"
+      model: "hr.dicipline_reason"
+      save_as: "dicipline_reason"
+      as_user: "base.user_admin"
+      values:
+        name: "Test Work Log Reason"
+        code: "/"
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      as_user: "base.user_admin"
+      values:
+        name: "Test Dicipline Work Log Employee"
+
+    - step: "Create timesheet covering the work log date"
+      action: "create"
+      model: "hr.timesheet"
+      save_as: "timesheet"
+      as_user: "base.user_admin"
+      values:
+        employee_id: "REC: employee.id"
+        date_start: 2026-02-01
+        date_end: 2026-02-28
+
+    - step: "Open timesheet"
+      action: "call"
+      target: "timesheet"
+      method: "action_open"
+      as_user: "base.user_admin"
+      context:
+        bypass_policy_check: true
+
+    - step: "Get ir.model for hr.dicipline"
+      action: "search"
+      model: "ir.model"
+      domain: [["model", "=", "hr.dicipline"]]
+      save_as: "ir_model"
+      limit: 1
+
+    - step: "Create analytic account"
+      action: "create"
+      model: "account.analytic.account"
+      save_as: "analytic_account"
+      values:
+        name: "Test Dicipline Work Log Analytic"
+
+scenarios:
+  - name: "Work log within the estimation: total, remaining and excess"
+    steps:
+      - step: "Create dicipline with a work estimation of 5"
+        action: "create"
+        model: "hr.dicipline"
+        save_as: "dicipline"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: dicipline_type.id"
+          reason_ids: [[6, 0, ["REC: dicipline_reason.id"]]]
+          date: 2026-02-01
+          date_start: 2026-02-01
+          date_end: 2026-03-01
+          work_estimation: 5.0
+      - step: "Log 2 hours of work against the dicipline"
+        action: "create"
+        model: "hr.work_log"
+        save_as: "work_log"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          description: "Test dicipline work log"
+          model_id: "REC: ir_model.id"
+          work_object_id: "REC: dicipline.id"
+          date: 2026-02-10
+          amount: 2.0
+          analytic_account_id: "REC: analytic_account.id"
+      - step: "Assert total, remaining and excess work"
+        action: "assert"
+        target: "dicipline"
+        refresh: true
+        asserts:
+          total_work:
+            type: "value"
+            expected: 2.0
+          remaining_work:
+            type: "value"
+            expected: 3.0
+          excess_work:
+            type: "value"
+            expected: 0.0
