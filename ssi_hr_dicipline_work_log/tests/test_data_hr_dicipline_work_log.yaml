@@ -44,6 +44,8 @@ setup:
       target: "timesheet"
       method: "action_open"
       as_user: "base.user_admin"
+      context:
+        bypass_policy_check: true
 
     - step: "Get ir.model for hr.dicipline"
       action: "search"
