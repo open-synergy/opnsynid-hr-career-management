@@ -500,9 +500,20 @@ class HrEmployee(models.Model):
                 )
 
     def action_set_method_2_career(self):
+        """Set the work information method to career transition.
+
+        Writes ``career_transition`` to ``work_information_method`` on
+        every record, so the work information follows the latest
+        career transition.
+        """
         for record in self:
             record.work_information_method = "career_transition"
 
     def action_set_method_2_manual(self):
+        """Set the work information method to manual.
+
+        Writes ``manual`` to ``work_information_method`` on every
+        record, so the work information follows the manual fields.
+        """
         for record in self:
             record.work_information_method = "manual"
