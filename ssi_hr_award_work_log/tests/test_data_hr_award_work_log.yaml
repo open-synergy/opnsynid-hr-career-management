@@ -1,0 +1,117 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Work log realization of an award"
+    steps:
+      - step: "Create employee"
+        action: "create"
+        model: "hr.employee"
+        save_as: "employee"
+        values:
+          name: "Test Award Work Log Employee"
+
+      - step: "Create award type"
+        action: "create"
+        model: "hr.award_type"
+        save_as: "award_type"
+        values:
+          name: "Test Work Log Award Type"
+          code: "/"
+
+      - step: "Create award reason"
+        action: "create"
+        model: "hr.award_reason"
+        save_as: "award_reason"
+        values:
+          name: "Test Work Log Award Reason"
+          code: "/"
+
+      - step: "Create timesheet for the employee"
+        action: "create"
+        model: "hr.timesheet"
+        save_as: "timesheet"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          date_start: 2024-01-01
+          date_end: 2024-01-31
+
+      - step: "Open the timesheet (work logs need an open timesheet)"
+        action: "call"
+        target: "timesheet"
+        method: "action_open"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Get ir.model of the award"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "hr.award"]]
+        save_as: "ir_model"
+        limit: 1
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic_account"
+        values:
+          name: "Test Award Work Log Analytic"
+
+      - step: "Create award with estimation 5"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REF: base.user_admin"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+          work_estimation: 5.0
+
+      - step: "Assert nothing is logged yet"
+        action: "assert"
+        target: "award"
+        asserts:
+          total_work:
+            type: "value"
+            expected: 0.0
+          remaining_work:
+            type: "value"
+            expected: 5.0
+          excess_work:
+            type: "value"
+            expected: 0.0
+
+      - step: "Create a 2 hour work log on the award"
+        action: "create"
+        model: "hr.work_log"
+        save_as: "work_log"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          description: "Test award work log"
+          model_id: "REC: ir_model.id"
+          work_object_id: "REC: award.id"
+          date: 2024-01-15
+          amount: 2.0
+          analytic_account_id: "REC: analytic_account.id"
+
+      - step: "Assert total, remaining and excess"
+        action: "assert"
+        target: "award"
+        asserts:
+          total_work:
+            type: "value"
+            expected: 2.0
+          remaining_work:
+            type: "value"
+            expected: 3.0
+          excess_work:
+            type: "value"
+            expected: 0.0

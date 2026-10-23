@@ -6,6 +6,14 @@
 Employee Award - Work Log Integration
 =====================================
 
+Integrates work log tracking with employee award documents.
+
+
+Work Instruction
+================
+
+* `Create Employee Award <docs/hr_award/01-create.html>`_
+
 
 Installation
 ============
