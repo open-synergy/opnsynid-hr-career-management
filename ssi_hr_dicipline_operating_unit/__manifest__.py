@@ -13,10 +13,12 @@
         "ssi_hr_dicipline",
         "ssi_hr_employee_operating_unit",
         "ssi_operating_unit_mixin",
+        "web_tour",
     ],
     "data": [
         "security/res_group/res_group_data.xml",
         "security/ir_rule/ir_rule_data.xml",
         "views/hr_dicipline_views.xml",
+        "views/assets.xml",
     ],
 }
