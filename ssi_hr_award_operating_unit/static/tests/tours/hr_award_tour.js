@@ -29,7 +29,8 @@ odoo.define("ssi_hr_award_operating_unit.hr_award_tour", function (require) {
             },
             {
                 content: "Open the Employee Awards menu",
-                trigger: ".o_menu_sections [data-menu-xmlid=X]",
+                trigger:
+                    '.o_menu_sections [data-menu-xmlid="ssi_hr_award.hr_award_menu"]',
             },
             {
                 // Gate on the TARGET action title (patterns.md §A).
