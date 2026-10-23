@@ -19,14 +19,6 @@ scenarios:
           name: "Test Work Log Transition Type"
           code: "/"
 
-      - step: "Get working schedule"
-        action: "search"
-        model: "resource.calendar"
-        domain: []
-        save_as: "working_schedule"
-        limit: 1
-        order: "id asc"
-
       - step: "Create timesheet for the employee"
         action: "create"
         model: "hr.timesheet"
@@ -36,13 +28,14 @@ scenarios:
           employee_id: "REC: employee.id"
           date_start: 2024-01-01
           date_end: 2024-01-31
-          working_schedule_id: "REC: working_schedule.id"
 
       - step: "Open the timesheet (work logs need an open timesheet)"
         action: "call"
         target: "timesheet"
         method: "action_open"
         as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
 
       - step: "Get ir.model of the career transition"
         action: "search"
