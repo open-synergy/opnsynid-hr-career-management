@@ -1,0 +1,40 @@
+setup:
+  steps:
+    - step: "Create employee using manual method"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee_manual"
+      values:
+        name: "Test Method Employee Manual"
+        work_information_method: "manual"
+
+    - step: "Create employee using career transition method"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee_career"
+      values:
+        name: "Test Method Employee Career"
+        work_information_method: "career_transition"
+
+scenarios:
+  - name: "Set method to career transition from manual"
+    steps:
+      - step: "Call action_set_method_2_career on manual employee"
+        action: "call"
+        target: "employee_manual"
+        method: "action_set_method_2_career"
+        asserts:
+          work_information_method:
+            type: "value"
+            expected: "career_transition"
+
+  - name: "Set method to manual from career transition"
+    steps:
+      - step: "Call action_set_method_2_manual on career employee"
+        action: "call"
+        target: "employee_career"
+        method: "action_set_method_2_manual"
+        asserts:
+          work_information_method:
+            type: "value"
+            expected: "manual"

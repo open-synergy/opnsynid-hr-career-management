@@ -27,20 +27,6 @@
                                 invisible="0"
                             />
                     </group>
-                    <!-- <button
-                            name="action_set_method_2_career"
-                            string="From Career Transition"
-                            type="object"
-                            icon="fa-cogs"
-                            attrs="{'invisible':[('work_information_method','&lt;&gt;','manual')]}"
-                        />
-                    <button
-                            name="action_set_method_2_manual"
-                            string="Manual"
-                            type="object"
-                            icon="fa-cogs"
-                            attrs="{'invisible':[('work_information_method','&lt;&gt;', False)]}"
-                        /> -->
                     <group
                             name="career_transition_1_2"
                             col="2"
@@ -80,6 +66,20 @@
                             <field name="reason_id" />
                             <field name="state" />
                         </tree>
+                        <form create='false' edit='false' delete='false'>
+                            <group name="career_transition_form_1" col="2">
+                                <field name="name" />
+                                <field name="create_date" />
+                                <field name="type_id" />
+                                <field name="effective_date" />
+                                <field name="date_contract_start" />
+                                <field name="date_contract_end" />
+                                <field name="user_id" />
+                                <field name="archieve" />
+                                <field name="reason_id" />
+                                <field name="state" />
+                            </group>
+                        </form>
                     </field>
                     <group
                             name="career_transition_1_3"

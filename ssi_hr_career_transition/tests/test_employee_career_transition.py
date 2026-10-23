@@ -54,3 +54,7 @@ class TestEmployeeCareerTransition(YamlTransactionCase):
         )
         with self.assertRaises(IntegrityError), self.env.cr.savepoint():
             grade.unlink()
+
+    def test_employee_set_method(self):
+        """Run the work information method switch scenarios."""
+        self.run_yaml_scenario("test_data_hr_employee_method.yaml")
