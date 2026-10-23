@@ -180,6 +180,14 @@ class HrEmployee(models.Model):
         "career_transition_ids.type_id",
     )
     def _compute_career_transition(self):
+        """Compute the career transition shortcut fields.
+
+        Resets ``latest_career_transition_id`` and the join, terminate,
+        permanent and contract transition fields, then fills each one
+        with the first ``done`` transition of the employee. The latest
+        field takes any ``done`` transition; the others also match the
+        transition type configured on the company.
+        """
         for record in self:
             record.latest_career_transition_id = False
             record.join_career_transition_id = False
@@ -246,6 +254,13 @@ class HrEmployee(models.Model):
         "manual_company_id",
     )
     def _compute_company_id(self):
+        """Compute ``company_id``.
+
+        Defaults to the current company. When ``work_information_method``
+        is ``manual``, use ``manual_company_id`` if set. When it is
+        ``career_transition``, use ``new_company_id`` of the latest
+        career transition if set.
+        """
         for record in self:
             record.company_id = self.env.company
             if record.work_information_method == "manual":
@@ -266,6 +281,13 @@ class HrEmployee(models.Model):
         "manual_department_id",
     )
     def _compute_department_id(self):
+        """Compute ``department_id``.
+
+        Use ``manual_department_id`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and a latest
+        career transition exists,
+        use ``new_department_id`` of that transition.
+        """
         for record in self:
             record.department_id = record.manual_department_id
             if (
@@ -282,6 +304,13 @@ class HrEmployee(models.Model):
         "manual_job_id",
     )
     def _compute_job_id(self):
+        """Compute ``job_id``.
+
+        Use ``manual_job_id`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and a latest
+        career transition exists,
+        use ``new_job_id`` of that transition.
+        """
         for record in self:
             record.job_id = record.manual_job_id
             if (
@@ -318,6 +347,13 @@ class HrEmployee(models.Model):
         "manual_parent_id",
     )
     def _compute_parent_id(self):
+        """Compute ``parent_id``.
+
+        Use ``manual_parent_id`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and a latest
+        career transition exists,
+        use ``new_parent_id`` of that transition.
+        """
         for record in self:
             record.parent_id = record.manual_parent_id
             if (
@@ -332,6 +368,14 @@ class HrEmployee(models.Model):
         "manual_employment_status_id",
     )
     def _compute_employment_status_id(self):
+        """Compute ``employment_status_id``.
+
+        Use ``manual_employment_status_id`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and a latest
+        career transition exists,
+        use ``new_employment_status_id`` of
+        that transition.
+        """
         for record in self:
             record.employment_status_id = record.manual_employment_status_id
             if (
@@ -348,6 +392,13 @@ class HrEmployee(models.Model):
         "manual_date_join",
     )
     def _compute_date_join(self):
+        """Compute ``date_join``.
+
+        Use ``manual_date_join`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and
+        ``join_career_transition_id``
+        is set, use its ``effective_date``.
+        """
         for record in self:
             record.date_join = record.manual_date_join
             if (
@@ -362,6 +413,13 @@ class HrEmployee(models.Model):
         "manual_date_termination",
     )
     def _compute_date_termination(self):
+        """Compute ``date_termination``.
+
+        Use ``manual_date_termination`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and
+        ``terminate_career_transition_id``
+        is set, use its ``effective_date``.
+        """
         for record in self:
             record.date_termination = record.manual_date_termination
             if (
@@ -378,6 +436,13 @@ class HrEmployee(models.Model):
         "manual_date_permanent",
     )
     def _compute_date_permanent(self):
+        """Compute ``date_permanent``.
+
+        Use ``manual_date_permanent`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and
+        ``permanent_career_transition_id``
+        is set, use its ``effective_date``.
+        """
         for record in self:
             record.date_permanent = record.manual_date_permanent
             if (
@@ -394,6 +459,13 @@ class HrEmployee(models.Model):
         "manual_date_contract_start",
     )
     def _compute_date_contract_start(self):
+        """Compute ``date_contract_start``.
+
+        Use ``manual_date_contract_start`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and
+        ``contract_career_transition_id``
+        is set, use its ``date_contract_start``.
+        """
         for record in self:
             record.date_contract_start = record.manual_date_contract_start
             if (
@@ -410,6 +482,13 @@ class HrEmployee(models.Model):
         "manual_date_contract_end",
     )
     def _compute_date_contract_end(self):
+        """Compute ``date_contract_end``.
+
+        Use ``manual_date_contract_end`` when ``work_information_method`` is
+        ``manual``. When it is ``career_transition`` and
+        ``contract_career_transition_id``
+        is set, use its ``date_contract_end``.
+        """
         for record in self:
             record.date_contract_end = record.manual_date_contract_end
             if (
