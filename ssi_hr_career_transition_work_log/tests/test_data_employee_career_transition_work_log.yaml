@@ -1,0 +1,103 @@
+options:
+  auto_refresh: true
+
+scenarios:
+  - name: "Work log realization of a career transition"
+    steps:
+      - step: "Create employee"
+        action: "create"
+        model: "hr.employee"
+        save_as: "employee"
+        values:
+          name: "Test Career Transition Work Log Employee"
+
+      - step: "Create transition type"
+        action: "create"
+        model: "employee_career_transition_type"
+        save_as: "transition_type"
+        values:
+          name: "Test Work Log Transition Type"
+          code: "/"
+
+      - step: "Create timesheet for the employee"
+        action: "create"
+        model: "hr.timesheet"
+        save_as: "timesheet"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          date_start: 2024-01-01
+          date_end: 2024-01-31
+
+      - step: "Open the timesheet (work logs need an open timesheet)"
+        action: "call"
+        target: "timesheet"
+        method: "action_open"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Get ir.model of the career transition"
+        action: "search"
+        model: "ir.model"
+        domain: [["model", "=", "employee_career_transition"]]
+        save_as: "ir_model"
+        limit: 1
+
+      - step: "Create analytic account"
+        action: "create"
+        model: "account.analytic.account"
+        save_as: "analytic_account"
+        values:
+          name: "Test Career Transition Work Log Analytic"
+
+      - step: "Create career transition with estimation 5"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "transition"
+        values:
+          employee_id: "REC: employee.id"
+          type_id: "REC: transition_type.id"
+          work_estimation: 5.0
+
+      - step: "Assert nothing is logged yet"
+        action: "assert"
+        target: "transition"
+        asserts:
+          total_work:
+            type: "value"
+            expected: 0.0
+          remaining_work:
+            type: "value"
+            expected: 5.0
+          excess_work:
+            type: "value"
+            expected: 0.0
+
+      - step: "Create a 2 hour work log on the transition"
+        action: "create"
+        model: "hr.work_log"
+        save_as: "work_log"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "REC: employee.id"
+          description: "Test career transition work log"
+          model_id: "REC: ir_model.id"
+          work_object_id: "REC: transition.id"
+          date: 2024-01-15
+          amount: 2.0
+          analytic_account_id: "REC: analytic_account.id"
+
+      - step: "Assert total, remaining and excess"
+        action: "assert"
+        target: "transition"
+        asserts:
+          total_work:
+            type: "value"
+            expected: 2.0
+          remaining_work:
+            type: "value"
+            expected: 3.0
+          excess_work:
+            type: "value"
+            expected: 0.0

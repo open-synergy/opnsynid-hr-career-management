@@ -6,6 +6,14 @@
 Human Resource Career Transition - Work Log Integration
 =======================================================
 
+Integrates work log tracking with career transition documents.
+
+
+Work Instruction
+================
+
+* `Create Career Transition <docs/employee_career_transition/01-create.html>`_
+
 
 Installation
 ============
