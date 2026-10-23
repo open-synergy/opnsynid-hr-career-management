@@ -6,6 +6,8 @@ from odoo import fields, models
 
 
 class HrAwardType(models.Model):
+    """Master data of the types of employee award."""
+
     _name = "hr.award_type"
     _inherit = ["mixin.master_data"]
     _description = "Employee Award Reason"
