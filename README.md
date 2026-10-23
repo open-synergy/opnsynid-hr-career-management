@@ -19,7 +19,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_hr_award](ssi_hr_award/) | 14.0.1.4.1 |  | Employee Award
-[ssi_hr_award_documenso_signing](ssi_hr_award_documenso_signing/) | 14.0.2.0.0 |  | HR Award - Documenso Signing Integration
+[ssi_hr_award_documenso_signing](ssi_hr_award_documenso_signing/) | 14.0.2.0.1 |  | HR Award - Documenso Signing Integration
 [ssi_hr_award_operating_unit](ssi_hr_award_operating_unit/) | 14.0.1.0.1 |  | Employee Award + Operating Unit
 [ssi_hr_award_work_log](ssi_hr_award_work_log/) | 14.0.1.0.1 |  | Employee Award - Work Log Integration
 [ssi_hr_career_transition](ssi_hr_career_transition/) | 14.0.2.5.6 |  | Human Resource Career Transition
