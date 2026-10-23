@@ -1,0 +1,61 @@
+setup:
+  steps:
+    - step: "Create award type"
+      action: "create"
+      model: "hr.award_type"
+      save_as: "award_type"
+      values:
+        name: "Test Documenso Award Type"
+        code: "/"
+
+    - step: "Create award reason"
+      action: "create"
+      model: "hr.award_reason"
+      save_as: "award_reason"
+      values:
+        name: "Test Documenso Award Reason"
+        code: "/"
+
+    - step: "Create employee"
+      action: "create"
+      model: "hr.employee"
+      save_as: "employee"
+      values:
+        name: "Test Documenso Award Employee"
+
+scenarios:
+  - name: "Draft award is confirmed and exposes the signature field"
+    steps:
+      - step: "Create award in draft"
+        action: "create"
+        model: "hr.award"
+        save_as: "award"
+        as_user: "base.user_admin"
+        values:
+          user_id: "REF: base.user_admin"
+          employee_id: "REC: employee.id"
+          type_id: "REC: award_type.id"
+          reason_ids: "EVAL: [(6, 0, [registry['award_reason'].id])]"
+          date: 2026-01-15
+          date_start: 2026-01-01
+          date_end: 2026-12-31
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          approval_signature_request_id:
+            type: "m2o"
+            expected: false
+
+      - step: "Confirm the award"
+        action: "call"
+        target: "award"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        refresh: true
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
